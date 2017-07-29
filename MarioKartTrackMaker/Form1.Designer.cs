@@ -1,4 +1,5 @@
-﻿namespace MarioKartTrackMaker
+﻿using MarioKartTrackMaker.ViewerResources;
+namespace MarioKartTrackMaker
 {
     partial class Form1
     {
@@ -28,7 +29,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.viewPortPanel1 = new MarioKartTrackMaker.ViewPortPanel();
+            this.viewPortPanel1 = new ViewPortPanel(new OpenTK.Graphics.GraphicsMode(32, 32, 0, 4));
             this.SuspendLayout();
             // 
             // viewPortPanel1
