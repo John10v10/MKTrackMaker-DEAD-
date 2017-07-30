@@ -12,7 +12,8 @@ namespace MarioKartTrackMaker.ViewerResources
         public ViewPortPanel vpc;
         public Vector3 pivot;
         private Vector3 _p;
-        public float zoom = 100F;
+        public float _z = 100F;
+        public float zoom { get { return _z; }set { _z = value; position = position; } }
         public Vector3 position {
             get { return _p; }
             set { _p = (value - pivot).Normalized()*zoom + pivot; }

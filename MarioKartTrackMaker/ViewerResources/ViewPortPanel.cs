@@ -53,12 +53,12 @@ namespace MarioKartTrackMaker.ViewerResources
                     GL.Color3(Color.Green);
                     GL.LineWidth(0.5F);
                     GL.Begin(PrimitiveType.Lines);
-                    GL.Vertex3(i, 100, -8);
-                    GL.Vertex3(i, -100, -8);
+                    GL.Vertex3(i, 100, 0);
+                    GL.Vertex3(i, -100, 0);
                     GL.End();
                     GL.Begin(PrimitiveType.Lines);
-                    GL.Vertex3(100,i, -8);
-                    GL.Vertex3(-100,i, -8);
+                    GL.Vertex3(100,i, 0);
+                    GL.Vertex3(-100,i, 0);
                     GL.End();
                 }
                 GL.Begin(PrimitiveType.Polygon);
@@ -82,8 +82,13 @@ namespace MarioKartTrackMaker.ViewerResources
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
-            if (e.Button == MouseButtons.Right)
-                _prev = e.Location;
+            _prev = e.Location;
+        }
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            base.OnMouseWheel(e);
+            cam.zoom = Math.Max(0.1F, cam.zoom+e.Delta/12F* (float)Math.Pow(cam.zoom, 0.375F));
+            Invalidate();
         }
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -92,10 +97,21 @@ namespace MarioKartTrackMaker.ViewerResources
             my = e.Y;
             if (e.Button == MouseButtons.Right)
             {
-                Vector3 vel = new Vector3(e.Location.X - _prev.X, e.Location.Y - _prev.Y, 0);
-                Matrix4 rotmtx = cam.look_at_mtx.ClearTranslation();
-                cam.position += (Matrix4.CreateTranslation(vel) * rotmtx.Inverted()).ExtractTranslation();
-                _prev = e.Location;
+                if ((Control.ModifierKeys & Keys.Shift) != 0)
+                {
+                    Vector3 vel = new Vector3(-(e.Location.X - _prev.X) * cam.zoom / 250F, (e.Location.Y - _prev.Y) * cam.zoom / 250F, 0);
+                    Matrix4 rotmtx = cam.look_at_mtx.ClearTranslation();
+                    cam.position += (Matrix4.CreateTranslation(vel) * rotmtx.Inverted()).ExtractTranslation();
+                    cam.pivot += (Matrix4.CreateTranslation(vel) * rotmtx.Inverted()).ExtractTranslation();
+                    _prev = e.Location;
+                }
+                else
+                {
+                    Vector3 vel = new Vector3(-(e.Location.X - _prev.X) * cam.zoom / 100F, (e.Location.Y - _prev.Y) * cam.zoom / 100F, 0);
+                    Matrix4 rotmtx = cam.look_at_mtx.ClearTranslation();
+                    cam.position += (Matrix4.CreateTranslation(vel) * rotmtx.Inverted()).ExtractTranslation();
+                    _prev = e.Location;
+                }
             }
             Invalidate();
         }
