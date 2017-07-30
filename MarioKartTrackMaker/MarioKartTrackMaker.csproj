@@ -106,6 +106,20 @@
     </EmbeddedResource>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
+    <None Include="Parts_n_Models\Basic_Shapes\Cone.mtl" />
+    <None Include="Parts_n_Models\Basic_Shapes\Cone.obj" />
+    <None Include="Parts_n_Models\Basic_Shapes\Cube.mtl" />
+    <None Include="Parts_n_Models\Basic_Shapes\Cube.obj" />
+    <None Include="Parts_n_Models\Basic_Shapes\Cylinder.mtl" />
+    <None Include="Parts_n_Models\Basic_Shapes\Cylinder.obj" />
+    <None Include="Parts_n_Models\Basic_Shapes\Monkey_Face.mtl" />
+    <None Include="Parts_n_Models\Basic_Shapes\Monkey_Face.obj" />
+    <None Include="Parts_n_Models\Basic_Shapes\Pyramid.mtl" />
+    <None Include="Parts_n_Models\Basic_Shapes\Pyramid.obj" />
+    <None Include="Parts_n_Models\Basic_Shapes\Sphere.mtl" />
+    <None Include="Parts_n_Models\Basic_Shapes\Sphere.obj" />
+    <None Include="Parts_n_Models\Basic_Shapes\Torus.mtl" />
+    <None Include="Parts_n_Models\Basic_Shapes\Torus.obj" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -131,8 +145,16 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Parts_n_Models\" />
+    <Content Include="Parts_n_Models\Basic_Shapes\Cone.png" />
+    <Content Include="Parts_n_Models\Basic_Shapes\Cube.png" />
+    <Content Include="Parts_n_Models\Basic_Shapes\Cylinder.png" />
+    <Content Include="Parts_n_Models\Basic_Shapes\Icon.png" />
+    <Content Include="Parts_n_Models\Basic_Shapes\Monkey_Face.png" />
+    <Content Include="Parts_n_Models\Basic_Shapes\Pyramid.png" />
+    <Content Include="Parts_n_Models\Basic_Shapes\Sphere.png" />
+    <Content Include="Parts_n_Models\Basic_Shapes\Torus.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
