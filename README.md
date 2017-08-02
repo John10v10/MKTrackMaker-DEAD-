@@ -9,4 +9,4 @@ The basic idea is to make custom Mario Kart tracks as easy as putting a toy trai
 My drawing shown above is an illustration that is supposed to be a kid putting a toy race car track together as he imagines the track as a rainbow road Mario is riding on.
 
 
-This is what the program currently looks like: <img src="https://github.com/John10v10/MKTrackMaker/raw/master/ScreenShot.png" width="80%">
+This is what the program currently looks like: <img src="https://snag.gy/upm6Bj.jpg" width="80%">
