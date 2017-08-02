@@ -27,10 +27,11 @@ namespace MarioKartTrackMaker
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
+        /// new OpenTK.Graphics.GraphicsMode(32, 24, 0, 8)
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.viewPortPanel1 = new MarioKartTrackMaker.ViewerResources.ViewPortPanel();
+            this.viewPortPanel1 = new MarioKartTrackMaker.ViewerResources.ViewPortPanel(new OpenTK.Graphics.GraphicsMode(32, 24, 0, 8));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openATrackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,6 +49,7 @@ namespace MarioKartTrackMaker
             this.listView2 = new System.Windows.Forms.ListView();
             this.imageList2 = new System.Windows.Forms.ImageList(this.components);
             this.label2 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,6 +65,7 @@ namespace MarioKartTrackMaker
             this.viewPortPanel1.Size = new System.Drawing.Size(890, 512);
             this.viewPortPanel1.TabIndex = 0;
             this.viewPortPanel1.VSync = true;
+            this.viewPortPanel1.Load += new System.EventHandler(this.viewPortPanel1_Load);
             // 
             // menuStrip1
             // 
@@ -205,11 +208,24 @@ namespace MarioKartTrackMaker
             this.label2.TabIndex = 3;
             this.label2.Text = "Pick a Set:";
             // 
+            // checkBox1
+            // 
+            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(690, 164);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(128, 29);
+            this.checkBox1.TabIndex = 5;
+            this.checkBox1.Text = "Wireframe";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1365, 741);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.listView2);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -247,6 +263,7 @@ namespace MarioKartTrackMaker
         private System.Windows.Forms.ListView listView2;
         private System.Windows.Forms.ImageList imageList2;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 

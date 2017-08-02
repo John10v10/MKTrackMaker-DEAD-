@@ -27,7 +27,7 @@ namespace MarioKartTrackMaker.ViewerResources
         public Matrix4 look_at_mtx { get { return Matrix4.LookAt(position, pivot, Vector3.UnitZ); } }
         public Matrix4 matrix
         {
-            get { return look_at_mtx * Matrix4.CreatePerspectiveFieldOfView(1F, vpc.Width * 1F / vpc.Height, 0.1F, 10000F); }
+            get { return look_at_mtx * Matrix4.CreatePerspectiveFieldOfView(1F, vpc.Width * 1F / vpc.Height, zoom/20, 100000F); }
         }
     }
 }

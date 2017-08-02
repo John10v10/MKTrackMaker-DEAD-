@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using MarioKartTrackMaker;
+using MarioKartTrackMaker.IO;
 namespace MarioKartTrackMaker.ViewerResources
 {
     public partial class ViewPortPanel : GLControl
@@ -23,7 +24,11 @@ namespace MarioKartTrackMaker.ViewerResources
             InitializeComponent();
         }
         bool loaded = false;
+        private bool _wf;
+        public bool wireframemode { get { return _wf; } set { _wf = value; Invalidate();} }
         public Camera cam;
+        private Mesh _dummyMesh;
+        private int _fs, _vs, _pgm;
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -31,13 +36,19 @@ namespace MarioKartTrackMaker.ViewerResources
             cam.position = new Vector3(100f, -120f, 200f);
             if (!DesignMode)
             {
+                _dummyMesh = new Mesh(@"Parts_n_Models\Planetary\Saturn.obj");
                 GL.ClearColor(Color.Black);
                 GL.Enable(EnableCap.DepthTest);
                 GL.Enable(EnableCap.Multisample);
+                GL.Enable(EnableCap.CullFace);
+                _fs = Shader.CompileFragmentShader();
+                _vs = Shader.CompileVertexShader();
+                _pgm = Shader.ProgramLink(_vs, _fs);
                 loaded = true;
             }
         }
         private int mx, my = 0;
+        Random r = new Random();
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -61,6 +72,7 @@ namespace MarioKartTrackMaker.ViewerResources
                     GL.Vertex3(-100,i, 0);
                     GL.End();
                 }
+                GL.LineWidth(1F);
                 GL.Begin(PrimitiveType.Polygon);
                 GL.Color3(Color.Red);
                 for (int i = 0; i < 360; i += 60)
@@ -75,6 +87,7 @@ namespace MarioKartTrackMaker.ViewerResources
                     GL.Vertex3(Math.Sin(i * Math.PI / 180) * 20 + mx - Width / 2, Math.Cos(i * Math.PI / 180) * 20 - my + Height / 2, -5);
                 }
                 GL.End();
+                _dummyMesh.DrawMesh(_pgm, _wf);
                 SwapBuffers();
             }
         }
@@ -87,7 +100,7 @@ namespace MarioKartTrackMaker.ViewerResources
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             base.OnMouseWheel(e);
-            cam.zoom = Math.Max(0.1F, cam.zoom+e.Delta/12F* (float)Math.Pow(cam.zoom, 0.375F));
+            cam.zoom = Math.Max(1F, cam.zoom+e.Delta/12F* (float)Math.Pow(cam.zoom, 0.375F));
             Invalidate();
         }
         protected override void OnMouseMove(MouseEventArgs e)
@@ -97,12 +110,12 @@ namespace MarioKartTrackMaker.ViewerResources
             my = e.Y;
             if (e.Button == MouseButtons.Right)
             {
-                if ((Control.ModifierKeys & Keys.Shift) != 0)
+                if ((ModifierKeys & Keys.Shift) != 0)
                 {
                     Vector3 vel = new Vector3(-(e.Location.X - _prev.X) * cam.zoom / 250F, (e.Location.Y - _prev.Y) * cam.zoom / 250F, 0);
                     Matrix4 rotmtx = cam.look_at_mtx.ClearTranslation();
-                    cam.position += (Matrix4.CreateTranslation(vel) * rotmtx.Inverted()).ExtractTranslation();
                     cam.pivot += (Matrix4.CreateTranslation(vel) * rotmtx.Inverted()).ExtractTranslation();
+                    cam.position += (Matrix4.CreateTranslation(vel) * rotmtx.Inverted()).ExtractTranslation();
                     _prev = e.Location;
                 }
                 else

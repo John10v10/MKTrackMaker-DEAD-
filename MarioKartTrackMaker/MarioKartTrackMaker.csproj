@@ -79,10 +79,22 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="IO\ContentPipe.cs" />
+    <Compile Include="IO\Wavefront\Extent.cs" />
+    <Compile Include="IO\Wavefront\Mtl.cs" />
+    <Compile Include="IO\Wavefront\Obj.cs" />
+    <Compile Include="IO\Wavefront\Types\Color.cs" />
+    <Compile Include="IO\Wavefront\Types\Face.cs" />
+    <Compile Include="IO\Wavefront\Types\IType.cs" />
+    <Compile Include="IO\Wavefront\Types\Material.cs" />
+    <Compile Include="IO\Wavefront\Types\TextureVertex.cs" />
+    <Compile Include="IO\Wavefront\Types\Normal.cs" />
+    <Compile Include="IO\Wavefront\Types\Vertex.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewerResources\Camera.cs" />
     <Compile Include="ViewerResources\Mesh.cs" />
+    <Compile Include="ViewerResources\Shader.cs" />
     <Compile Include="ViewerResources\ViewPortPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
