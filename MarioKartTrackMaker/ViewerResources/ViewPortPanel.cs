@@ -27,7 +27,7 @@ namespace MarioKartTrackMaker.ViewerResources
         private bool _wf;
         public bool wireframemode { get { return _wf; } set { _wf = value; Invalidate();} }
         public Camera cam;
-        private Mesh _dummyMesh;
+        private Model _dummyModel;
         private int _fs, _vs, _pgm;
         protected override void OnLoad(EventArgs e)
         {
@@ -36,7 +36,6 @@ namespace MarioKartTrackMaker.ViewerResources
             cam.position = new Vector3(100f, -120f, 200f);
             if (!DesignMode)
             {
-                _dummyMesh = new Mesh(@"Parts_n_Models\Planetary\Saturn.obj");
                 GL.ClearColor(Color.Black);
                 GL.Enable(EnableCap.DepthTest);
                 GL.Enable(EnableCap.Multisample);
@@ -48,13 +47,24 @@ namespace MarioKartTrackMaker.ViewerResources
             }
         }
         private int mx, my = 0;
-        Random r = new Random();
+
+        //Schedule for Importing
+        private List<string> _ObjectsToLoad = new List<string>();
+        public void InsertObjects(string filepath) {
+            _ObjectsToLoad.Add(filepath);
+        }
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
             if (!DesignMode)
             {
-                
+                //Import Objects if necessary
+                if (_ObjectsToLoad.Count > 0)
+                {
+                   _dummyModel = new Model(_ObjectsToLoad[0]);
+                   _ObjectsToLoad = new List<string>();
+                }
+                //End of Import
                 Matrix4 mtx = cam.matrix;
                 GL.LoadMatrix(ref mtx);
                 GL.Clear(ClearBufferMask.ColorBufferBit);
@@ -87,7 +97,7 @@ namespace MarioKartTrackMaker.ViewerResources
                     GL.Vertex3(Math.Sin(i * Math.PI / 180) * 20 + mx - Width / 2, Math.Cos(i * Math.PI / 180) * 20 - my + Height / 2, -5);
                 }
                 GL.End();
-                _dummyMesh.DrawMesh(_pgm, _wf);
+                if(_dummyModel != null) _dummyModel.DrawModel(_pgm, _wf);
                 SwapBuffers();
             }
         }

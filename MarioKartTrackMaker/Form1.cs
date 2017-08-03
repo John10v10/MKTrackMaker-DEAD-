@@ -40,6 +40,11 @@ namespace MarioKartTrackMaker
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if(listView1.SelectedItems.Count > 0)
+            {
+                viewPortPanel1.InsertObjects((string)listView1.SelectedItems[0].Tag);
+                viewPortPanel1.Invalidate();
+            }
         }
 
         private void LoadSets(ListView sender)
@@ -90,6 +95,7 @@ namespace MarioKartTrackMaker
                     if (Path.GetExtension(fdir).ToUpper() == ".OBJ")
                     {
                         ListViewItem item = listView.Items.Add(Path.GetFileNameWithoutExtension(fdir).Replace('_', ' '), imageIndex.ToString());
+                        item.Tag = fdir;
                         listView.LargeImageList.Images.Add(imageIndex.ToString(), Image.FromFile(Path.ChangeExtension(fdir, ".png")));
                         imageIndex++;
                     }

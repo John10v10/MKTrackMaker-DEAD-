@@ -18,14 +18,27 @@ namespace MarioKartTrackMaker.IO
         {
             public string path;
             public int id;
+            public TextureUnit textureUnit;
 
-            public TextureInfo(string path, int id) : this()
+            public TextureInfo(string path, int id, TextureUnit textureUnit) : this()
             {
                 this.path = path;
                 this.id = id;
+                this.textureUnit = textureUnit;
             }
         }
         static int txi = 0;
+        public static TextureUnit GetUnitFromID(int texture)
+        {
+            foreach (TextureInfo tinfo in TextureInfoDatabase)
+            {
+                if (tinfo.id == texture)
+                {
+                    return tinfo.textureUnit;
+                }
+            }
+            return TextureUnit.Texture31;
+        }
         public static int TextureAlreadyLoaded(string path)
         {
             foreach(TextureInfo tinfo in TextureInfoDatabase)
@@ -39,14 +52,23 @@ namespace MarioKartTrackMaker.IO
         }
         public static int Load_and_AddTexture(string path)
         {
-
+            if (!File.Exists(path)) return -1;
+            try { Image.FromFile(path); }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return -1;
+            }
             int texture = TextureAlreadyLoaded(path);
+
             if (texture == -1)
             {
                 texture = GL.GenTexture();
-                LoadTexture(path, texture, (TextureUnit)(0x84C0 + txi));
-                TextureInfoDatabase.Add(new TextureInfo(path, texture));
+                LoadTexture(path, texture, TextureUnit.Texture0+txi);
+                TextureInfoDatabase.Add(new TextureInfo(path, texture, TextureUnit.Texture0+txi));
+                
                 txi++;
+                return texture;
             }
             return texture;
         }

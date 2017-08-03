@@ -31,7 +31,7 @@ namespace MarioKartTrackMaker
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.viewPortPanel1 = new MarioKartTrackMaker.ViewerResources.ViewPortPanel(new OpenTK.Graphics.GraphicsMode(32, 24, 0, 8));
+            this.viewPortPanel1 = new MarioKartTrackMaker.ViewerResources.ViewPortPanel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openATrackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();

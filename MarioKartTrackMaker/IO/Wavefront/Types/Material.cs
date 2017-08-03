@@ -20,12 +20,14 @@ namespace ObjParser.Types
         public float OpticalDensity { get; set; }
         public float Dissolve { get; set; }
         public float IlluminationModel { get; set; }
+        public string DiffuseTexture { get; set; }
 
         public Material()
         {
             this.Name = "DefaultMaterial";
             this.AmbientReflectivity = new Color();
             this.DiffuseReflectivity = new Color();
+            this.DiffuseTexture = "";
             this.SpecularReflectivity = new Color();
             this.TransmissionFilter = new Color();
             this.EmissiveCoefficient = new Color();
@@ -46,6 +48,7 @@ namespace ObjParser.Types
 
             b.AppendLine(string.Format("Ka {0}", AmbientReflectivity));
             b.AppendLine(string.Format("Kd {0}", DiffuseReflectivity));
+            b.AppendLine(string.Format("map_Kd {0}", DiffuseTexture));
             b.AppendLine(string.Format("Ks {0}", SpecularReflectivity));
             b.AppendLine(string.Format("Tf {0}", TransmissionFilter));
             b.AppendLine(string.Format("Ke {0}", EmissiveCoefficient));

@@ -110,6 +110,9 @@ namespace ObjParser
                         c.LoadFromStringArray(parts);
                         CurrentMaterial.DiffuseReflectivity = c;
                         break;
+                    case "map_Kd":
+                        CurrentMaterial.DiffuseTexture = parts[1];
+                        break;
                     case "Ks":
                         c.LoadFromStringArray(parts);
                         CurrentMaterial.SpecularReflectivity = c;

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenTK;
+﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using ObjParser;
-using MarioKartTrackMaker.IO;
+using System;
+using System.Collections.Generic;
 
 namespace MarioKartTrackMaker.ViewerResources
 {
@@ -20,41 +15,169 @@ namespace MarioKartTrackMaker.ViewerResources
         public List<int[]> fuvs;
         public Vector3 Color = Vector3.One;
         public int texture;
-        public Mesh(string filepath)
+        public Mesh(List<Vector3> Vertices, List<Vector3> Normals, List<Vector2> UVs, List<int[]> faces, List<int[]> fnmls, List<int[]> fuvs, Vector3 Color, int texture)
         {
-            Obj tobj = new Obj();
-            tobj.LoadObj(filepath);
-            
-            texture = ContentPipe.Load_and_AddTexture(@"Parts_n_Models\Planetary\TEX_Saturn.png");
-            Vertices = new List<Vector3>();
-            foreach (ObjParser.Types.Vertex v in tobj.VertexList)
+            this.Vertices = Vertices;
+            this.Normals = Normals;
+            this.UVs = UVs;
+            this.faces = faces;
+            this.fnmls = fnmls;
+            this.fuvs = fuvs;
+            this.Color = Color;
+            this.texture = texture;
+            Optimize();
+        }
+        private void RemoveVertex(int index)
+        {
+            Vertices.RemoveAt(index);
+            List<int[]> faces_to_remove = new List<int[]>();
+            for (int f = 0; f < faces.Count; f++)
             {
-                Vertices.Add(new Vector3((float)v.X, (float)v.Y, (float)v.Z));
+                for(int i = 0; i < faces[f].Length; i++)
+                {
+                    if (faces[f][i]-1 == index)
+                    {
+                        faces_to_remove.Add(faces[f]);
+                        break;
+                    }
+                    else if (faces[f][i]-1 > index)
+                        faces[f][i]--;
+                }
             }
-            Normals = new List<Vector3>();
-            foreach (ObjParser.Types.Normal vn in tobj.NormalList)
+            foreach (int[] f in faces_to_remove)
             {
-                Normals.Add(new Vector3((float)vn.X, (float)vn.Y, (float)vn.Z));
-            }
-            UVs = new List<Vector2>();
-            foreach (ObjParser.Types.TextureVertex vt in tobj.TextureList)
-            {
-                UVs.Add(new Vector2((float)vt.X, (float)vt.Y));
-            }
-            faces = new List<int[]>();
-            fnmls = new List<int[]>();
-            fuvs = new List<int[]>();
-            foreach (ObjParser.Types.Face f in tobj.FaceList)
-            {
-                faces.Add(f.VertexIndexList);
-                fnmls.Add(f.NormalIndexList);
-                fuvs.Add(f.TextureVertexIndexList);
+                int i = faces.IndexOf(f);
+                faces.RemoveAt(i);
+                if (fnmls.Count > 0)
+                {
+                    fnmls.RemoveAt(i);
+                }
+                if (fuvs.Count > 0)
+                {
+                    fuvs.RemoveAt(i);
+                }
             }
         }
+        private void RemoveUV(int index)
+        {
+            UVs.RemoveAt(index);
+            for (int f = 0; f < fuvs.Count; f++)
+            {
+                for (int i = 0; i < fuvs[f].Length; i++)
+                {
+                    if (fuvs[f][i] > index) fuvs[f][i]--;
+                }
+            }
+        }
+        private void RemoveNormal(int index)
+        {
+            Normals.RemoveAt(index);
+            for (int f = 0; f < fnmls.Count; f++)
+            {
+                for (int i = 0; i < fnmls[f].Length; i++)
+                {
+                    if (fnmls[f][i] > index) fnmls[f][i]--;
+                }
+            }
+        }
+        public static int amountremoved = 0;
+        private bool InFaces(int index)
+        {
+            foreach (int[] f in faces)
+                foreach (int i in f)
+                    if (i - 1 == index)
+                        return true;
+            return false;
+        }
+        private bool InFnmls(int index)
+        {
+            foreach (int[] f in fnmls)
+                foreach (int i in f)
+                    if (i - 1 == index)
+                        return true;
+            return false;
+        }
+        private bool InFuvs(int index)
+        {
+            foreach (int[] f in fuvs)
+                foreach (int i in f)
+                    if (i - 1 == index)
+                        return true;
+            return false;
+        }
+        private void Optimize()
+        {
+            List<int> Verts_to_remove = new List<int>();
+            for(int i = 0; i < Vertices.Count; i++)
+            {
+                if (!InFaces(i))
+                {
+                    Verts_to_remove.Add(i);
+                }
+            }
+            for (int i = 0; i < Verts_to_remove.Count; i++)
+            {
+                RemoveVertex(Verts_to_remove[i]);
+                for(int ii = 0; ii < Verts_to_remove.Count; ii++)
+                {
+                    if (Verts_to_remove[i] < Verts_to_remove[ii])
+                        Verts_to_remove[ii]--;
+                }
+            }
+            List<int> Norms_to_remove = new List<int>();
+            for (int i = 0; i < Normals.Count; i++)
+            {
+                if (!InFnmls(i))
+                {
+                    Norms_to_remove.Add(i);
+                }
+            }
+            for (int i = 0; i < Norms_to_remove.Count; i++)
+            {
+                RemoveNormal(Norms_to_remove[i]);
+                for (int ii = 0; ii < Norms_to_remove.Count; ii++)
+                {
+                    if (Norms_to_remove[i] < Norms_to_remove[ii])
+                        Norms_to_remove[ii]--;
+                }
+            }
+            List<int> UVs_to_remove = new List<int>();
+            for (int i = 0; i < UVs.Count; i++)
+            {
+                if (!InFuvs(i))
+                {
+                    UVs_to_remove.Add(i);
+                }
+            }
+            for (int i = 0; i < UVs_to_remove.Count; i++)
+            {
+                RemoveUV(UVs_to_remove[i]);
+                amountremoved++;
+                Console.Write("\r{0}           ", amountremoved);
+                for (int ii = 0; ii < UVs_to_remove.Count; ii++)
+                {
+                    if (UVs_to_remove[i] < UVs_to_remove[ii])
+                        UVs_to_remove[ii]--;
+                }
+            }
+        }
+
         public void DrawMesh(int program, bool wireframe)
         {
             GL.UseProgram(program);
+            int texloc = GL.GetUniformLocation(program, "texture");
+            int usetexLoc = GL.GetUniformLocation(program, "useTexture");
+            if (texture != -1)
+            {
+                GL.Uniform1(texloc, texture - 1);
+                GL.Uniform1(usetexLoc, 1);
+            }
+            else
+            {
+                GL.Uniform1(usetexLoc, 0);
+            }
             GL.Color3(Color);
+            
             if (wireframe)
             {
                 GL.Begin(PrimitiveType.Lines);
@@ -62,23 +185,23 @@ namespace MarioKartTrackMaker.ViewerResources
                 {
                     for (int i = 0; i < 3; i += 3)
                     {
-                        GL.Normal3(Normals[fnmls[f][0] - 1]);
-                        GL.TexCoord2(UVs[fuvs[f][0] - 1]);
+                        if (fnmls[f][0] - 1 >= 0) GL.Normal3(Normals[fnmls[f][0] - 1]);
+                        if (fuvs[f][0] - 1 >= 0) GL.TexCoord2(UVs[fuvs[f][0] - 1]);
                         GL.Vertex3(Vertices[faces[f][0] - 1]);
-                        GL.Normal3(Normals[fnmls[f][i + 1] - 1]);
-                        GL.TexCoord2(UVs[fuvs[f][i + 1] - 1]);
+                        if (fnmls[f][i + 1] - 1 >= 0) GL.Normal3(Normals[fnmls[f][i + 1] - 1]);
+                        if (fuvs[f][i + 1] - 1 >= 0) GL.TexCoord2(UVs[fuvs[f][i + 1] - 1]);
                         GL.Vertex3(Vertices[faces[f][i + 1] - 1]);
-                        GL.Normal3(Normals[fnmls[f][i + 1] - 1]);
-                        GL.TexCoord2(UVs[fuvs[f][i + 1] - 1]);
+                        if (fnmls[f][i + 1] - 1 >= 0) GL.Normal3(Normals[fnmls[f][i + 1] - 1]);
+                        if (fuvs[f][i + 1] - 1 >= 0) GL.TexCoord2(UVs[fuvs[f][i + 1] - 1]);
                         GL.Vertex3(Vertices[faces[f][i + 1] - 1]);
-                        GL.Normal3(Normals[fnmls[f][i + 2] - 1]);
-                        GL.TexCoord2(UVs[fuvs[f][i + 2] - 1]);
+                        if (fnmls[f][i + 2] - 1 >= 0) GL.Normal3(Normals[fnmls[f][i + 2] - 1]);
+                        if (fuvs[f][i + 2] - 1 >= 0) GL.TexCoord2(UVs[fuvs[f][i + 2] - 1]);
                         GL.Vertex3(Vertices[faces[f][i + 2] - 1]);
-                        GL.Normal3(Normals[fnmls[f][i + 2] - 1]);
-                        GL.TexCoord2(UVs[fuvs[f][i + 2] - 1]);
+                        if (fnmls[f][i + 2] - 1 >= 0) GL.Normal3(Normals[fnmls[f][i + 2] - 1]);
+                        if (fuvs[f][i + 2] - 1 >= 0) GL.TexCoord2(UVs[fuvs[f][i + 2] - 1]);
                         GL.Vertex3(Vertices[faces[f][i + 2] - 1]);
-                        GL.Normal3(Normals[fnmls[f][0] - 1]);
-                        GL.TexCoord2(UVs[fuvs[f][0] - 1]);
+                        if (fnmls[f][0] - 1 >= 0) GL.Normal3(Normals[fnmls[f][0] - 1]);
+                        if (fuvs[f][0] - 1 >= 0) GL.TexCoord2(UVs[fuvs[f][0] - 1]);
                         GL.Vertex3(Vertices[faces[f][0] - 1]);
                     }
                 }
@@ -89,17 +212,20 @@ namespace MarioKartTrackMaker.ViewerResources
                 GL.Begin(PrimitiveType.Triangles);
                 for(int f = 0; f < Math.Min(faces.Count, Math.Min(fnmls.Count, fuvs.Count)); f++)
                 {
-
+                    
                     for (int i = 0; i < Math.Min(faces[f].Length, Math.Min(fnmls[f].Length, fuvs[f].Length)) - 2; i++)
                     {
-                        GL.Normal3(Normals[fnmls[f][0] - 1]);
-                        GL.TexCoord2(UVs[fuvs[f][0] - 1]);
+                        faces[f][i + 0] = Math.Min(faces[f][i + 0], Vertices.Count);
+                        faces[f][i + 1] = Math.Min(faces[f][i + 1], Vertices.Count);
+                        faces[f][i + 2] = Math.Min(faces[f][i + 2], Vertices.Count);
+                        if (fnmls[f][0] - 1 >= 0) GL.Normal3(Normals[fnmls[f][0] - 1]);
+                        if (fuvs[f][0] - 1 >= 0) GL.TexCoord2(UVs[fuvs[f][0] - 1]);
                         GL.Vertex3(Vertices[faces[f][0] - 1]);
-                        GL.Normal3(Normals[fnmls[f][i + 1] - 1]);
-                        GL.TexCoord2(UVs[fuvs[f][i + 1] - 1]);
+                        if (fnmls[f][i + 1] - 1 >= 0) GL.Normal3(Normals[fnmls[f][i + 1] - 1]);
+                        if (fuvs[f][i + 1] - 1 >= 0) GL.TexCoord2(UVs[fuvs[f][i + 1] - 1]);
                         GL.Vertex3(Vertices[faces[f][i + 1] - 1]);
-                        GL.Normal3(Normals[fnmls[f][i + 2] - 1]);
-                        GL.TexCoord2(UVs[fuvs[f][i + 2] - 1]);
+                        if (fnmls[f][i + 2] - 1 >= 0) GL.Normal3(Normals[fnmls[f][i + 2] - 1]);
+                        if (fuvs[f][i + 2] - 1 >= 0) GL.TexCoord2(UVs[fuvs[f][i + 2] - 1]);
                         GL.Vertex3(Vertices[faces[f][i + 2] - 1]);
                     }
                 }
