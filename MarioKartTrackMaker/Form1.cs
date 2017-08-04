@@ -92,7 +92,7 @@ namespace MarioKartTrackMaker
             {
                 foreach (string fdir in Directory.GetFiles(dir))
                 {
-                    if (Path.GetExtension(fdir).ToUpper() == ".OBJ")
+                    if (Path.GetExtension(fdir).ToUpper() == ".OBJ" && !Path.GetFileNameWithoutExtension(fdir).ToUpper().EndsWith("_KCL"))
                     {
                         ListViewItem item = listView.Items.Add(Path.GetFileNameWithoutExtension(fdir).Replace('_', ' '), imageIndex.ToString());
                         item.Tag = fdir;
@@ -109,14 +109,39 @@ namespace MarioKartTrackMaker
             }
         }
 
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            viewPortPanel1.wireframemode = ((CheckBox)sender).Checked;
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((CheckBox)sender).CheckState == CheckState.Unchecked)
+                viewPortPanel1.collisionviewmode = 1;
+            else if (((CheckBox)sender).CheckState == CheckState.Checked)
+                viewPortPanel1.collisionviewmode = 2;
+            else if (((CheckBox)sender).CheckState == CheckState.Indeterminate)
+                viewPortPanel1.collisionviewmode = 3;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            viewPortPanel1.Invoke((EventHandler)delegate {viewPortPanel1.Invalidate();});
+        }
+
         private void viewPortPanel1_Load(object sender, EventArgs e)
         {
 
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void viewPortPanel1_KeyDown(object sender, KeyEventArgs e)
         {
-            viewPortPanel1.wireframemode = ((CheckBox)sender).Checked;
+
+        }
+
+        private void viewPortPanel1_KeyUp(object sender, KeyEventArgs e)
+        {
+
         }
     }
 }

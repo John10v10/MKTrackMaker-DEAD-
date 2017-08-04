@@ -1,4 +1,6 @@
-﻿namespace ObjParser
+﻿//ObjParser written by Stefangordon, createthis, josh-perry, and alex-shmyga.
+//Modified by John10v10 to use in this program.
+namespace ObjParser
 {
 	public class Extent
 	{

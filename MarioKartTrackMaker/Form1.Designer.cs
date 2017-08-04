@@ -50,6 +50,8 @@ namespace MarioKartTrackMaker
             this.imageList2 = new System.Windows.Forms.ImageList(this.components);
             this.label2 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,10 +64,13 @@ namespace MarioKartTrackMaker
             this.viewPortPanel1.Location = new System.Drawing.Point(460, 214);
             this.viewPortPanel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.viewPortPanel1.Name = "viewPortPanel1";
-            this.viewPortPanel1.Size = new System.Drawing.Size(890, 512);
+            this.viewPortPanel1.Size = new System.Drawing.Size(532, 512);
             this.viewPortPanel1.TabIndex = 0;
             this.viewPortPanel1.VSync = true;
+            this.viewPortPanel1.wireframemode = false;
             this.viewPortPanel1.Load += new System.EventHandler(this.viewPortPanel1_Load);
+            this.viewPortPanel1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.viewPortPanel1_KeyDown);
+            this.viewPortPanel1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.viewPortPanel1_KeyUp);
             // 
             // menuStrip1
             // 
@@ -212,7 +217,7 @@ namespace MarioKartTrackMaker
             // 
             this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(690, 164);
+            this.checkBox1.Location = new System.Drawing.Point(688, 134);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(128, 29);
             this.checkBox1.TabIndex = 5;
@@ -220,11 +225,37 @@ namespace MarioKartTrackMaker
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
+            // checkBox2
+            // 
+            this.checkBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(683, 169);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(177, 29);
+            this.checkBox2.TabIndex = 5;
+            this.checkBox2.Text = "Show Collisions";
+            this.checkBox2.ThreeState = true;
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckStateChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            // 
+            // listBox1
+            // 
+            this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 24;
+            this.listBox1.Location = new System.Drawing.Point(1002, 214);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(351, 508);
+            this.listBox1.TabIndex = 6;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1365, 741);
+            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.listView2);
             this.Controls.Add(this.label2);
@@ -264,6 +295,8 @@ namespace MarioKartTrackMaker
         private System.Windows.Forms.ImageList imageList2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.ListBox listBox1;
     }
 }
 

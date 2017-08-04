@@ -1,3 +1,5 @@
+//ObjParser written by Stefangordon, createthis, josh-perry, and alex-shmyga.
+//Modified by John10v10 to use in this program.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,8 +17,10 @@ namespace ObjParser
 
 		public Extent Size { get; set; }
 
-		public string UseMtl { get; set; }
-		public string Mtl { get; set; }
+        public string UseMtl { get; set; }
+        private string _currentObjectName = "";
+        public List<string> objects { get; set; }
+        public string Mtl { get; set; }
 
         /// <summary>
         /// Constructor. Initializes VertexList, FaceList and TextureList.
@@ -27,6 +31,7 @@ namespace ObjParser
             NormalList = new List<Normal>();
             FaceList = new List<Face>();
             TextureList = new List<TextureVertex>();
+            objects = new List<string>();
         }
 
         /// <summary>
@@ -148,11 +153,15 @@ namespace ObjParser
 			if (parts.Length > 0)
 			{
 				switch (parts[0])
-				{
-					case "usemtl":
-						UseMtl = parts[1];
-						break;
-					case "mtllib":
+                {
+                    case "usemtl":
+                        UseMtl = parts[1];
+                        break;
+                    case "o":
+                        _currentObjectName = parts[1];
+                        objects.Add(_currentObjectName);
+                        break;
+                    case "mtllib":
 						Mtl = parts[1];
 						break;
                     case "v":
@@ -170,8 +179,9 @@ namespace ObjParser
                     case "f":
 						Face f = new Face();
 						f.LoadFromStringArray(parts);
-						f.UseMtl = UseMtl;
-						FaceList.Add(f);
+                        f.UseMtl = UseMtl;
+                        f.objectName = _currentObjectName;
+                        FaceList.Add(f);
 						break;
 					case "vt":
 						TextureVertex vt = new TextureVertex();

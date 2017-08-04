@@ -13,9 +13,32 @@ namespace MarioKartTrackMaker.ViewerResources
 {
     class Model
     {
+        public static List<Model> database = new List<Model>();
+        public static int IsLoaded(string path)
+        {
+            for (int i = 0; i < database.Count; i++)
+                if (database[i].path == path)
+                    return i;
+            return -1;
+        }
+        public static int AddModel(string path)
+        {
+            int id = IsLoaded(path);
+            if(id == -1)
+            {
+                Model m = new Model(path);
+                database.Add(m);
+                id = database.IndexOf(m);
+            }
+            return id;
+        }
+        public string path;
         public List<Mesh> meshes = new List<Mesh>();
+        public List<Collision_Mesh> KCLs = new List<Collision_Mesh>();
+
         public Model(string filepath)
         {
+            path = filepath;
             Obj tobj = new Obj();
             tobj.LoadObj(filepath);
             Mtl tmtl = new Mtl();
@@ -64,12 +87,76 @@ namespace MarioKartTrackMaker.ViewerResources
                 meshes.Add(new Mesh(cverts, cnorms, cuvs, faces, fnmls, fuvs, Vector3.One, texture));
 
             }
-        }
-        public void DrawModel(int program, bool wireframe)
-        {
-            foreach (Mesh mesh in meshes)
+            Obj tobjkcl = new Obj();
+            tobjkcl.LoadObj(Path.GetDirectoryName(filepath) + "\\" + Path.GetFileNameWithoutExtension(filepath) + "_KCL.obj");
+
+            List<Vector3> CVerts = new List<Vector3>();
+            foreach (ObjParser.Types.Vertex v in tobjkcl.VertexList)
             {
-                mesh.DrawMesh(program, wireframe);
+                CVerts.Add(new Vector3((float)v.X, (float)v.Y, (float)v.Z));
+            }
+            foreach (string name in tobjkcl.objects)
+            {
+                Collision_Mesh.CollisionType coll;
+                if (name == "ROAD")
+                    coll = Collision_Mesh.CollisionType.road;
+                else if (name == "WALL")
+                    coll = Collision_Mesh.CollisionType.wall;
+                else if (name == "OFFROAD")
+                    coll = Collision_Mesh.CollisionType.off_road;
+                else if (name == "WAYOFFROAD")
+                    coll = Collision_Mesh.CollisionType.way_off_road;
+                else if (name == "OUTOFBOUNDS")
+                    coll = Collision_Mesh.CollisionType.out_of_bounds;
+                else if (name == "BOOST")
+                    coll = Collision_Mesh.CollisionType.boost;
+                else if (name == "RAMP")
+                    coll = Collision_Mesh.CollisionType.ramp;
+                else if (name == "ENGAGEGLIDER")
+                    coll = Collision_Mesh.CollisionType.engage_glider;
+                else if (name == "SIDERAMP")
+                    coll = Collision_Mesh.CollisionType.side_ramp;
+                else if (name == "CANNON")
+                    coll = Collision_Mesh.CollisionType.cannon;
+                else if (name == "WATER")
+                    coll = Collision_Mesh.CollisionType.water;
+                else if (name == "LAVA")
+                    coll = Collision_Mesh.CollisionType.lava;
+                else if (name == "SPINOUT")
+                    coll = Collision_Mesh.CollisionType.spin_out;
+                else if (name == "KNOCKOUT")
+                    coll = Collision_Mesh.CollisionType.knock_out;
+                else continue;
+
+                List<int[]> faces = new List<int[]>();
+                foreach (ObjParser.Types.Face f in tobjkcl.FaceList)
+                {
+                    if (f.objectName == name)
+                    {
+                        faces.Add(f.VertexIndexList);
+                    }
+                }
+                List<Vector3> cverts = new List<Vector3>();
+                foreach (Vector3 v in CVerts)
+                    cverts.Add(v);
+                KCLs.Add(new Collision_Mesh(cverts, faces, coll));
+            }
+        }
+        public void DrawModel(int program, int mode, bool wireframe, Vector3 scale)
+        {
+            if ((mode & 1) == 1)
+            {
+                foreach (Mesh mesh in meshes)
+                {
+                    mesh.DrawMesh(program, wireframe, scale);
+                }
+            }
+            if ((mode & 2) == 2)
+            {
+                foreach (Collision_Mesh mesh in KCLs)
+                {
+                    mesh.DrawMesh(wireframe);
+                }
             }
         }
     }

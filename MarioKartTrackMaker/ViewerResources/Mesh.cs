@@ -162,11 +162,13 @@ namespace MarioKartTrackMaker.ViewerResources
             }
         }
 
-        public void DrawMesh(int program, bool wireframe)
+        public void DrawMesh(int program, bool wireframe, Vector3 scale)
         {
             GL.UseProgram(program);
             int texloc = GL.GetUniformLocation(program, "texture");
             int usetexLoc = GL.GetUniformLocation(program, "useTexture");
+            int scaleIndex = GL.GetUniformLocation(program, "scale");
+            GL.Uniform3(scaleIndex, scale);
             if (texture != -1)
             {
                 GL.Uniform1(texloc, texture - 1);
@@ -215,9 +217,6 @@ namespace MarioKartTrackMaker.ViewerResources
                     
                     for (int i = 0; i < Math.Min(faces[f].Length, Math.Min(fnmls[f].Length, fuvs[f].Length)) - 2; i++)
                     {
-                        faces[f][i + 0] = Math.Min(faces[f][i + 0], Vertices.Count);
-                        faces[f][i + 1] = Math.Min(faces[f][i + 1], Vertices.Count);
-                        faces[f][i + 2] = Math.Min(faces[f][i + 2], Vertices.Count);
                         if (fnmls[f][0] - 1 >= 0) GL.Normal3(Normals[fnmls[f][0] - 1]);
                         if (fuvs[f][0] - 1 >= 0) GL.TexCoord2(UVs[fuvs[f][0] - 1]);
                         GL.Vertex3(Vertices[faces[f][0] - 1]);

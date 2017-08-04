@@ -1,9 +1,10 @@
+//ObjParser written by Stefangordon, createthis, josh-perry, and alex-shmyga.
+//Modified by John10v10 to use in this program.
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ObjParser.Types;
-
 namespace ObjParser
 {
     public class Mtl

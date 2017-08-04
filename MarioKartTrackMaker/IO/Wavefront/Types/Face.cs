@@ -1,3 +1,5 @@
+//ObjParser written by Stefangordon, createthis, josh-perry, and alex-shmyga.
+//Modified by John10v10 to use in this program.
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -14,6 +16,7 @@ namespace ObjParser.Types
         public const string Prefix = "f";
 
         public string UseMtl { get; set; }
+        public string objectName { get; set; }
         public int[] VertexIndexList { get; set; }
         public int[] TextureVertexIndexList { get; set; }
         public int[] NormalIndexList { get; set; }

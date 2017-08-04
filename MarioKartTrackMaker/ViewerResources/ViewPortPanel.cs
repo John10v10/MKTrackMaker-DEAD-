@@ -25,9 +25,10 @@ namespace MarioKartTrackMaker.ViewerResources
         }
         bool loaded = false;
         private bool _wf;
-        public bool wireframemode { get { return _wf; } set { _wf = value; Invalidate();} }
+        public bool wireframemode { get { return _wf; } set { _wf = value; Invalidate(); } }
+        private int _coll = 1;
+        public int collisionviewmode { get { return _coll; } set { _coll = value; Invalidate(); } }
         public Camera cam;
-        private Model _dummyModel;
         private int _fs, _vs, _pgm;
         protected override void OnLoad(EventArgs e)
         {
@@ -53,15 +54,50 @@ namespace MarioKartTrackMaker.ViewerResources
         public void InsertObjects(string filepath) {
             _ObjectsToLoad.Add(filepath);
         }
+        Random r = new Random();
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
+            DateTime t = DateTime.Now.AddSeconds(1 / 60.0);
+            if (Forward)
+            {
+                Vector3 vel = new Vector3(0, 0, -cam.zoom / 150F);
+                Matrix4 rotmtx = cam.look_at_mtx.ClearTranslation();
+                cam.pivot += (Matrix4.CreateTranslation(vel) * rotmtx.Inverted()).ExtractTranslation();
+                cam.position += (Matrix4.CreateTranslation(vel) * rotmtx.Inverted()).ExtractTranslation();
+            }
+            if (Backward)
+            {
+                Vector3 vel = new Vector3(0, 0, cam.zoom / 150F);
+                Matrix4 rotmtx = cam.look_at_mtx.ClearTranslation();
+                cam.pivot += (Matrix4.CreateTranslation(vel) * rotmtx.Inverted()).ExtractTranslation();
+                cam.position += (Matrix4.CreateTranslation(vel) * rotmtx.Inverted()).ExtractTranslation();
+            }
+            if (SideLeft)
+            {
+                Vector3 vel = new Vector3(-cam.zoom / 150F, 0, 0);
+                Matrix4 rotmtx = cam.look_at_mtx.ClearTranslation();
+                cam.pivot += (Matrix4.CreateTranslation(vel) * rotmtx.Inverted()).ExtractTranslation();
+                cam.position += (Matrix4.CreateTranslation(vel) * rotmtx.Inverted()).ExtractTranslation();
+            }
+            if (SideRight)
+            {
+                Vector3 vel = new Vector3(cam.zoom / 150F, 0, 0);
+                Matrix4 rotmtx = cam.look_at_mtx.ClearTranslation();
+                cam.pivot += (Matrix4.CreateTranslation(vel) * rotmtx.Inverted()).ExtractTranslation();
+                cam.position += (Matrix4.CreateTranslation(vel) * rotmtx.Inverted()).ExtractTranslation();
+            }
             if (!DesignMode)
             {
                 //Import Objects if necessary
                 if (_ObjectsToLoad.Count > 0)
                 {
-                   _dummyModel = new Model(_ObjectsToLoad[0]);
+                    foreach (string objectpath in _ObjectsToLoad)
+                    {
+                        Object3D obj = new Object3D(objectpath);
+                        obj.position = new Vector3((float)(r.NextDouble() - 0.5) * 100000, (float)(r.NextDouble() - 0.5) * 100000, (float)(r.NextDouble() - 0.5) * 100000);
+                        Object3D.database.Add(obj);
+                    }
                    _ObjectsToLoad = new List<string>();
                 }
                 //End of Import
@@ -83,7 +119,7 @@ namespace MarioKartTrackMaker.ViewerResources
                     GL.End();
                 }
                 GL.LineWidth(1F);
-                GL.Begin(PrimitiveType.Polygon);
+                /*GL.Begin(PrimitiveType.Polygon);
                 GL.Color3(Color.Red);
                 for (int i = 0; i < 360; i += 60)
                 {
@@ -96,12 +132,39 @@ namespace MarioKartTrackMaker.ViewerResources
                 {
                     GL.Vertex3(Math.Sin(i * Math.PI / 180) * 20 + mx - Width / 2, Math.Cos(i * Math.PI / 180) * 20 - my + Height / 2, -5);
                 }
-                GL.End();
-                if(_dummyModel != null) _dummyModel.DrawModel(_pgm, _wf);
+                GL.End();*/
+                foreach (Object3D obj in Object3D.database)
+                {
+                    obj.DrawObject(_pgm, _coll, _wf);
+                }
                 SwapBuffers();
+            }
+            if (Forward || Backward || SideLeft || SideRight)
+            {
+                while (DateTime.Now < t) {}
+                Invalidate();
             }
         }
         Point _prev = new Point();
+        bool Forward, Backward, SideLeft, SideRight = false;
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            Forward |= (e.KeyCode == Keys.W);
+            Backward |= (e.KeyCode == Keys.S);
+            SideLeft |= (e.KeyCode == Keys.A);
+            SideRight |= (e.KeyCode == Keys.D);
+            Invalidate();
+        }
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            base.OnKeyUp(e);
+            Forward &= !(e.KeyCode == Keys.W);
+            Backward &= !(e.KeyCode == Keys.S);
+            SideLeft &= !(e.KeyCode == Keys.A);
+            SideRight &= !(e.KeyCode == Keys.D);
+            Invalidate();
+        }
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);

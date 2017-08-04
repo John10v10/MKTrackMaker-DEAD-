@@ -1,0 +1,44 @@
+﻿using OpenTK;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using OpenTK.Graphics.OpenGL;
+namespace MarioKartTrackMaker.ViewerResources
+{
+    class Object3D
+    {
+        public static List<Object3D> database = new List<Object3D>();
+        private int _model;
+        public Model model
+        {
+            get {
+                return Model.database[_model];
+            }
+        }
+        public Vector3 position = Vector3.Zero;
+        public Vector3 rotation = Vector3.Zero;
+        public Vector3 scale = Vector3.One;
+        public Matrix4 transform
+        {
+            get
+            {
+                Matrix4 mat = Matrix4.Mult(Matrix4.CreateScale(scale),Matrix4.Mult(Matrix4.CreateFromQuaternion(Quaternion.FromEulerAngles(rotation)),Matrix4.CreateTranslation(position)));
+                return mat;
+            }
+        }
+        public Object3D(string filepath)
+        {
+            _model = Model.AddModel(filepath);
+        }
+        public void DrawObject(int program, int collision_mode, bool wireframe)
+        {
+            GL.PushMatrix();
+            Matrix4 mat = transform;
+            GL.MultMatrix(ref mat);
+            model.DrawModel(program, collision_mode, wireframe, scale);
+            GL.PopMatrix();
+        }
+    }
+}
