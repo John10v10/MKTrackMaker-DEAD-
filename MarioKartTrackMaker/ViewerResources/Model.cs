@@ -11,7 +11,7 @@ using ObjParser;
 
 namespace MarioKartTrackMaker.ViewerResources
 {
-    class Model
+    public class Model
     {
         public static List<Model> database = new List<Model>();
         public static int IsLoaded(string path)
@@ -33,12 +33,15 @@ namespace MarioKartTrackMaker.ViewerResources
             return id;
         }
         public string path;
+        public string name;
+        public Bounds size = new Bounds();
         public List<Mesh> meshes = new List<Mesh>();
         public List<Collision_Mesh> KCLs = new List<Collision_Mesh>();
 
         public Model(string filepath)
         {
             path = filepath;
+            name = Path.GetFileNameWithoutExtension(filepath).Replace('_', ' ')                                                              ;
             Obj tobj = new Obj();
             tobj.LoadObj(filepath);
             Mtl tmtl = new Mtl();
@@ -141,14 +144,36 @@ namespace MarioKartTrackMaker.ViewerResources
                     cverts.Add(v);
                 KCLs.Add(new Collision_Mesh(cverts, faces, coll));
             }
+            CalculateBounds();
         }
-        public void DrawModel(int program, int mode, bool wireframe, Vector3 scale)
+
+        private void CalculateBounds()
+        {
+            size.minX = float.PositiveInfinity;
+            size.minY = float.PositiveInfinity;
+            size.minZ = float.PositiveInfinity;
+            size.maxX = float.NegativeInfinity;
+            size.maxY = float.NegativeInfinity;
+            size.maxZ = float.NegativeInfinity;
+
+            foreach (Mesh m in meshes)
+            {
+                size.minX = Math.Min(size.minX, m.size.minX);
+                size.maxX = Math.Max(size.maxX, m.size.maxX);
+                size.minY = Math.Min(size.minY, m.size.minY);
+                size.maxY = Math.Max(size.maxY, m.size.maxY);
+                size.minZ = Math.Min(size.minZ, m.size.minZ);
+                size.maxZ = Math.Max(size.maxZ, m.size.maxZ);
+            }
+        }
+
+        public void DrawModel(int program, int mode, bool wireframe)
         {
             if ((mode & 1) == 1)
             {
                 foreach (Mesh mesh in meshes)
                 {
-                    mesh.DrawMesh(program, wireframe, scale);
+                    mesh.DrawMesh(program, wireframe);
                 }
             }
             if ((mode & 2) == 2)
