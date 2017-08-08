@@ -14,8 +14,31 @@ namespace MarioKartTrackMaker.ViewerResources
     public class Model
     {
         public static List<Model> database = new List<Model>();
+
+        public static bool runningOnMac;
+        public static string filepathSlash;
+
+        public static void DoMacStuff() {
+			int plat = (int)Environment.OSVersion.Platform;
+			if ((plat == 4) || (plat == 128))
+			{
+				runningOnMac = true;
+			}
+			else
+			{
+				runningOnMac = false;
+			}
+
+            filepathSlash = "\\";
+            if (runningOnMac)
+            {
+                filepathSlash = "//";
+            }
+			}
+
         public static int IsLoaded(string path)
         {
+            DoMacStuff();
             for (int i = 0; i < database.Count; i++)
                 if (database[i].path == path)
                     return i;
@@ -45,7 +68,7 @@ namespace MarioKartTrackMaker.ViewerResources
             Obj tobj = new Obj();
             tobj.LoadObj(filepath);
             Mtl tmtl = new Mtl();
-            tmtl.LoadMtl(Path.GetDirectoryName(filepath) + "\\" + tobj.Mtl);
+            tmtl.LoadMtl(Path.GetDirectoryName(filepath) + filepathSlash + tobj.Mtl);
 
             List<Vector3> Vertices = new List<Vector3>();
             foreach (ObjParser.Types.Vertex v in tobj.VertexList)
@@ -67,7 +90,7 @@ namespace MarioKartTrackMaker.ViewerResources
                 List<int[]> faces = new List<int[]>();
                 List<int[]> fnmls = new List<int[]>();
                 List<int[]> fuvs = new List<int[]>();
-                int texture = ContentPipe.Load_and_AddTexture(Path.GetDirectoryName(filepath) + "\\" + mat.DiffuseTexture);
+                int texture = ContentPipe.Load_and_AddTexture(Path.GetDirectoryName(filepath) + filepathSlash + mat.DiffuseTexture);
 
                 foreach (ObjParser.Types.Face f in tobj.FaceList)
                 {
@@ -91,7 +114,7 @@ namespace MarioKartTrackMaker.ViewerResources
 
             }
             Obj tobjkcl = new Obj();
-            tobjkcl.LoadObj(Path.GetDirectoryName(filepath) + "\\" + Path.GetFileNameWithoutExtension(filepath) + "_KCL.obj");
+            tobjkcl.LoadObj(Path.GetDirectoryName(filepath) + filepathSlash + Path.GetFileNameWithoutExtension(filepath) + "_KCL.obj");
 
             List<Vector3> CVerts = new List<Vector3>();
             foreach (ObjParser.Types.Vertex v in tobjkcl.VertexList)
