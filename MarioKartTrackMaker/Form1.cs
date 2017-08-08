@@ -68,7 +68,16 @@ namespace MarioKartTrackMaker
             {
                 foreach (string dir in Directory.GetDirectories("Parts_n_Models"))
                 {
-                    sender.LargeImageList.Images.Add(imageIndex.ToString(), Image.FromFile(dir + @"\Icon.png"));
+					int plat = (int)Environment.OSVersion.Platform;
+					if ((plat == 4) || (plat == 128))
+					{
+						sender.LargeImageList.Images.Add(imageIndex.ToString(), Image.FromFile(dir + @"/Icon.png"));
+					}
+					else
+					{
+						sender.LargeImageList.Images.Add(imageIndex.ToString(), Image.FromFile(dir + @"\Icon.png"));
+					}
+
                     ListViewItem item = sender.Items.Add(Path.GetFileName(dir).Replace('_', ' '), imageIndex.ToString());
                     item.Tag = dir;
                     imageIndex++;
