@@ -8,9 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using MarioKartTrackMaker.ViewerResources;
 
 namespace MarioKartTrackMaker
 {
+    public enum Tools : int
+    {
+        Select = 0,
+        Move = 1,
+        Rotate = 2,
+        Scale = 3,
+        Snap = 4,
+        Decorate = 5
+    }
     public partial class Form1 : Form
     {
         public Form1()
@@ -21,8 +31,10 @@ namespace MarioKartTrackMaker
         private void Form1_Load(object sender, EventArgs e)
         {
             LoadSets(listView2);
+            UpdateToolStats();
+            UpdateObjectStats();
         }
-
+        public static Tools current_tool = Tools.Select;
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
 
@@ -40,13 +52,13 @@ namespace MarioKartTrackMaker
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(listView1.SelectedItems.Count > 0)
-            {
-                viewPortPanel1.InsertObjects((string)listView1.SelectedItems[0].Tag);
-                viewPortPanel1.Invalidate();
-            }
         }
-
+        void DisplayObjectList()
+        {
+            listBox1.Items.Clear();
+            foreach (Object3D obj in Object3D.database)
+                listBox1.Items.Add(obj);
+        }
         private void LoadSets(ListView sender)
         {
             int imageIndex = 0;
@@ -142,6 +154,237 @@ namespace MarioKartTrackMaker
         private void viewPortPanel1_KeyUp(object sender, KeyEventArgs e)
         {
 
+        }
+
+        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
+        {
+            numericUpDown1.Maximum = numericUpDown2.Value;
+            viewPortPanel1.cam.clip_far = (float)numericUpDown2.Value;
+            viewPortPanel1.Invalidate();
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            viewPortPanel1.cam.clip_near = (float)numericUpDown1.Value;
+            viewPortPanel1.Invalidate();
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(((ListBox)sender).SelectedItems.Count > 0)
+            {
+                Object3D.Active_Object = ((Object3D)((ListBox)sender).SelectedItems[0]);
+            }
+            else Object3D.Active_Object = null;
+            viewPortPanel1.Invalidate();
+            UpdateObjectStats();
+        }
+
+        private void UpdateObjectStats()
+        {
+            posXnm.Enabled = posYnm.Enabled = posZnm.Enabled = rotXnm.Enabled = rotYnm.Enabled = rotZnm.Enabled = sclXnm.Enabled = sclYnm.Enabled = sclZnm.Enabled = false;
+            if (Object3D.Active_Object != null)
+            {
+                posXnm.Value = (decimal)Object3D.Active_Object.position.X;
+                posYnm.Value = (decimal)Object3D.Active_Object.position.Y;
+                posZnm.Value = (decimal)Object3D.Active_Object.position.Z;
+                rotXnm.Value = (decimal)Object3D.Active_Object.rotation.X;
+                rotYnm.Value = (decimal)Object3D.Active_Object.rotation.Y;
+                rotZnm.Value = (decimal)Object3D.Active_Object.rotation.Z;
+                sclXnm.Value = (decimal)Object3D.Active_Object.scale.X;
+                sclYnm.Value = (decimal)Object3D.Active_Object.scale.Y;
+                sclZnm.Value = (decimal)Object3D.Active_Object.scale.Z;
+                posXnm.Enabled = posYnm.Enabled = posZnm.Enabled = rotXnm.Enabled = rotYnm.Enabled = rotZnm.Enabled = sclXnm.Enabled = sclYnm.Enabled = sclZnm.Enabled = true;
+
+            }
+            else
+            {
+                posXnm.Value = 0;
+                posYnm.Value = 0;
+                posZnm.Value = 0;
+                rotXnm.Value = 0;
+                rotYnm.Value = 0;
+                rotZnm.Value = 0;
+                sclXnm.Value = 1;
+                sclYnm.Value = 1;
+                sclYnm.Value = 1;
+            }
+        }
+
+        private void listBox1_DoubleClick(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedItems.Count > 0)
+            {
+                viewPortPanel1.GoToObject((Object3D)listBox1.SelectedItems[0]);
+            }
+        }
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        void UpdateToolStats()
+        {
+            Color sc = Color.LightSkyBlue;
+            pictureBox1.BackColor = (current_tool == Tools.Select) ? sc : Color.White;
+            pictureBox2.BackColor = (current_tool == Tools.Move) ? sc : Color.White;
+            pictureBox3.BackColor = (current_tool == Tools.Rotate) ? sc : Color.White;
+            pictureBox4.BackColor = (current_tool == Tools.Scale) ? sc : Color.White;
+            pictureBox5.BackColor = (current_tool == Tools.Snap) ? sc : Color.White;
+            pictureBox6.BackColor = (current_tool == Tools.Decorate) ? sc : Color.White;
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            current_tool = Tools.Select;
+            UpdateToolStats();
+            viewPortPanel1.Invalidate();
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+
+            current_tool = Tools.Move;
+            UpdateToolStats();
+            viewPortPanel1.Invalidate();
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+            current_tool = Tools.Rotate;
+            UpdateToolStats();
+            viewPortPanel1.Invalidate();
+        }
+
+        private void pictureBox4_Click(object sender, EventArgs e)
+        {
+
+            current_tool = Tools.Scale;
+            UpdateToolStats();
+            viewPortPanel1.Invalidate();
+        }
+
+        private void pictureBox5_Click(object sender, EventArgs e)
+        {
+
+            current_tool = Tools.Snap;
+            UpdateToolStats();
+            viewPortPanel1.Invalidate();
+        }
+
+        private void pictureBox6_Click(object sender, EventArgs e)
+        {
+
+            current_tool = Tools.Decorate;
+            UpdateToolStats();
+            viewPortPanel1.Invalidate();
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void listView1_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (listView1.SelectedItems.Count > 0)
+            {
+                viewPortPanel1.InsertObjects((string)listView1.SelectedItems[0].Tag);
+                viewPortPanel1.Refresh();
+                DisplayObjectList();
+            }
+        }
+
+        private void posXnm_ValueChanged(object sender, EventArgs e)
+        {
+            if (((NumericUpDown)sender).Enabled)
+            {
+                Object3D.Active_Object.position.X = (float)((NumericUpDown)sender).Value;
+                viewPortPanel1.Invalidate();
+            }
+        }
+
+        private void posYnm_ValueChanged(object sender, EventArgs e)
+        {
+
+            if (((NumericUpDown)sender).Enabled)
+            {
+                Object3D.Active_Object.position.Y = (float)((NumericUpDown)sender).Value;
+                viewPortPanel1.Invalidate();
+            }
+        }
+
+        private void posZnm_ValueChanged(object sender, EventArgs e)
+        {
+            if (((NumericUpDown)sender).Enabled)
+            {
+                Object3D.Active_Object.position.Z = (float)((NumericUpDown)sender).Value;
+                viewPortPanel1.Invalidate();
+            }
+        }
+
+        private void rotXnm_ValueChanged(object sender, EventArgs e)
+        {
+
+            if (((NumericUpDown)sender).Enabled)
+            {
+                Object3D.Active_Object.rotation.Z = (float)((double)((NumericUpDown)sender).Value/180*Math.PI);
+                viewPortPanel1.Invalidate();
+            }
+        }
+
+        private void rotYnm_ValueChanged(object sender, EventArgs e)
+        {
+
+            if (((NumericUpDown)sender).Enabled)
+            {
+                Object3D.Active_Object.rotation.Y = (float)((double)((NumericUpDown)sender).Value / 180 * Math.PI);
+                viewPortPanel1.Invalidate();
+            }
+        }
+
+        private void rotZnm_ValueChanged(object sender, EventArgs e)
+        {
+            if (((NumericUpDown)sender).Enabled)
+            {
+                Object3D.Active_Object.rotation.X = (float)((double)((NumericUpDown)sender).Value / 180 * Math.PI);
+                viewPortPanel1.Invalidate();
+            }
+        }
+
+        private void sclXnm_ValueChanged(object sender, EventArgs e)
+        {
+
+            if (((NumericUpDown)sender).Enabled)
+            {
+                Object3D.Active_Object.scale.X = (float)((NumericUpDown)sender).Value;
+                viewPortPanel1.Invalidate();
+            }
+        }
+
+        private void sclYnm_ValueChanged(object sender, EventArgs e)
+        {
+
+            if (((NumericUpDown)sender).Enabled)
+            {
+                Object3D.Active_Object.scale.Y = (float)((NumericUpDown)sender).Value;
+            viewPortPanel1.Invalidate();
+        }
+        }
+
+        private void sclZnm_ValueChanged(object sender, EventArgs e)
+        {
+            if (((NumericUpDown)sender).Enabled)
+            {
+                Object3D.Active_Object.scale.Z = (float)((NumericUpDown)sender).Value;
+                viewPortPanel1.Invalidate();
+            }
         }
     }
 }

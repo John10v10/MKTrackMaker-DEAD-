@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL;
 namespace MarioKartTrackMaker.ViewerResources
 {
-    class Object3D
+    public class Object3D
     {
         public static List<Object3D> database = new List<Object3D>();
+        public static Object3D Active_Object;
+        public static List<Object3D> Selected_Objects = new List<Object3D>();
         private int _model;
         public Model model
         {
@@ -32,12 +34,42 @@ namespace MarioKartTrackMaker.ViewerResources
         {
             _model = Model.AddModel(filepath);
         }
+        public override string ToString()
+        {
+            return string.Format("{0} [{1}, {2}, {3}]", model.name, Math.Round(position.X, 1), Math.Round(position.Y, 1), Math.Round(position.Z, 1));
+        }
+
+        public void DrawTool()
+        {
+            GL.PushMatrix();
+            Matrix4 mat = transform;
+            GL.MultMatrix(ref mat);
+            switch (Form1.current_tool) {
+                case Tools.Select:
+                    break;
+                case Tools.Move:
+                    ToolModels.DrawMoveTool(model.size.maxS * 2);
+                    break;
+                case Tools.Rotate:
+                    ToolModels.DrawRotateTool(model.size.maxS * 2);
+                    break;
+                case Tools.Scale:
+                    ToolModels.DrawScaleTool(model.size.maxS * 2);
+                    break;
+                case Tools.Snap:
+                    ToolModels.DrawConnectTool(model.size.maxS * 2);
+                    break;
+                case Tools.Decorate:
+                    break;
+            }
+            GL.PopMatrix();
+        }
         public void DrawObject(int program, int collision_mode, bool wireframe)
         {
             GL.PushMatrix();
             Matrix4 mat = transform;
             GL.MultMatrix(ref mat);
-            model.DrawModel(program, collision_mode, wireframe, scale);
+            model.DrawModel(program, collision_mode, wireframe);
             GL.PopMatrix();
         }
     }

@@ -5,16 +5,117 @@ using System.Collections.Generic;
 
 namespace MarioKartTrackMaker.ViewerResources
 {
+    public class Bounds
+    {
+        public float minX, maxX, minY, maxY, minZ, maxZ = 0;
+        public float minS
+        {
+            get
+            {
+                float rslt = Math.Abs(minX);
+                rslt = Math.Min(rslt, Math.Abs(maxX));
+                rslt = Math.Min(rslt, Math.Abs(minY));
+                rslt = Math.Min(rslt, Math.Abs(maxY));
+                rslt = Math.Min(rslt, Math.Abs(minZ));
+                rslt = Math.Min(rslt, Math.Abs(maxZ));
+                return rslt;
+            }
+        }
+        public float maxS
+        {
+            get
+            {
+                float rslt = Math.Abs(minX);
+                rslt = Math.Max(rslt, Math.Abs(maxX));
+                rslt = Math.Max(rslt, Math.Abs(minY));
+                rslt = Math.Max(rslt, Math.Abs(maxY));
+                rslt = Math.Max(rslt, Math.Abs(minZ));
+                rslt = Math.Max(rslt, Math.Abs(maxZ));
+                return rslt;
+            }
+        }
+        public float average
+        {
+            get
+            {
+                return (minS + maxS) / 2f;
+            }
+        }
+        public void DrawBounds()
+        {
+            GL.Color3(1F, 1F, 1F);
+            GL.Begin(PrimitiveType.Lines);
+            {
+                GL.Vertex3(minX, minY, minZ);
+                GL.Vertex3(maxX, minY, minZ);
+                GL.Vertex3(minX, maxY, minZ);
+                GL.Vertex3(maxX, maxY, minZ);
+                GL.Vertex3(minX, minY, maxZ);
+                GL.Vertex3(maxX, minY, maxZ);
+                GL.Vertex3(minX, maxY, maxZ);
+                GL.Vertex3(maxX, maxY, maxZ);
+                GL.Vertex3(minX, minY, minZ);
+                GL.Vertex3(minX, maxY, minZ);
+                GL.Vertex3(maxX, minY, minZ);
+                GL.Vertex3(maxX, maxY, minZ);
+                GL.Vertex3(minX, minY, maxZ);
+                GL.Vertex3(minX, maxY, maxZ);
+                GL.Vertex3(maxX, minY, maxZ);
+                GL.Vertex3(maxX, maxY, maxZ);
+                GL.Vertex3(minX, minY, minZ);
+                GL.Vertex3(minX, minY, maxZ);
+                GL.Vertex3(maxX, minY, minZ);
+                GL.Vertex3(maxX, minY, maxZ);
+                GL.Vertex3(minX, maxY, minZ);
+                GL.Vertex3(minX, maxY, maxZ);
+                GL.Vertex3(maxX, maxY, minZ);
+                GL.Vertex3(maxX, maxY, maxZ);
+            }
+            GL.End();
+        }
+        public Bounds MultMtx(Matrix4 mtx)
+        {
+            Bounds b = new Bounds();
+            //old Min/Max as in before new min/max calculation
+            Vector3[] TransformedPoints = new Vector3[] {
+            Vector3.TransformPosition(new Vector3(minX, minY, minZ), mtx),
+            Vector3.TransformPosition(new Vector3(maxX, minY, minZ), mtx),
+            Vector3.TransformPosition(new Vector3(minX, maxY, minZ), mtx),
+            Vector3.TransformPosition(new Vector3(maxX, maxY, minZ), mtx),
+            Vector3.TransformPosition(new Vector3(minX, minY, maxZ), mtx),
+            Vector3.TransformPosition(new Vector3(maxX, minY, maxZ), mtx),
+            Vector3.TransformPosition(new Vector3(minX, maxY, maxZ), mtx),
+            Vector3.TransformPosition(new Vector3(maxX, maxY, maxZ), mtx)};
+            b.minX = float.PositiveInfinity;
+            b.minY = float.PositiveInfinity;
+            b.minZ = float.PositiveInfinity;
+            b.maxX = float.NegativeInfinity;
+            b.maxY = float.NegativeInfinity;
+            b.maxZ = float.NegativeInfinity;
+            foreach (Vector3 p in TransformedPoints)
+            {
+                b.minX = Math.Min(b.minX, p.X);
+                b.maxX = Math.Max(b.maxX, p.X);
+                b.minY = Math.Min(b.minY, p.Y);
+                b.maxY = Math.Max(b.maxY, p.Y);
+                b.minZ = Math.Min(b.minZ, p.Z);
+                b.maxZ = Math.Max(b.maxZ, p.Z);
+            }
+            return b;
+        }
+    }
     public class Mesh
     {
         public List<Vector3> Vertices;
         public List<Vector3> Normals;
         public List<Vector2> UVs;
+        public List<Bounds> faceBounds = new List<Bounds>();
         public List<int[]> faces;
         public List<int[]> fnmls;
         public List<int[]> fuvs;
         public Vector3 Color = Vector3.One;
         public int texture;
+        public Bounds size = new Bounds();
         public Mesh(List<Vector3> Vertices, List<Vector3> Normals, List<Vector2> UVs, List<int[]> faces, List<int[]> fnmls, List<int[]> fuvs, Vector3 Color, int texture)
         {
             this.Vertices = Vertices;
@@ -26,7 +127,56 @@ namespace MarioKartTrackMaker.ViewerResources
             this.Color = Color;
             this.texture = texture;
             Optimize();
+            CalculateBounds();
+            CalculateFaceBounds();
         }
+
+        private void CalculateFaceBounds()
+        {
+            foreach (int[] f in faces)
+            {
+                Bounds size = new Bounds();
+                size.minX = float.PositiveInfinity;
+                size.minY = float.PositiveInfinity;
+                size.minZ = float.PositiveInfinity;
+                size.maxX = float.NegativeInfinity;
+                size.maxY = float.NegativeInfinity;
+                size.maxZ = float.NegativeInfinity;
+
+                foreach (int i in f)
+                {
+                    Vector3 v = Vertices[i - 1];
+                    size.minX = Math.Min(size.minX, v.X);
+                    size.maxX = Math.Max(size.maxX, v.X);
+                    size.minY = Math.Min(size.minY, v.Y);
+                    size.maxY = Math.Max(size.maxY, v.Y);
+                    size.minZ = Math.Min(size.minZ, v.Z);
+                    size.maxZ = Math.Max(size.maxZ, v.Z);
+                }
+                faceBounds.Add(size);
+            }
+        }
+
+        private void CalculateBounds()
+        {
+            size.minX = float.PositiveInfinity;
+            size.minY = float.PositiveInfinity;
+            size.minZ = float.PositiveInfinity;
+            size.maxX = float.NegativeInfinity;
+            size.maxY = float.NegativeInfinity;
+            size.maxZ = float.NegativeInfinity;
+
+            foreach (Vector3 v in Vertices)
+            {
+                size.minX = Math.Min(size.minX, v.X);
+                size.maxX = Math.Max(size.maxX, v.X);
+                size.minY = Math.Min(size.minY, v.Y);
+                size.maxY = Math.Max(size.maxY, v.Y);
+                size.minZ = Math.Min(size.minZ, v.Z);
+                size.maxZ = Math.Max(size.maxZ, v.Z);
+            }
+        }
+
         private void RemoveVertex(int index)
         {
             Vertices.RemoveAt(index);
@@ -162,13 +312,11 @@ namespace MarioKartTrackMaker.ViewerResources
             }
         }
 
-        public void DrawMesh(int program, bool wireframe, Vector3 scale)
+        public void DrawMesh(int program, bool wireframe)
         {
             GL.UseProgram(program);
             int texloc = GL.GetUniformLocation(program, "texture");
             int usetexLoc = GL.GetUniformLocation(program, "useTexture");
-            int scaleIndex = GL.GetUniformLocation(program, "scale");
-            GL.Uniform3(scaleIndex, scale);
             if (texture != -1)
             {
                 GL.Uniform1(texloc, texture - 1);
