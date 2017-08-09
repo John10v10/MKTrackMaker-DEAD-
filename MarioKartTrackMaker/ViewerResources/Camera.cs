@@ -12,8 +12,9 @@ namespace MarioKartTrackMaker.ViewerResources
         public ViewPortPanel vpc;
         public Vector3 pivot;
         private Vector3 _p;
-        public float clip_near = 1F;
-        public float clip_far = 10000F;
+        public Vector3 UpDirection = Vector3.UnitZ;
+        public float clip_near = 10F;
+        public float clip_far = 100000F;
         private float _z = 100F;
         public float zoom { get { return _z; }set { _z = value; position = position; } }
         public Vector3 position {
@@ -26,7 +27,7 @@ namespace MarioKartTrackMaker.ViewerResources
             position = p;
             pivot = pv;
         }
-        public Matrix4 look_at_mtx { get { return Matrix4.LookAt(position, pivot, Vector3.UnitZ); } }
+        public Matrix4 look_at_mtx { get { return Matrix4.LookAt(position, pivot, UpDirection); } }
         public Matrix4 matrix
         {
             get { return look_at_mtx * Matrix4.CreatePerspectiveFieldOfView(1F, vpc.Width * 1F / vpc.Height, clip_near, clip_far); }

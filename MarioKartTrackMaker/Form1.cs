@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using MarioKartTrackMaker.ViewerResources;
+using OpenTK;
 
 namespace MarioKartTrackMaker
 {
@@ -191,6 +192,7 @@ namespace MarioKartTrackMaker
 
         private void UpdateObjectStats()
         {
+            listBox2.Items.Clear();
             posXnm.Enabled = posYnm.Enabled = posZnm.Enabled = rotXnm.Enabled = rotYnm.Enabled = rotZnm.Enabled = sclXnm.Enabled = sclYnm.Enabled = sclZnm.Enabled = false;
             if (Object3D.Active_Object != null)
             {
@@ -204,7 +206,14 @@ namespace MarioKartTrackMaker
                 sclYnm.Value = (decimal)Object3D.Active_Object.scale.Y;
                 sclZnm.Value = (decimal)Object3D.Active_Object.scale.Z;
                 posXnm.Enabled = posYnm.Enabled = posZnm.Enabled = rotXnm.Enabled = rotYnm.Enabled = rotZnm.Enabled = sclXnm.Enabled = sclYnm.Enabled = sclZnm.Enabled = true;
-
+                foreach (Attachment atch in Object3D.Active_Object.model.attachments)
+                {
+                    foreach (Object3D.attachmentInfo atif in Object3D.Active_Object.atch_info)
+                        if (atif.thisAtch == atch)
+                            goto no;
+                    listBox2.Items.Add(atch);
+                    no:;
+                }
             }
             else
             {
@@ -394,6 +403,18 @@ namespace MarioKartTrackMaker
                 Object3D.Active_Object.scale.Z = (float)((NumericUpDown)sender).Value;
                 viewPortPanel1.Invalidate();
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            viewPortPanel1.cam.UpDirection = Vector3.UnitZ;
+            viewPortPanel1.Invalidate();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            viewPortPanel1.cam.UpDirection = Vector3.UnitZ*Matrix3.CreateFromQuaternion(Quaternion.FromEulerAngles(Object3D.Active_Object.rotation));
+            viewPortPanel1.Invalidate();
         }
     }
 }

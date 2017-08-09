@@ -13,9 +13,17 @@ namespace MarioKartTrackMaker.ViewerResources
         public static Object3D Active_Object;
         public static List<Object3D> Selected_Objects = new List<Object3D>();
         private int _model;
+        public struct attachmentInfo
+        {
+            public Attachment thisAtch;
+            public Attachment thatAtch;
+            public Object3D AttachedTo;
+        }
+        public List<attachmentInfo> atch_info = new List<attachmentInfo>();
         public Model model
         {
-            get {
+            get
+            {
                 return Model.database[_model];
             }
         }
@@ -26,7 +34,7 @@ namespace MarioKartTrackMaker.ViewerResources
         {
             get
             {
-                Matrix4 mat = Matrix4.Mult(Matrix4.CreateScale(scale),Matrix4.Mult(Matrix4.CreateFromQuaternion(Quaternion.FromEulerAngles(rotation)),Matrix4.CreateTranslation(position)));
+                Matrix4 mat = Matrix4.Mult(Matrix4.CreateScale(scale), Matrix4.Mult(Matrix4.CreateFromQuaternion(Quaternion.FromEulerAngles(rotation)), Matrix4.CreateTranslation(position)));
                 return mat;
             }
         }
@@ -44,7 +52,8 @@ namespace MarioKartTrackMaker.ViewerResources
             GL.PushMatrix();
             Matrix4 mat = transform;
             GL.MultMatrix(ref mat);
-            switch (Form1.current_tool) {
+            switch (Form1.current_tool)
+            {
                 case Tools.Select:
                     break;
                 case Tools.Move:
@@ -69,8 +78,24 @@ namespace MarioKartTrackMaker.ViewerResources
             GL.PushMatrix();
             Matrix4 mat = transform;
             GL.MultMatrix(ref mat);
+            if (this == Active_Object)
+            {
+                DrawAttachments();
+            }
             model.DrawModel(program, collision_mode, wireframe);
             GL.PopMatrix();
+        }
+
+        private void DrawAttachments()
+        {
+            foreach (Attachment atch in model.attachments)
+            {
+                foreach (attachmentInfo atif in atch_info)
+                    if (atif.thisAtch == atch)
+                        goto no;
+                atch.draw(model.size.average);
+                no:;
+            }
         }
     }
 }

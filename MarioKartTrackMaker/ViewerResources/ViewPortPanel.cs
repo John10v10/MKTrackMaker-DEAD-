@@ -519,7 +519,7 @@ namespace MarioKartTrackMaker.ViewerResources
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             base.OnMouseWheel(e);
-            cam.zoom = Math.Max(1F, cam.zoom+e.Delta/12F* (float)Math.Pow(cam.zoom, 0.375F));
+            cam.zoom = Math.Max(cam.clip_near, cam.zoom+e.Delta/12F* (float)Math.Pow(cam.zoom, 0.375F));
             Invalidate();
         }
         protected override void OnMouseMove(MouseEventArgs e)

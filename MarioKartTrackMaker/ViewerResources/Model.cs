@@ -60,11 +60,11 @@ namespace MarioKartTrackMaker.ViewerResources
         public Bounds size = new Bounds();
         public List<Mesh> meshes = new List<Mesh>();
         public List<Collision_Mesh> KCLs = new List<Collision_Mesh>();
-
+        public List<Attachment> attachments = new List<Attachment>();
         public Model(string filepath)
         {
             path = filepath;
-            name = Path.GetFileNameWithoutExtension(filepath).Replace('_', ' ')                                                              ;
+            name = Path.GetFileNameWithoutExtension(filepath).Replace('_', ' ');
             Obj tobj = new Obj();
             tobj.LoadObj(filepath);
             Mtl tmtl = new Mtl();
@@ -168,6 +168,101 @@ namespace MarioKartTrackMaker.ViewerResources
                 KCLs.Add(new Collision_Mesh(cverts, faces, coll));
             }
             CalculateBounds();
+            ImportAttachments(Path.GetDirectoryName(filepath) + filepathSlash + Path.GetFileNameWithoutExtension(filepath) + "_Atch.txt");
+        }
+
+        private void ImportAttachments(string path)
+        {
+            if (File.Exists(path))
+            {
+                Attachment atch = new Attachment();
+                foreach (string line in File.ReadAllLines(path))
+                {
+                    string[] parts = line.Split(new string[] { ": ", ":" }, StringSplitOptions.RemoveEmptyEntries);
+                    if (parts[0].ToUpper() == "NAME")
+                    {
+                        atch.name = parts[1];
+                    }
+                    if (parts[0].ToUpper() == "ISFIRST")
+                    {
+                        atch.isFirst = parts[1] == "1";
+                    }
+                    if (parts[0].ToUpper() == "ISFEMALE")
+                    {
+                        atch.isFemale = parts[1] == "1";
+                    }
+                    if (parts[0].ToUpper() == "MAT00")
+                    {
+                        atch.transform[0, 0] = float.Parse(parts[1]);
+                    }
+                    if (parts[0].ToUpper() == "MAT10")
+                    {
+                        atch.transform[0, 1] = float.Parse(parts[1]);
+                    }
+                    if (parts[0].ToUpper() == "MAT20")
+                    {
+                        atch.transform[0, 2] = float.Parse(parts[1]);
+                    }
+                    if (parts[0].ToUpper() == "MAT30")
+                    {
+                        atch.transform[0, 3] = float.Parse(parts[1]);
+                    }
+                    if (parts[0].ToUpper() == "MAT01")
+                    {
+                        atch.transform[1, 0] = float.Parse(parts[1]);
+                    }
+                    if (parts[0].ToUpper() == "MAT11")
+                    {
+                        atch.transform[1, 1] = float.Parse(parts[1]);
+                    }
+                    if (parts[0].ToUpper() == "MAT21")
+                    {
+                        atch.transform[1, 2] = float.Parse(parts[1]);
+                    }
+                    if (parts[0].ToUpper() == "MAT31")
+                    {
+                        atch.transform[1, 3] = float.Parse(parts[1]);
+                    }
+                    if (parts[0].ToUpper() == "MAT02")
+                    {
+                        atch.transform[2, 0] = float.Parse(parts[1]);
+                    }
+                    if (parts[0].ToUpper() == "MAT12")
+                    {
+                        atch.transform[2, 1] = float.Parse(parts[1]);
+                    }
+                    if (parts[0].ToUpper() == "MAT22")
+                    {
+                        atch.transform[2, 2] = float.Parse(parts[1]);
+                    }
+                    if (parts[0].ToUpper() == "MAT32")
+                    {
+                        atch.transform[2, 3] = float.Parse(parts[1]);
+                    }
+                    if (parts[0].ToUpper() == "MAT03")
+                    {
+                        atch.transform[3, 0] = float.Parse(parts[1]);
+                    }
+                    if (parts[0].ToUpper() == "MAT13")
+                    {
+                        atch.transform[3, 1] = float.Parse(parts[1]);
+                    }
+                    if (parts[0].ToUpper() == "MAT23")
+                    {
+                        atch.transform[3, 2] = float.Parse(parts[1]);
+                    }
+                    if (parts[0].ToUpper() == "MAT33")
+                    {
+                        atch.transform[3, 3] = float.Parse(parts[1]);
+                    }
+                    if (parts[0].ToUpper() == "END")
+                    {
+                        //atch.transform *= Matrix4.CreateTranslation(100,100,100);
+                        attachments.Add(atch);
+                        atch = new Attachment();
+                    }
+                }
+            }
         }
 
         private void CalculateBounds()

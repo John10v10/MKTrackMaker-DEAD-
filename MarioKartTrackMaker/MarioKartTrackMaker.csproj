@@ -92,6 +92,7 @@
     <Compile Include="IO\Wavefront\Types\Vertex.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewerResources\Attachment.cs" />
     <Compile Include="ViewerResources\Camera.cs" />
     <Compile Include="ViewerResources\Collision_Mesh.cs" />
     <Compile Include="ViewerResources\ToolModels.cs" />
