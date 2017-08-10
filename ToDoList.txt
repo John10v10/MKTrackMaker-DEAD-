@@ -1,0 +1,15 @@
+Program Move Tool
+Program Rotation Tool
+Program Scale Tool
+Program Attach Tool
+Program Decoration Tool
+	-Create Decoration Classes
+Always keep Attachments attached (This means qhen you move an object, all the objects attached to that object and the objects attached to that object etc. will move along with it.)
+Enable Detaching Objects
+Enable Deleting Objects
+
+
+Enable Multiple Object Selection
+Enable Quick Theme-Change (If you double-click a set, all the selected objects will be replaced with the parts from that set, unless if that type of object is not found in the new set.)
+
+To be continued...

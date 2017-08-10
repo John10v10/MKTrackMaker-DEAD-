@@ -21,6 +21,7 @@ namespace MarioKartTrackMaker.ViewerResources
 
 uniform sampler2D texture;
 uniform int useTexture;
+uniform int selected;
 varying vec3 vPosition;
 varying vec3 vNormal;
 varying vec3 LightPos1;
@@ -34,6 +35,9 @@ void main(){
 	vec3 texmap = vColor.xyz;
     if(useTexture == 1)texmap = texture2D(texture,vUVs.xy).xyz;
     gl_FragColor = vec4((Light1+Light2)*texmap,1);
+    if(selected == 1)
+        if((mod(gl_FragCoord.x/2,1)<1/2.0)&&(mod(gl_FragCoord.y/2,1)<1/2.0))
+            gl_FragColor = mix(gl_FragColor, vec4(1), 0.5);
     //gl_FragColor = vec4(vNormal,1);
     
 }

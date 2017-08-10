@@ -920,6 +920,7 @@ namespace MarioKartTrackMaker
             this.listBox2.Name = "listBox2";
             this.listBox2.Size = new System.Drawing.Size(193, 134);
             this.listBox2.TabIndex = 6;
+            this.listBox2.SelectedIndexChanged += new System.EventHandler(this.listBox2_SelectedIndexChanged);
             // 
             // viewPortPanel1
             // 

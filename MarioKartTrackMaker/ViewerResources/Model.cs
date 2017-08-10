@@ -293,13 +293,13 @@ namespace MarioKartTrackMaker.ViewerResources
             }
         }
 
-        public void DrawModel(int program, int mode, bool wireframe)
+        public void DrawModel(int program, int mode, bool wireframe, bool selected)
         {
             if ((mode & 1) == 1)
             {
                 foreach (Mesh mesh in meshes)
                 {
-                    mesh.DrawMesh(program, wireframe);
+                    mesh.DrawMesh(program, wireframe, selected);
                 }
             }
             if ((mode & 2) == 2)

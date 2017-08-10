@@ -565,7 +565,7 @@ namespace MarioKartTrackMaker.ViewerResources
         Point _prev = new Point();
         bool Forward, Backward, SideLeft, SideRight, SideUp, SideDown = false;
         private Ray MPray;
-        private TraceResult tr;
+        private TraceResult tr = new TraceResult();
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
@@ -596,6 +596,43 @@ namespace MarioKartTrackMaker.ViewerResources
         {
             base.OnMouseDown(e);
             _prev = e.Location;
+            if (Form1.current_tool == Tools.Select)
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    if (tr.Hit)
+                    {
+                        Object3D.Active_Object = tr.HitObject;
+                        float distance = float.PositiveInfinity;
+                        Attachment closestAtch = null;
+                        foreach (Attachment atch in Object3D.Active_Object.model.attachments)
+                        {
+                            foreach (Object3D.attachmentInfo atif in Object3D.Active_Object.atch_info)
+                                if (atif.thisAtch == atch)
+                                    goto no;
+                            float this_dist = (atch.get_world_transform(Object3D.Active_Object.transform).ExtractTranslation() - tr.HitPos).Length;
+                            if (distance > this_dist)
+                            {
+                                closestAtch = atch;
+                                distance = this_dist;
+                            }
+                            no:;
+                        }
+                        if (closestAtch != null)
+                        {
+                            Object3D.Active_Object.Active_Attachment = closestAtch;
+                        }
+                        ((Form1)Form.ActiveForm).listBox1_DoStuffWhenIndexChanged = false;
+                        ((Form1)Form.ActiveForm).UpdateActiveObject();
+                        ((Form1)Form.ActiveForm).listBox1_DoStuffWhenIndexChanged = true;
+                    }
+                    else { Object3D.Active_Object = null;Invalidate();
+                        ((Form1)Form.ActiveForm).listBox1_DoStuffWhenIndexChanged = false;
+                        ((Form1)Form.ActiveForm).UpdateActiveObject();
+                        ((Form1)Form.ActiveForm).listBox1_DoStuffWhenIndexChanged = true;
+                    }
+                }
+            }
         }
         protected override void OnMouseWheel(MouseEventArgs e)
         {
@@ -603,12 +640,13 @@ namespace MarioKartTrackMaker.ViewerResources
             cam.zoom = Math.Max(cam.clip_near, cam.zoom+e.Delta/12F* (float)Math.Pow(cam.zoom, 0.375F));
             Invalidate();
         }
+        bool _prevhit = false;
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
             mx = e.X;
             my = e.Y;
-            bool invalidate = true;
+            bool invalidate = false;
             if (e.Button == MouseButtons.Right)
             {
                 if ((ModifierKeys & Keys.Shift) != 0)
@@ -631,7 +669,9 @@ namespace MarioKartTrackMaker.ViewerResources
             Matrix4 mtx = cam.matrix;
             MPray = FromMousePos(mtx);
             tr = MPray.Trace(cam);
-            if (tr.Hit || invalidate) Invalidate();
+
+            if (tr.Hit || invalidate || _prevhit) Invalidate();
+            _prevhit = tr.Hit;
         }
 
         private void ViewPortPanel_Load(object sender, EventArgs e)

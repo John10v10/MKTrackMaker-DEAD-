@@ -19,15 +19,15 @@ namespace MarioKartTrackMaker.ViewerResources
             return transform * parentMtx;
         }
 
-        public void draw(float size)
+        public void draw(float size, int selectState)
         {
             GL.PushMatrix();
             GL.MultMatrix(ref transform);
             GL.LineWidth(4F);
             if (isFemale)
-                GL.Color3(0.875F, 0, 1F);
+                GL.Color3(Vector3.Lerp(new Vector3(0.875F, 0, 1F), Vector3.One, 1 - (float)Math.Pow(1 - (selectState /2F), 2)));
             else
-                GL.Color3(0, 0.875F, 1F);
+                GL.Color3(Vector3.Lerp(new Vector3(0, 0.875F, 1F), Vector3.One, 1 - (float)Math.Pow(1 - (selectState /2F), 2)));
             GL.Begin(PrimitiveType.Lines);
             GL.Vertex3(0, 0, 0);
             if (isFemale)

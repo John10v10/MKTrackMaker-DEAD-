@@ -343,11 +343,13 @@ namespace MarioKartTrackMaker.ViewerResources
             }
         }
 
-        public void DrawMesh(int program, bool wireframe)
+        public void DrawMesh(int program, bool wireframe, bool selected)
         {
             GL.UseProgram(program);
             int texloc = GL.GetUniformLocation(program, "texture");
             int usetexLoc = GL.GetUniformLocation(program, "useTexture");
+            int selloc = GL.GetUniformLocation(program, "selected");
+            GL.Uniform1(selloc, (selected)?1:0);
             if (texture != -1)
             {
                 GL.Uniform1(texloc, texture - 1);

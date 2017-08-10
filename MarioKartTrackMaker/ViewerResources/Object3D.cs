@@ -65,7 +65,9 @@ namespace MarioKartTrackMaker.ViewerResources
                 scale = value.ExtractScale();
             }
         }
-        
+
+        public Attachment Active_Attachment;
+
         public Object3D(string filepath)
         {
             _model = Model.AddModel(filepath);
@@ -111,7 +113,7 @@ namespace MarioKartTrackMaker.ViewerResources
                 DrawAttachments();
             }
             if (inSight)
-                model.DrawModel(program, collision_mode, wireframe);
+                model.DrawModel(program, collision_mode, wireframe, this == Active_Object && (Form1.current_tool == Tools.Select || Form1.current_tool == Tools.Snap));
             GL.PopMatrix();
         }
 
@@ -122,7 +124,7 @@ namespace MarioKartTrackMaker.ViewerResources
                 foreach (attachmentInfo atif in atch_info)
                     if (atif.thisAtch == atch)
                         goto no;
-                atch.draw(model.size.average);
+                atch.draw(model.size.average, (atch == Active_Attachment)?1:0);
                 no:;
             }
         }

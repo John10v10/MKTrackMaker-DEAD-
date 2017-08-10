@@ -185,19 +185,26 @@ namespace MarioKartTrackMaker
             viewPortPanel1.cam.clip_near = (float)numericUpDown1.Value;
             viewPortPanel1.Invalidate();
         }
-
+        public bool listBox1_DoStuffWhenIndexChanged = true;
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(((ListBox)sender).SelectedItems.Count > 0)
+            if (listBox1_DoStuffWhenIndexChanged)
             {
-                Object3D.Active_Object = ((Object3D)((ListBox)sender).SelectedItems[0]);
+                if (((ListBox)sender).SelectedItems.Count > 0)
+                {
+                    Object3D.Active_Object = ((Object3D)((ListBox)sender).SelectedItems[0]);
+                }
+                else Object3D.Active_Object = null;
             }
-            else Object3D.Active_Object = null;
             viewPortPanel1.Invalidate();
             UpdateObjectStats();
         }
-
-        private void UpdateObjectStats()
+        public void UpdateActiveObject()
+        {
+            listBox1.SelectedItems.Clear();
+            listBox1.SelectedItems.Add(Object3D.Active_Object);
+        }
+        public void UpdateObjectStats()
         {
             listBox2.Items.Clear();
             posXnm.Enabled = posYnm.Enabled = posZnm.Enabled = rotXnm.Enabled = rotYnm.Enabled = rotZnm.Enabled = sclXnm.Enabled = sclYnm.Enabled = sclZnm.Enabled = false;
@@ -214,16 +221,7 @@ namespace MarioKartTrackMaker
                 sclYnm.Value = (decimal)Object3D.Active_Object.scale.Y;
                 sclZnm.Value = (decimal)Object3D.Active_Object.scale.Z;
                 posXnm.Enabled = posYnm.Enabled = posZnm.Enabled = rotXnm.Enabled = rotYnm.Enabled = rotZnm.Enabled = sclXnm.Enabled = sclYnm.Enabled = sclZnm.Enabled = true;
-                bool firstoneadded = true;
-                foreach (Attachment atch in Object3D.Active_Object.model.attachments)
-                {
-                    foreach (Object3D.attachmentInfo atif in Object3D.Active_Object.atch_info)
-                        if (atif.thisAtch == atch)
-                            goto no;
-                    listBox2.Items.Add(atch);
-                    if (firstoneadded) { listBox2.SelectedItem = atch; firstoneadded = false; }
-                    no:;
-                }
+
             }
             else
             {
@@ -236,6 +234,27 @@ namespace MarioKartTrackMaker
                 sclXnm.Value = 1;
                 sclYnm.Value = 1;
                 sclYnm.Value = 1;
+            }
+            listBox2.Items.Clear();
+            listBox2.SelectedItems.Clear();
+            if (Object3D.Active_Object != null)
+            {
+                foreach (Attachment atch in Object3D.Active_Object.model.attachments)
+                {
+                    foreach (Object3D.attachmentInfo atif in Object3D.Active_Object.atch_info)
+                        if (atif.thisAtch == atch)
+                            goto no;
+                    listBox2.Items.Add(atch);
+                    if (atch == Object3D.Active_Object.Active_Attachment)
+                    {
+                        listBox2.SelectedItems.Add(atch);
+                    }
+                    no:;
+                }
+                if(listBox2.SelectedItems.Count == 0 && listBox2.Items.Count > 0)
+                {
+                    listBox2.SelectedItems.Add(listBox2.Items[0]);
+                }
             }
         }
 
@@ -433,5 +452,15 @@ namespace MarioKartTrackMaker
             listBox2.Top = (int)(listBox1.Top + listBox1.Height + 8.0);
             listBox2.Height = (int)((Height - listBox2.Top - 48.0));
         }
+
+        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(listBox2.SelectedItems.Count > 0 && Object3D.Active_Object != null)
+            {
+                Object3D.Active_Object.Active_Attachment = (Attachment)listBox2.SelectedItems[0];
+                viewPortPanel1.Invalidate();
+            }
+        }
+        
     }
 }
