@@ -41,6 +41,38 @@ namespace MarioKartTrackMaker.ViewerResources
                 return (minS + maxS) / 2f;
             }
         }
+        public Vector3 nXnYnZ
+        {
+            get { return new Vector3(minX, minY, minZ); }
+        }
+        public Vector3 pXnYnZ
+        {
+            get { return new Vector3(maxX, minY, minZ); }
+        }
+        public Vector3 nXpYnZ
+        {
+            get { return new Vector3(minX, maxY, minZ); }
+        }
+        public Vector3 nXnYpZ
+        {
+            get { return new Vector3(minX, minY, maxZ); }
+        }
+        public Vector3 pXpYnZ
+        {
+            get { return new Vector3(maxX, maxY, minZ); }
+        }
+        public Vector3 pXnYpZ
+        {
+            get { return new Vector3(maxX, minY, maxZ); }
+        }
+        public Vector3 nXpYpZ
+        {
+            get { return new Vector3(minX, maxY, maxZ); }
+        }
+        public Vector3 pXpYpZ
+        {
+            get { return new Vector3(maxX, maxY, maxZ); }
+        }
         public void DrawBounds()
         {
             GL.Color3(1F, 1F, 1F);
@@ -303,7 +335,6 @@ namespace MarioKartTrackMaker.ViewerResources
             {
                 RemoveUV(UVs_to_remove[i]);
                 amountremoved++;
-                Console.Write("\r{0}           ", amountremoved);
                 for (int ii = 0; ii < UVs_to_remove.Count; ii++)
                 {
                     if (UVs_to_remove[i] < UVs_to_remove[ii])

@@ -113,6 +113,8 @@ namespace ObjParser
                         break;
                     case "map_Kd":
                         CurrentMaterial.DiffuseTexture = parts[1];
+                        for (int i = 2; i < parts.Length; i++)
+                            CurrentMaterial.DiffuseTexture += " " + parts[i];
                         break;
                     case "Ks":
                         c.LoadFromStringArray(parts);

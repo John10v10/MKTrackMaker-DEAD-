@@ -95,6 +95,7 @@
     <Compile Include="ViewerResources\Attachment.cs" />
     <Compile Include="ViewerResources\Camera.cs" />
     <Compile Include="ViewerResources\Collision_Mesh.cs" />
+    <Compile Include="ViewerResources\OtherMathUtils.cs" />
     <Compile Include="ViewerResources\ToolModels.cs" />
     <Compile Include="ViewerResources\Mesh.cs" />
     <Compile Include="ViewerResources\Model.cs" />

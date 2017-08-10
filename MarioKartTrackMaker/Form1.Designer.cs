@@ -87,11 +87,11 @@ namespace MarioKartTrackMaker
             this.posXnm = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.listBox2 = new System.Windows.Forms.ListBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.viewPortPanel1 = new MarioKartTrackMaker.ViewerResources.ViewPortPanel();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -213,7 +213,7 @@ namespace MarioKartTrackMaker
             this.listView1.GridLines = true;
             this.listView1.LargeImageList = this.imageList1;
             this.listView1.Location = new System.Drawing.Point(12, 116);
-            this.listView1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.listView1.Margin = new System.Windows.Forms.Padding(2);
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(236, 281);
@@ -244,7 +244,7 @@ namespace MarioKartTrackMaker
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listView2.LargeImageList = this.imageList2;
             this.listView2.Location = new System.Drawing.Point(12, 38);
-            this.listView2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.listView2.Margin = new System.Windows.Forms.Padding(2);
             this.listView2.MultiSelect = false;
             this.listView2.Name = "listView2";
             this.listView2.Size = new System.Drawing.Size(338, 63);
@@ -272,7 +272,7 @@ namespace MarioKartTrackMaker
             // 
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(136, 4);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(74, 17);
             this.checkBox1.TabIndex = 5;
@@ -284,7 +284,7 @@ namespace MarioKartTrackMaker
             // 
             this.checkBox2.AutoSize = true;
             this.checkBox2.Location = new System.Drawing.Point(210, 4);
-            this.checkBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBox2.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(99, 17);
             this.checkBox2.TabIndex = 5;
@@ -295,11 +295,10 @@ namespace MarioKartTrackMaker
             // 
             // listBox1
             // 
-            this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(525, 116);
-            this.listBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.listBox1.Margin = new System.Windows.Forms.Padding(2);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(193, 134);
             this.listBox1.TabIndex = 6;
@@ -311,7 +310,7 @@ namespace MarioKartTrackMaker
             // 
             this.numericUpDown1.DecimalPlaces = 1;
             this.numericUpDown1.Location = new System.Drawing.Point(57, 4);
-            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -346,7 +345,7 @@ namespace MarioKartTrackMaker
             // 
             this.numericUpDown2.DecimalPlaces = 1;
             this.numericUpDown2.Location = new System.Drawing.Point(57, 22);
-            this.numericUpDown2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDown2.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDown2.Maximum = new decimal(new int[] {
             10000000,
             0,
@@ -384,7 +383,7 @@ namespace MarioKartTrackMaker
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(351, 15);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(365, 90);
@@ -399,9 +398,9 @@ namespace MarioKartTrackMaker
             this.tabPage1.Controls.Add(this.pictureBox2);
             this.tabPage1.Controls.Add(this.pictureBox1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(2);
             this.tabPage1.Size = new System.Drawing.Size(357, 64);
             this.tabPage1.TabIndex = 2;
             this.tabPage1.Text = "Transform Tools";
@@ -415,7 +414,7 @@ namespace MarioKartTrackMaker
             this.pictureBox6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pictureBox6.Location = new System.Drawing.Point(256, 18);
-            this.pictureBox6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox6.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox6.Name = "pictureBox6";
             this.pictureBox6.Size = new System.Drawing.Size(37, 37);
             this.pictureBox6.TabIndex = 0;
@@ -430,7 +429,7 @@ namespace MarioKartTrackMaker
             this.pictureBox5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pictureBox5.Location = new System.Drawing.Point(218, 18);
-            this.pictureBox5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox5.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(37, 37);
             this.pictureBox5.TabIndex = 0;
@@ -445,7 +444,7 @@ namespace MarioKartTrackMaker
             this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pictureBox4.Location = new System.Drawing.Point(179, 18);
-            this.pictureBox4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox4.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(37, 37);
             this.pictureBox4.TabIndex = 0;
@@ -460,7 +459,7 @@ namespace MarioKartTrackMaker
             this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pictureBox3.Location = new System.Drawing.Point(141, 18);
-            this.pictureBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox3.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(37, 37);
             this.pictureBox3.TabIndex = 0;
@@ -475,7 +474,7 @@ namespace MarioKartTrackMaker
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pictureBox2.Location = new System.Drawing.Point(103, 18);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(37, 37);
             this.pictureBox2.TabIndex = 0;
@@ -491,7 +490,7 @@ namespace MarioKartTrackMaker
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pictureBox1.Location = new System.Drawing.Point(65, 18);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(37, 37);
             this.pictureBox1.TabIndex = 0;
@@ -506,9 +505,9 @@ namespace MarioKartTrackMaker
             this.tabPage3.Controls.Add(this.groupBox2);
             this.tabPage3.Controls.Add(this.groupBox1);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage3.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(2);
             this.tabPage3.Size = new System.Drawing.Size(357, 64);
             this.tabPage3.TabIndex = 3;
             this.tabPage3.Text = "Object Properties";
@@ -518,7 +517,7 @@ namespace MarioKartTrackMaker
             // 
             this.ColorButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ColorButton.Location = new System.Drawing.Point(289, 3);
-            this.ColorButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ColorButton.Margin = new System.Windows.Forms.Padding(2);
             this.ColorButton.Name = "ColorButton";
             this.ColorButton.Size = new System.Drawing.Size(66, 60);
             this.ColorButton.TabIndex = 1;
@@ -534,9 +533,9 @@ namespace MarioKartTrackMaker
             this.groupBox3.Controls.Add(this.sclXnm);
             this.groupBox3.Controls.Add(this.label13);
             this.groupBox3.Location = new System.Drawing.Point(193, 0);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox3.Size = new System.Drawing.Size(91, 62);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
@@ -547,7 +546,7 @@ namespace MarioKartTrackMaker
             this.sclZnm.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.sclZnm.DecimalPlaces = 3;
             this.sclZnm.Location = new System.Drawing.Point(19, 45);
-            this.sclZnm.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.sclZnm.Margin = new System.Windows.Forms.Padding(2);
             this.sclZnm.Maximum = new decimal(new int[] {
             10000000,
             0,
@@ -583,7 +582,7 @@ namespace MarioKartTrackMaker
             this.sclYnm.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.sclYnm.DecimalPlaces = 3;
             this.sclYnm.Location = new System.Drawing.Point(19, 29);
-            this.sclYnm.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.sclYnm.Margin = new System.Windows.Forms.Padding(2);
             this.sclYnm.Maximum = new decimal(new int[] {
             10000000,
             0,
@@ -619,7 +618,7 @@ namespace MarioKartTrackMaker
             this.sclXnm.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.sclXnm.DecimalPlaces = 3;
             this.sclXnm.Location = new System.Drawing.Point(19, 14);
-            this.sclXnm.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.sclXnm.Margin = new System.Windows.Forms.Padding(2);
             this.sclXnm.Maximum = new decimal(new int[] {
             10000000,
             0,
@@ -659,9 +658,9 @@ namespace MarioKartTrackMaker
             this.groupBox2.Controls.Add(this.rotXnm);
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Location = new System.Drawing.Point(98, 0);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox2.Size = new System.Drawing.Size(91, 62);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
@@ -672,7 +671,7 @@ namespace MarioKartTrackMaker
             this.rotZnm.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rotZnm.DecimalPlaces = 3;
             this.rotZnm.Location = new System.Drawing.Point(19, 45);
-            this.rotZnm.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rotZnm.Margin = new System.Windows.Forms.Padding(2);
             this.rotZnm.Maximum = new decimal(new int[] {
             360,
             0,
@@ -703,7 +702,7 @@ namespace MarioKartTrackMaker
             this.rotYnm.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rotYnm.DecimalPlaces = 3;
             this.rotYnm.Location = new System.Drawing.Point(19, 29);
-            this.rotYnm.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rotYnm.Margin = new System.Windows.Forms.Padding(2);
             this.rotYnm.Maximum = new decimal(new int[] {
             360,
             0,
@@ -734,7 +733,7 @@ namespace MarioKartTrackMaker
             this.rotXnm.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rotXnm.DecimalPlaces = 3;
             this.rotXnm.Location = new System.Drawing.Point(19, 14);
-            this.rotXnm.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rotXnm.Margin = new System.Windows.Forms.Padding(2);
             this.rotXnm.Maximum = new decimal(new int[] {
             360,
             0,
@@ -769,9 +768,9 @@ namespace MarioKartTrackMaker
             this.groupBox1.Controls.Add(this.posXnm);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Location = new System.Drawing.Point(4, 0);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(91, 62);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
@@ -782,7 +781,7 @@ namespace MarioKartTrackMaker
             this.posZnm.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.posZnm.DecimalPlaces = 3;
             this.posZnm.Location = new System.Drawing.Point(19, 45);
-            this.posZnm.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.posZnm.Margin = new System.Windows.Forms.Padding(2);
             this.posZnm.Maximum = new decimal(new int[] {
             10000000,
             0,
@@ -813,7 +812,7 @@ namespace MarioKartTrackMaker
             this.posYnm.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.posYnm.DecimalPlaces = 3;
             this.posYnm.Location = new System.Drawing.Point(19, 29);
-            this.posYnm.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.posYnm.Margin = new System.Windows.Forms.Padding(2);
             this.posYnm.Maximum = new decimal(new int[] {
             10000000,
             0,
@@ -844,7 +843,7 @@ namespace MarioKartTrackMaker
             this.posXnm.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.posXnm.DecimalPlaces = 3;
             this.posXnm.Location = new System.Drawing.Point(19, 14);
-            this.posXnm.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.posXnm.Margin = new System.Windows.Forms.Padding(2);
             this.posXnm.Maximum = new decimal(new int[] {
             10000000,
             0,
@@ -881,24 +880,24 @@ namespace MarioKartTrackMaker
             this.tabPage2.Controls.Add(this.label4);
             this.tabPage2.Controls.Add(this.numericUpDown1);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
             this.tabPage2.Size = new System.Drawing.Size(357, 64);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "View Tools";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // listBox2
+            // button2
             // 
-            this.listBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.listBox2.FormattingEnabled = true;
-            this.listBox2.Location = new System.Drawing.Point(525, 257);
-            this.listBox2.Margin = new System.Windows.Forms.Padding(2);
-            this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(193, 134);
-            this.listBox2.TabIndex = 6;
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Location = new System.Drawing.Point(132, 22);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(40, 37);
+            this.button2.TabIndex = 9;
+            this.button2.Text = "Reset Orbit View";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
             // 
@@ -912,16 +911,15 @@ namespace MarioKartTrackMaker
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // listBox2
             // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(132, 22);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(40, 37);
-            this.button2.TabIndex = 9;
-            this.button2.Text = "Reset Orbit View";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.listBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBox2.FormattingEnabled = true;
+            this.listBox2.Location = new System.Drawing.Point(525, 257);
+            this.listBox2.Margin = new System.Windows.Forms.Padding(2);
+            this.listBox2.Name = "listBox2";
+            this.listBox2.Size = new System.Drawing.Size(193, 134);
+            this.listBox2.TabIndex = 6;
             // 
             // viewPortPanel1
             // 
@@ -955,10 +953,11 @@ namespace MarioKartTrackMaker
             this.Controls.Add(this.viewPortPanel1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Mario Kart Track Maker";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Resize += new System.EventHandler(this.Form1_Resize);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();

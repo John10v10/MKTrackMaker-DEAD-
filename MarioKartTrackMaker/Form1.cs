@@ -58,7 +58,14 @@ namespace MarioKartTrackMaker
         {
             listBox1.Items.Clear();
             foreach (Object3D obj in Object3D.database)
+            {
                 listBox1.Items.Add(obj);
+                if (obj == Object3D.Active_Object)
+                {
+                    listBox1.SelectedItem = obj;
+                }
+            }
+            
         }
         private void LoadSets(ListView sender)
         {
@@ -199,19 +206,22 @@ namespace MarioKartTrackMaker
                 posXnm.Value = (decimal)Object3D.Active_Object.position.X;
                 posYnm.Value = (decimal)Object3D.Active_Object.position.Y;
                 posZnm.Value = (decimal)Object3D.Active_Object.position.Z;
-                rotXnm.Value = (decimal)Object3D.Active_Object.rotation.X;
-                rotYnm.Value = (decimal)Object3D.Active_Object.rotation.Y;
-                rotZnm.Value = (decimal)Object3D.Active_Object.rotation.Z;
+                Quaternion q = Object3D.Active_Object.rotation;
+                rotXnm.Value = (decimal)(Math.Round(Math.Atan2(Math.Max(-1, Math.Min(1, (2 * q.X * q.W - 2 * q.Y * q.Z))), Math.Max(-1, Math.Min(1, (1 - 2 * q.X * q.X - 2 * q.Z * q.Z)))) * 180 / Math.PI, 3));
+                rotYnm.Value = (decimal)(Math.Round(Math.Atan2(Math.Max(-1, Math.Min(1, (2 * q.Y * q.W - 2 * q.X * q.Z))), Math.Max(-1, Math.Min(1, (1 - 2 * q.Y * q.Y - 2 * q.Z * q.Z)))) * 180 / Math.PI, 3));
+                rotZnm.Value = (decimal)(Math.Round(Math.Asin(Math.Max(-1, Math.Min(1, (2 * q.X * q.Y + 2 * q.Z * q.W)))) * 180 / Math.PI, 3));
                 sclXnm.Value = (decimal)Object3D.Active_Object.scale.X;
                 sclYnm.Value = (decimal)Object3D.Active_Object.scale.Y;
                 sclZnm.Value = (decimal)Object3D.Active_Object.scale.Z;
                 posXnm.Enabled = posYnm.Enabled = posZnm.Enabled = rotXnm.Enabled = rotYnm.Enabled = rotZnm.Enabled = sclXnm.Enabled = sclYnm.Enabled = sclZnm.Enabled = true;
+                bool firstoneadded = true;
                 foreach (Attachment atch in Object3D.Active_Object.model.attachments)
                 {
                     foreach (Object3D.attachmentInfo atif in Object3D.Active_Object.atch_info)
                         if (atif.thisAtch == atch)
                             goto no;
                     listBox2.Items.Add(atch);
+                    if (firstoneadded) { listBox2.SelectedItem = atch; firstoneadded = false; }
                     no:;
                 }
             }
@@ -233,7 +243,7 @@ namespace MarioKartTrackMaker
         {
             if (listBox1.SelectedItems.Count > 0)
             {
-                viewPortPanel1.GoToObject((Object3D)listBox1.SelectedItems[0]);
+                viewPortPanel1.GoToObject((Object3D)listBox1.SelectedItems[0], false);
             }
         }
 
@@ -313,7 +323,7 @@ namespace MarioKartTrackMaker
         {
             if (listView1.SelectedItems.Count > 0)
             {
-                viewPortPanel1.InsertObjects((string)listView1.SelectedItems[0].Tag);
+                viewPortPanel1.InsertObjects((string)listView1.SelectedItems[0].Tag, (listBox2.SelectedItems.Count > 0)?((Attachment)listBox2.SelectedItems[0]):null);
                 viewPortPanel1.Refresh();
                 DisplayObjectList();
             }
@@ -352,7 +362,7 @@ namespace MarioKartTrackMaker
 
             if (((NumericUpDown)sender).Enabled)
             {
-                Object3D.Active_Object.rotation.Z = (float)((double)((NumericUpDown)sender).Value/180*Math.PI);
+                Object3D.Active_Object.rotation = Quaternion.FromEulerAngles(new Vector3((float)((double)(rotZnm.Value) / 180 * Math.PI), (float)((double)(rotYnm.Value) / 180 * Math.PI), (float)((double)(rotXnm.Value) / 180 * Math.PI)));
                 viewPortPanel1.Invalidate();
             }
         }
@@ -362,7 +372,7 @@ namespace MarioKartTrackMaker
 
             if (((NumericUpDown)sender).Enabled)
             {
-                Object3D.Active_Object.rotation.Y = (float)((double)((NumericUpDown)sender).Value / 180 * Math.PI);
+                Object3D.Active_Object.rotation = Quaternion.FromEulerAngles(new Vector3((float)((double)(rotZnm.Value) / 180 * Math.PI), (float)((double)(rotYnm.Value) / 180 * Math.PI), (float)((double)(rotXnm.Value) / 180 * Math.PI)));
                 viewPortPanel1.Invalidate();
             }
         }
@@ -371,7 +381,7 @@ namespace MarioKartTrackMaker
         {
             if (((NumericUpDown)sender).Enabled)
             {
-                Object3D.Active_Object.rotation.X = (float)((double)((NumericUpDown)sender).Value / 180 * Math.PI);
+                Object3D.Active_Object.rotation = Quaternion.FromEulerAngles(new Vector3((float)((double)(rotZnm.Value) / 180 * Math.PI), (float)((double)(rotYnm.Value) / 180 * Math.PI), (float)((double)(rotXnm.Value) / 180 * Math.PI)));
                 viewPortPanel1.Invalidate();
             }
         }
@@ -413,8 +423,15 @@ namespace MarioKartTrackMaker
 
         private void button1_Click(object sender, EventArgs e)
         {
-            viewPortPanel1.cam.UpDirection = Vector3.UnitZ*Matrix3.CreateFromQuaternion(Quaternion.FromEulerAngles(Object3D.Active_Object.rotation));
+            viewPortPanel1.cam.UpDirection = Vector3.UnitZ*Matrix3.CreateFromQuaternion(Object3D.Active_Object.rotation);
             viewPortPanel1.Invalidate();
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            listBox1.Height = (int)((Height - listBox1.Top - 48.0) / 2.0 - 8.0);
+            listBox2.Top = (int)(listBox1.Top + listBox1.Height + 8.0);
+            listBox2.Height = (int)((Height - listBox2.Top - 48.0));
         }
     }
 }

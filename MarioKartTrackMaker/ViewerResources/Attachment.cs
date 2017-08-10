@@ -11,7 +11,7 @@ namespace MarioKartTrackMaker.ViewerResources
     public class Attachment
     {
         public string name = "<unknown>";
-        public bool isFirst;
+        public int isFirst;
         public bool isFemale;
         public Matrix4 transform;
         public Matrix4 get_world_transform(Matrix4 parentMtx)

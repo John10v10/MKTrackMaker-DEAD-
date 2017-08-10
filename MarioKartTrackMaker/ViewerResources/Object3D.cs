@@ -16,8 +16,29 @@ namespace MarioKartTrackMaker.ViewerResources
         public struct attachmentInfo
         {
             public Attachment thisAtch;
+            public Object3D thisObject;
             public Attachment thatAtch;
             public Object3D AttachedTo;
+
+            public void Attach()
+            {
+                thisObject.transform = thisAtch.transform.Inverted()*thatAtch.transform*AttachedTo.transform;
+                
+                attachmentInfo ata = new attachmentInfo();
+                for(int i = 0; i < AttachedTo.atch_info.Count; i++)
+                {
+                    if (AttachedTo.atch_info[i].thisAtch == thatAtch)
+                    {
+                        AttachedTo.atch_info.RemoveAt(i);
+                        break;
+                    }
+                }
+                ata.thisObject = AttachedTo;
+                ata.thisAtch = thatAtch;
+                ata.thatAtch = thisAtch;
+                ata.AttachedTo = thisObject;
+                AttachedTo.atch_info.Add(ata);
+            }
         }
         public List<attachmentInfo> atch_info = new List<attachmentInfo>();
         public Model model
@@ -28,16 +49,23 @@ namespace MarioKartTrackMaker.ViewerResources
             }
         }
         public Vector3 position = Vector3.Zero;
-        public Vector3 rotation = Vector3.Zero;
+        public Quaternion rotation = Quaternion.Identity;
         public Vector3 scale = Vector3.One;
         public Matrix4 transform
         {
             get
             {
-                Matrix4 mat = Matrix4.Mult(Matrix4.CreateScale(scale), Matrix4.Mult(Matrix4.CreateFromQuaternion(Quaternion.FromEulerAngles(rotation)), Matrix4.CreateTranslation(position)));
+                Matrix4 mat = Matrix4.Mult(Matrix4.CreateScale(scale), Matrix4.Mult(Matrix4.CreateFromQuaternion(rotation), Matrix4.CreateTranslation(position)));
                 return mat;
             }
+            set
+            {
+                position = value.ExtractTranslation();
+                rotation = value.ExtractRotation();
+                scale = value.ExtractScale();
+            }
         }
+        
         public Object3D(string filepath)
         {
             _model = Model.AddModel(filepath);
@@ -73,7 +101,7 @@ namespace MarioKartTrackMaker.ViewerResources
             }
             GL.PopMatrix();
         }
-        public void DrawObject(int program, int collision_mode, bool wireframe)
+        public void DrawObject(int program, int collision_mode, bool wireframe, bool inSight)
         {
             GL.PushMatrix();
             Matrix4 mat = transform;
@@ -82,7 +110,8 @@ namespace MarioKartTrackMaker.ViewerResources
             {
                 DrawAttachments();
             }
-            model.DrawModel(program, collision_mode, wireframe);
+            if (inSight)
+                model.DrawModel(program, collision_mode, wireframe);
             GL.PopMatrix();
         }
 
@@ -96,6 +125,38 @@ namespace MarioKartTrackMaker.ViewerResources
                 atch.draw(model.size.average);
                 no:;
             }
+        }
+
+        public bool attachTo(Attachment atch, Object3D targetObj)
+        {
+            foreach(Attachment thisatch in model.attachments)
+            {
+                if (thisatch.isFirst == ((atch.isFemale)?2:1))
+
+                {
+                    attachTo(thisatch, atch, targetObj);
+                    return true;
+                }
+            }
+            return false;
+        }
+        public void attachTo(Attachment thisatch, Attachment thatatch, Object3D targetObj)
+        {
+            for (int i = 0; i < atch_info.Count; i++)
+            {
+                if (atch_info[i].thisAtch == thatatch)
+                {
+                    atch_info.RemoveAt(i);
+                    break;
+                }
+            }
+            attachmentInfo new_atif = new attachmentInfo();
+            new_atif.thisAtch = thisatch;
+            new_atif.thatAtch = thatatch;
+            new_atif.thisObject = this;
+            new_atif.AttachedTo = targetObj;
+            new_atif.Attach();
+            atch_info.Add(new_atif);
         }
     }
 }
