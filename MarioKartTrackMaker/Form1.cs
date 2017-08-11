@@ -202,7 +202,8 @@ namespace MarioKartTrackMaker
         public void UpdateActiveObject()
         {
             listBox1.SelectedItems.Clear();
-            listBox1.SelectedItems.Add(Object3D.Active_Object);
+	    if(Object3D.Active_Object != null)
+            	listBox1.SelectedItems.Add(Object3D.Active_Object);
         }
         public void UpdateObjectStats()
         {
