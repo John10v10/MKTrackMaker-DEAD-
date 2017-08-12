@@ -57,6 +57,7 @@ void main(){
 
             GL.ShaderSource(s, @"
 #version 120
+uniform vec3 scale;
 varying vec3 vPosition;
 varying vec3 vNormal;
 varying vec2 vUVs;
@@ -64,16 +65,12 @@ varying vec3 LightPos1;
 varying vec3 LightPos2;
 varying vec4 vColor;
 void main(){
-	gl_Position = gl_ModelViewMatrix * gl_Vertex;
+	gl_Position = gl_ModelViewMatrix * (gl_Vertex * vec4(scale, 1));
 	vPosition = vec3(gl_ModelViewMatrix * gl_Vertex);
 	vColor = gl_Color;
-    LightPos1 = normalize(vec3(1,1,-4));
-    LightPos2 = normalize(vec3(-1,-1,6));
-	vNormal = vec3(
-dot(gl_Normal, normalize(transpose(mat3(gl_NormalMatrix))*vec3(1,0,0))),
-dot(gl_Normal, normalize(transpose(mat3(gl_NormalMatrix))*vec3(0,1,0))),
-dot(gl_Normal, normalize(transpose(mat3(gl_NormalMatrix))*vec3(0,0,1)))
-);
+    LightPos1 = normalize(vec4(1,1,-4,0)*gl_ModelViewMatrix).xyz;
+    LightPos2 = normalize(vec4(-1,-1,6,0)*gl_ModelViewMatrix).xyz;
+	vNormal = gl_Normal/scale;
     vUVs = gl_MultiTexCoord0.st;
 }
 "

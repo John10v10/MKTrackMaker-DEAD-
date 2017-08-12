@@ -77,7 +77,7 @@ namespace MarioKartTrackMaker.ViewerResources
             return string.Format("{0} [{1}, {2}, {3}]", model.name, Math.Round(position.X, 1), Math.Round(position.Y, 1), Math.Round(position.Z, 1));
         }
 
-        public void DrawTool()
+        public void DrawTool(int HoverState)
         {
             GL.PushMatrix();
             Matrix4 mat = transform;
@@ -87,16 +87,16 @@ namespace MarioKartTrackMaker.ViewerResources
                 case Tools.Select:
                     break;
                 case Tools.Move:
-                    ToolModels.DrawMoveTool(model.size.maxS * 2);
+                    ToolModels.DrawMoveTool(HoverState, model.size.maxS * ((this == Active_Object)?1:0.25f));
                     break;
                 case Tools.Rotate:
-                    ToolModels.DrawRotateTool(model.size.maxS * 2);
+                    ToolModels.DrawRotateTool(HoverState, model.size.maxS * ((this == Active_Object) ? 1 : 0.25f));
                     break;
                 case Tools.Scale:
-                    ToolModels.DrawScaleTool(model.size.maxS * 2);
+                    ToolModels.DrawScaleTool(HoverState, model.size.maxS * ((this == Active_Object) ? 1 : 0.25f));
                     break;
                 case Tools.Snap:
-                    ToolModels.DrawConnectTool(model.size.maxS * 2);
+                    ToolModels.DrawConnectTool(model.size.maxS * ((this == Active_Object) ? 1 : 0.25f));
                     break;
                 case Tools.Decorate:
                     break;
@@ -107,7 +107,11 @@ namespace MarioKartTrackMaker.ViewerResources
         {
             GL.PushMatrix();
             Matrix4 mat = transform;
-            GL.MultMatrix(ref mat);
+            Matrix4 matnoscale = mat.ClearScale();
+            Vector3 matscale = mat.ExtractScale();
+            GL.MultMatrix(ref matnoscale);
+            int sclloc = GL.GetUniformLocation(program, "scale");
+            GL.ProgramUniform3(program, sclloc, ref matscale);
             if (this == Active_Object)
             {
                 DrawAttachments();

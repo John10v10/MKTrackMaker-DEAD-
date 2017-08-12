@@ -54,16 +54,18 @@ namespace MarioKartTrackMaker
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
         }
-        void DisplayObjectList()
+        public void DisplayObjectList()
         {
+            Object3D activeObj = Object3D.Active_Object;
             listBox1.Items.Clear();
             foreach (Object3D obj in Object3D.database)
             {
                 listBox1.Items.Add(obj);
-                if (obj == Object3D.Active_Object)
-                {
-                    listBox1.SelectedItem = obj;
-                }
+            }
+            if(activeObj != null)
+            {
+                Object3D.Active_Object = activeObj;
+                listBox1.SelectedItem = activeObj;
             }
             
         }
@@ -202,7 +204,8 @@ namespace MarioKartTrackMaker
         public void UpdateActiveObject()
         {
             listBox1.SelectedItems.Clear();
-            listBox1.SelectedItems.Add(Object3D.Active_Object);
+            if(Object3D.Active_Object != null)
+                listBox1.SelectedItems.Add(Object3D.Active_Object);
         }
         public void UpdateObjectStats()
         {
@@ -354,6 +357,7 @@ namespace MarioKartTrackMaker
             {
                 Object3D.Active_Object.position.X = (float)((NumericUpDown)sender).Value;
                 viewPortPanel1.Invalidate();
+                DisplayObjectList();
             }
         }
 
@@ -364,6 +368,7 @@ namespace MarioKartTrackMaker
             {
                 Object3D.Active_Object.position.Y = (float)((NumericUpDown)sender).Value;
                 viewPortPanel1.Invalidate();
+                DisplayObjectList();
             }
         }
 
@@ -373,6 +378,7 @@ namespace MarioKartTrackMaker
             {
                 Object3D.Active_Object.position.Z = (float)((NumericUpDown)sender).Value;
                 viewPortPanel1.Invalidate();
+                DisplayObjectList();
             }
         }
 
@@ -383,6 +389,7 @@ namespace MarioKartTrackMaker
             {
                 Object3D.Active_Object.rotation = Quaternion.FromEulerAngles(new Vector3((float)((double)(rotZnm.Value) / 180 * Math.PI), (float)((double)(rotYnm.Value) / 180 * Math.PI), (float)((double)(rotXnm.Value) / 180 * Math.PI)));
                 viewPortPanel1.Invalidate();
+                DisplayObjectList();
             }
         }
 
@@ -393,6 +400,7 @@ namespace MarioKartTrackMaker
             {
                 Object3D.Active_Object.rotation = Quaternion.FromEulerAngles(new Vector3((float)((double)(rotZnm.Value) / 180 * Math.PI), (float)((double)(rotYnm.Value) / 180 * Math.PI), (float)((double)(rotXnm.Value) / 180 * Math.PI)));
                 viewPortPanel1.Invalidate();
+                DisplayObjectList();
             }
         }
 
@@ -402,6 +410,7 @@ namespace MarioKartTrackMaker
             {
                 Object3D.Active_Object.rotation = Quaternion.FromEulerAngles(new Vector3((float)((double)(rotZnm.Value) / 180 * Math.PI), (float)((double)(rotYnm.Value) / 180 * Math.PI), (float)((double)(rotXnm.Value) / 180 * Math.PI)));
                 viewPortPanel1.Invalidate();
+                DisplayObjectList();
             }
         }
 
@@ -412,6 +421,7 @@ namespace MarioKartTrackMaker
             {
                 Object3D.Active_Object.scale.X = (float)((NumericUpDown)sender).Value;
                 viewPortPanel1.Invalidate();
+                DisplayObjectList();
             }
         }
 
@@ -421,8 +431,9 @@ namespace MarioKartTrackMaker
             if (((NumericUpDown)sender).Enabled)
             {
                 Object3D.Active_Object.scale.Y = (float)((NumericUpDown)sender).Value;
-            viewPortPanel1.Invalidate();
-        }
+                viewPortPanel1.Invalidate();
+                DisplayObjectList();
+            }
         }
 
         private void sclZnm_ValueChanged(object sender, EventArgs e)
@@ -431,6 +442,7 @@ namespace MarioKartTrackMaker
             {
                 Object3D.Active_Object.scale.Z = (float)((NumericUpDown)sender).Value;
                 viewPortPanel1.Invalidate();
+                DisplayObjectList();
             }
         }
 

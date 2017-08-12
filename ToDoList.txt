@@ -1,4 +1,3 @@
-Program Move Tool
 Program Rotation Tool
 Program Scale Tool
 Program Attach Tool

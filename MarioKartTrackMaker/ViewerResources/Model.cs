@@ -91,7 +91,6 @@ namespace MarioKartTrackMaker.ViewerResources
                 List<int[]> fnmls = new List<int[]>();
                 List<int[]> fuvs = new List<int[]>();
                 int texture;
-                Console.WriteLine("{0}: {1}", mat.DiffuseTexture, Path.IsPathRooted(mat.DiffuseTexture));
                 if (Path.IsPathRooted(mat.DiffuseTexture))
                 {
                     texture = ContentPipe.Load_and_AddTexture(mat.DiffuseTexture);
