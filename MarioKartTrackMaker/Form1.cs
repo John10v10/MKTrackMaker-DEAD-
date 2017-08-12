@@ -204,13 +204,10 @@ namespace MarioKartTrackMaker
         public void UpdateActiveObject()
         {
             listBox1.SelectedItems.Clear();
-<<<<<<< HEAD
             if(Object3D.Active_Object != null)
                 listBox1.SelectedItems.Add(Object3D.Active_Object);
-=======
 	    if(Object3D.Active_Object != null)
             	listBox1.SelectedItems.Add(Object3D.Active_Object);
->>>>>>> origin/master
         }
         public void UpdateObjectStats()
         {
