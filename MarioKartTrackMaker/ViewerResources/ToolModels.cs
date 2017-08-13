@@ -71,19 +71,19 @@ namespace MarioKartTrackMaker.ViewerResources
             GL.MultMatrix(ref Scale);
             GL.Begin(PrimitiveType.Lines);
             if (HoverState == 0)
-                GL.Color3(1F, 0.5F, 0.5F);
+                GL.Color3(1F, 1F, 1F);
             else
                 GL.Color3(1F, 0, 0);
             GL.Vertex3(0, 0, 0);
             GL.Vertex3(0.75, 0, 0);
             if (HoverState == 1)
-                GL.Color3(0.5F, 1F, 0.5F);
+                GL.Color3(1F, 1F, 1F);
             else
                 GL.Color3(0, 1F, 0);
             GL.Vertex3(0, 0, 0);
             GL.Vertex3(0, 0.75, 0);
             if (HoverState == 2)
-                GL.Color3(0.5F, 0.5F, 1F);
+                GL.Color3(1F, 1F, 1F);
             else
                 GL.Color3(0, 0, 1F);
             GL.Vertex3(0, 0, 0);
@@ -96,70 +96,70 @@ namespace MarioKartTrackMaker.ViewerResources
                 double deg2 = (i) * Math.PI / 180.0;
                 //Bull hate red, so when it wins, the fighte has Xes on for eyes!
                 if (HoverState == 0)
-                    GL.Color3(1F, 0.5F, 0.5F);
+                    GL.Color3(1F, 1F, 1F);
                 else
                     GL.Color3(1F, 0, 0);
                 GL.Vertex3(0.75, Math.Sin(deg) / 10, Math.Cos(deg) / 10);
                 GL.Vertex3(0.75, Math.Sin(deg2) / 10, Math.Cos(deg2) / 10);
                 if (HoverState == 0)
-                    GL.Color3(0.75F, 0.375F, 0.375F);
+                    GL.Color3(0.75F, 0.75F, 0.75F);
                 else
                     GL.Color3(0.75F, 0, 0);
                 GL.Vertex3(1, 0, 0);
                 if (HoverState == 0)
-                    GL.Color3(1F, 0.5F, 0.5F);
+                    GL.Color3(1F, 1F, 1F);
                 else
                     GL.Color3(1F, 0, 0);
                 GL.Vertex3(0.75F, Math.Sin(deg2) / 10, Math.Cos(deg2) / 10);
                 GL.Vertex3(0.75F, Math.Sin(deg) / 10, Math.Cos(deg) / 10);
                 if (HoverState == 0)
-                    GL.Color3(0.75F, 0.375F, 0.375F);
+                    GL.Color3(0.75F, 0.75F, 0.75F);
                 else
                     GL.Color3(0.75F, 0, 0);
                 GL.Vertex3(0.75, 0, 0);
                 //Y is this GREEN instead of Yellow?
                 if (HoverState == 1)
-                    GL.Color3(0.5F, 1F, 0.5F);
+                    GL.Color3(1F, 1F, 1F);
                 else
                     GL.Color3(0, 1F, 0);
                 GL.Vertex3(Math.Sin(deg2) / 10, 0.75, Math.Cos(deg2) / 10);
                 GL.Vertex3(Math.Sin(deg) / 10, 0.75, Math.Cos(deg) / 10);
                 if (HoverState == 1)
-                    GL.Color3(0.375F, 0.75F, 0.375F);
+                    GL.Color3(0.75F, 0.75F, 0.75F);
                 else
                     GL.Color3(0, 0.75F, 0);
                 GL.Vertex3(0, 1, 0);
                 if (HoverState == 1)
-                    GL.Color3(0.5F, 1F, 0.5F);
+                    GL.Color3(1F, 1F, 1F);
                 else
                     GL.Color3(0, 1F, 0);
                 GL.Vertex3(Math.Sin(deg) / 10, 0.75, Math.Cos(deg) / 10);
                 GL.Vertex3(Math.Sin(deg2) / 10, 0.75, Math.Cos(deg2) / 10);
                 if (HoverState == 1)
-                    GL.Color3(0.375F, 0.75F, 0.375F);
+                    GL.Color3(0.75F, 0.75F, 0.75F);
                 else
                     GL.Color3(0, 0.75F, 0);
                 GL.Vertex3(0, 0.75, 0);
                 //Deep BLUE Z!
                 if (HoverState == 2)
-                    GL.Color3(0.5F, 0.5F, 1F);
+                    GL.Color3(1F, 1F, 1F);
                 else
                     GL.Color3(0, 0, 1F);
                 GL.Vertex3(Math.Sin(deg) / 10, Math.Cos(deg) / 10, 0.75);
                 GL.Vertex3(Math.Sin(deg2) / 10, Math.Cos(deg2) / 10, 0.75);
                 if (HoverState == 2)
-                    GL.Color3(0.375F, 0.375F, 0.75F);
+                    GL.Color3(0.75F, 0.75F, 0.75F);
                 else
                     GL.Color3(0, 0, 0.75F);
                 GL.Vertex3(0, 0, 1);
                 if (HoverState == 2)
-                    GL.Color3(0.5F, 0.5F, 1F);
+                    GL.Color3(1F, 1F, 1F);
                 else
                     GL.Color3(0, 0, 1F);
                 GL.Vertex3(Math.Sin(deg2) / 10, Math.Cos(deg2) / 10, 0.75);
                 GL.Vertex3(Math.Sin(deg) / 10, Math.Cos(deg) / 10, 0.75);
                 if (HoverState == 2)
-                    GL.Color3(0.375F, 0.375F, 0.75F);
+                    GL.Color3(0.75F, 0.75F, 0.75F);
                 else
                     GL.Color3(0, 0, 0.75F);
                 GL.Vertex3(0, 0, 0.75);
@@ -290,13 +290,22 @@ namespace MarioKartTrackMaker.ViewerResources
             {
                 double deg = (i + 360f / 32f) * Math.PI / 180.0;
                 double deg2 = (i) * Math.PI / 180.0;
-                GL.Color3(1F, 0, 0);
+                if (HoverState == 0)
+                    GL.Color3(1F, 1F, 1F);
+                else
+                    GL.Color3(1F, 0, 0);
                 GL.Vertex3(0, Math.Sin(deg) * 0.625F, Math.Cos(deg) * 0.625F);
                 GL.Vertex3(0, Math.Sin(deg2) * 0.625F, Math.Cos(deg2) * 0.625F);
-                GL.Color3(0, 1F, 0);
+                if (HoverState == 1)
+                    GL.Color3(1F, 1F, 1F);
+                else
+                    GL.Color3(0, 1F, 0);
                 GL.Vertex3(Math.Sin(deg) * 0.625F, 0, Math.Cos(deg) * 0.625F);
                 GL.Vertex3(Math.Sin(deg2) * 0.625F, 0, Math.Cos(deg2) * 0.625F);
-                GL.Color3(0, 0, 1F);
+                if (HoverState == 2)
+                    GL.Color3(1F, 1F, 1F);
+                else
+                    GL.Color3(0, 0, 1F);
                 GL.Vertex3(Math.Sin(deg)* 0.625F, Math.Cos(deg) * 0.625F, 0);
                 GL.Vertex3(Math.Sin(deg2) * 0.625F, Math.Cos(deg2) * 0.625F, 0);
             }

@@ -97,24 +97,6 @@ namespace MarioKartTrackMaker.ViewerResources
                 this.ToolHit = ToolHit;
             }
         }
-        struct TriangleIntersection
-        {
-            public bool intersects;
-            public float depth;
-            public Vector3 normal;
-
-            public TriangleIntersection(bool v) : this()
-            {
-                intersects = v;
-            }
-
-            public TriangleIntersection(bool v, float t, Vector3 n) : this()
-            {
-                intersects = v;
-                depth = t;
-                normal = n;
-            }
-        }
         public struct Ray
         {
             public Vector3 pos;
@@ -205,7 +187,7 @@ namespace MarioKartTrackMaker.ViewerResources
                     return maxT.Z;
                 }
             }
-            public TraceResult Trace(Camera cam, bool objects, bool MoveTool)
+            public TraceResult Trace(Camera cam, bool objects, bool MoveTool, bool RotateTool)
             {
                 float depth = float.PositiveInfinity;
                 bool intersects = false;
@@ -232,7 +214,7 @@ namespace MarioKartTrackMaker.ViewerResources
                                         }
                                         for (int i = 0; i < Math.Min(m.faces[f].Length, m.fnmls[f].Length) - 2; i++)
                                         {
-                                            TriangleIntersection ti = RayIntersectsTriangle(this,
+                                            OtherMathUtils.TriangleIntersection ti = OtherMathUtils.RayIntersectsTriangle(this,
                                                 verts[0],
                                                 verts[i + 1],
                                                 verts[i + 2],
@@ -258,20 +240,23 @@ namespace MarioKartTrackMaker.ViewerResources
                 }
                 if (MoveTool)
                 {
-                    foreach (Object3D obj in Object3D.database) {
+                    foreach (Object3D obj in Object3D.database)
+                    {
                         if (inSight(obj, cam))
                         {
                             Matrix4 tnsfm = obj.transform;
-                            Ray MoveX = new Ray(Vector3.TransformPosition(Vector3.Zero, tnsfm), Vector3.TransformNormal(Vector3.UnitX*obj.model.size.maxS*((obj == Object3D.Active_Object) ? 1 : 0.25f), tnsfm));
+                            Ray MoveX = new Ray(Vector3.TransformPosition(Vector3.Zero, tnsfm), Vector3.TransformNormal(Vector3.UnitX * obj.model.size.maxS * ((obj == Object3D.Active_Object) ? 1 : 0.25f), tnsfm));
                             Vector3[] CPx = OtherMathUtils.ClosestPointsBetweenRays(this, MoveX, cam.clip_near, 0F, cam.clip_far, 0.9F);
-                            float DistanceX = (CPx[1]-CPx[0]).Length;
-                            if(DistanceX / obj.model.size.maxS / ((obj == Object3D.Active_Object) ? 1 : 0.25f) * 10 < 1)
+                            float DistanceX = (CPx[1] - CPx[0]).Length;
+                            if (DistanceX / obj.model.size.maxS / ((obj == Object3D.Active_Object) ? 1 : 0.25f) * 10 < 1)
                             {
                                 float DistanceFromCameraX = (CPx[0] - cam.position).Length;
-                                if(DistanceFromCameraX < depth)
+                                if (DistanceFromCameraX < depth)
                                 {
                                     depth = DistanceFromCameraX;
                                     ToolHit = 0;
+                                    //normal = (CPx[1] - CPx[0]).Normalized();
+                                       
                                     outobj = obj;
                                 }
                             }
@@ -285,6 +270,7 @@ namespace MarioKartTrackMaker.ViewerResources
                                 {
                                     depth = DistanceFromCameraY;
                                     ToolHit = 1;
+                                    //normal = (CPy[1] - CPy[0]).Normalized();
                                     outobj = obj;
                                 }
                             }
@@ -298,7 +284,74 @@ namespace MarioKartTrackMaker.ViewerResources
                                 {
                                     depth = DistanceFromCameraZ;
                                     ToolHit = 2;
+                                    //normal = (CPz[1] - CPz[0]).Normalized();
                                     outobj = obj;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (RotateTool)
+                {
+                    foreach (Object3D obj in Object3D.database)
+                    {
+                        if (inSight(obj, cam))
+                        {
+                            Matrix4 tnsfm = obj.transform;
+                            for (int i = 0; i < 16; i++)
+                            {
+                                double deg = (i + 1) * 22.5 * Math.PI / 180.0;
+                                double deg2 = (i) * 22.5 * Math.PI / 180.0;
+                                Vector3 pos = Vector3.TransformPosition(new Vector3(0, (float)Math.Sin(deg) * 0.625F * obj.model.size.maxS * ((obj == Object3D.Active_Object) ? 1 : 0.5f), (float)Math.Cos(deg) * 0.625F * obj.model.size.maxS * ((obj == Object3D.Active_Object) ? 1 : 0.5f)), tnsfm);
+                                Vector3 dir = Vector3.TransformPosition(new Vector3(0, (float)Math.Sin(deg2) * 0.625F * obj.model.size.maxS * ((obj == Object3D.Active_Object) ? 1 : 0.5f), (float)Math.Cos(deg2) * 0.625F * obj.model.size.maxS * ((obj == Object3D.Active_Object) ? 1 : 0.5f)), tnsfm) - pos;
+                                Ray XRing = new Ray(pos, dir);
+                                Vector3[] CPx = OtherMathUtils.ClosestPointsBetweenRays(this, XRing, cam.clip_near, 0F, cam.clip_far, 1F);
+                                float DistanceX = (CPx[1] - CPx[0]).Length;
+                                float DistanceFromCameraX = (CPx[0] - cam.position).Length;
+                                if (DistanceX / ((obj == Object3D.Active_Object) ? 1 : 0.5f) / DistanceFromCameraX * 100 < 1)
+                                {
+                                    if (DistanceFromCameraX < depth)
+                                    {
+                                        depth = DistanceFromCameraX;
+                                        ToolHit = 0;
+                                        //normal = (CPx[1] - CPx[0]).Normalized();
+
+                                        outobj = obj;
+                                    }
+                                }
+                                pos = Vector3.TransformPosition(new Vector3((float)Math.Sin(deg) * 0.625F * obj.model.size.maxS * ((obj == Object3D.Active_Object) ? 1 : 0.5f), 0, (float)Math.Cos(deg) * 0.625F * obj.model.size.maxS * ((obj == Object3D.Active_Object) ? 1 : 0.5f)), tnsfm);
+                                dir = Vector3.TransformPosition(new Vector3((float)Math.Sin(deg2) * 0.625F * obj.model.size.maxS * ((obj == Object3D.Active_Object) ? 1 : 0.5f), 0, (float)Math.Cos(deg2) * 0.625F * obj.model.size.maxS * ((obj == Object3D.Active_Object) ? 1 : 0.5f)), tnsfm) - pos;
+                                Ray YRing = new Ray(pos, dir);
+                                Vector3[] CPy = OtherMathUtils.ClosestPointsBetweenRays(this, YRing, cam.clip_near, 0F, cam.clip_far, 1F);
+                                float DistanceY = (CPy[1] - CPy[0]).Length;
+                                float DistanceFromCameraY = (CPy[0] - cam.position).Length;
+                                if (DistanceY / ((obj == Object3D.Active_Object) ? 1 : 0.5f) / DistanceFromCameraY * 100 < 1)
+                                {
+                                    if (DistanceFromCameraY < depth)
+                                    {
+                                        depth = DistanceFromCameraY;
+                                        ToolHit = 1;
+                                        //normal = (CPy[1] - CPy[0]).Normalized();
+
+                                        outobj = obj;
+                                    }
+                                }
+                                pos = Vector3.TransformPosition(new Vector3((float)Math.Sin(deg) * 0.625F * obj.model.size.maxS * ((obj == Object3D.Active_Object) ? 1 : 0.5f), (float)Math.Cos(deg) * 0.625F * obj.model.size.maxS * ((obj == Object3D.Active_Object) ? 1 : 0.5f), 0), tnsfm);
+                                dir = Vector3.TransformPosition(new Vector3((float)Math.Sin(deg2) * 0.625F * obj.model.size.maxS * ((obj == Object3D.Active_Object) ? 1 : 0.5f), (float)Math.Cos(deg2) * 0.625F * obj.model.size.maxS * ((obj == Object3D.Active_Object) ? 1 : 0.5f), 0), tnsfm) - pos;
+                                Ray ZRing = new Ray(pos, dir);
+                                Vector3[] CPz = OtherMathUtils.ClosestPointsBetweenRays(this, ZRing, cam.clip_near, 0F, cam.clip_far, 1F);
+                                float DistanceZ = (CPz[1] - CPz[0]).Length;
+                                float DistanceFromCameraZ = (CPz[0] - cam.position).Length;
+                                if (DistanceZ / ((obj == Object3D.Active_Object) ? 1 : 0.5f) / DistanceFromCameraZ * 100 < 1)
+                                {
+                                    if (DistanceFromCameraZ < depth)
+                                    {
+                                        depth = DistanceFromCameraZ;
+                                        ToolHit = 2;
+                                        //normal = (CPz[1] - CPz[0]).Normalized();
+
+                                        outobj = obj;
+                                    }
                                 }
                             }
                         }
@@ -307,90 +360,6 @@ namespace MarioKartTrackMaker.ViewerResources
                 return new TraceResult(intersects, dir.Normalized() * depth + pos, normal, outobj, ToolHit);
 
             }
-        }
-        static float edgeFunction(Vector3 a, Vector3 b, Vector3 c, int mode)
-        {
-            if(mode == 0)
-                return (c[0] - a[0]) * (b[1] - a[1]) - (c[1] - a[1]) * (b[0] - a[0]);
-            else if (mode == 1)
-                return (c[0] - a[0]) * (b[2] - a[2]) - (c[2] - a[2]) * (b[0] - a[0]);
-            else if (mode == 2)
-                return (c[1] - a[1]) * (b[2] - a[2]) - (c[2] - a[2]) * (b[1] - a[1]);
-            return 0;
-        }
-        static TriangleIntersection RayIntersectsTriangle(Ray r, Vector3 v0, Vector3 v1, Vector3 v2, Vector3 n0, Vector3 n1, Vector3 n2)
-        {
-            Vector3 e1, e2, h, s, q;
-            float a, f, u, v;
-            e1 = v1 - v0;
-            e2 = v2 - v0;
-
-            h = Vector3.Cross(r.dir, e2);
-            a = Vector3.Dot(e1, h);
-
-
-            if (a > -0.00001 && a < 0.00001)
-                return new TriangleIntersection(false);
-
-            f = 1 / a;
-            s = r.pos - v0;
-            u = f * (Vector3.Dot(s, h));
-
-            if (u < 0.0 || u > 1.0)
-                return new TriangleIntersection(false);
-
-            q = Vector3.Cross(s, e1);
-            v = f * Vector3.Dot(r.dir, q);
-
-            if (v < 0.0 || u + v > 1.0)
-                return new TriangleIntersection(false);
-
-            // at this stage we can compute t to find out where
-            // the intersection point is on the line
-            float t = f * Vector3.Dot(e2, q);
-
-            Vector3 normal = new Vector3();
-            if (t <= 0.00001) // ray intersection
-            {
-                return new TriangleIntersection(false, t, normal);
-            }
-            Vector3 p = r.pos + r.dir * t;
-
-            float area;
-            float w0, w1, w2;
-            area = edgeFunction(v0, v1, v2, 0);
-            w0 = edgeFunction(v1, v2, p, 0);
-            w1 = edgeFunction(v2, v0, p, 0);
-            w2 = edgeFunction(v0, v1, p, 0);
-            w0 /= area;
-            w1 /= area;
-            w2 /= area;
-            if (float.IsNaN(w0) || float.IsNaN(w1) || float.IsNaN(w2) || float.IsInfinity(w0) || float.IsInfinity(w1) || float.IsInfinity(w2))
-            {
-                area = edgeFunction(v0, v1, v2, 1);
-                w0 = edgeFunction(v1, v2, p, 1);
-                w1 = edgeFunction(v2, v0, p, 1);
-                w2 = edgeFunction(v0, v1, p, 1);
-                w0 /= area;
-                w1 /= area;
-                w2 /= area;
-                if (float.IsNaN(w0) || float.IsNaN(w1) || float.IsNaN(w2) || float.IsInfinity(w0) || float.IsInfinity(w1) || float.IsInfinity(w2))
-                {
-                    area = edgeFunction(v0, v1, v2, 2);
-                    w0 = edgeFunction(v1, v2, p, 2);
-                    w1 = edgeFunction(v2, v0, p, 2);
-                    w2 = edgeFunction(v0, v1, p, 2);
-                    w0 /= area;
-                    w1 /= area;
-                    w2 /= area;
-                }
-            }
-            normal[0] = w0 * n0[0] + w1 * n1[0] + w2 * n2[0];
-            normal[1] = w0 * n0[1] + w1 * n1[1] + w2 * n2[1];
-            normal[2] = w0 * n0[2] + w1 * n1[2] + w2 * n2[2];
-            return new TriangleIntersection(true, t, normal.Normalized());
-
-
         }
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -543,9 +512,28 @@ namespace MarioKartTrackMaker.ViewerResources
                 GL.Clear(ClearBufferMask.DepthBufferBit);
                 foreach (Object3D obj in Object3D.database)
                 {
-                    obj.DrawTool((_IsDragging != -1) ?_IsDragging:((obj == tr.HitObject) ? tr.ToolHit : -1));
+                    obj.DrawTool((_IsDragging != -1 && (obj == _ObjectToDrag)) ?_IsDragging:((obj == tr.HitObject) ? tr.ToolHit : -1));
                 }
-
+                //Testing Out Collisions
+                if (ModifierKeys == Keys.Alt) {
+                    GL.PointSize(1F);
+                    GL.Begin(PrimitiveType.Points);
+                    GL.Color3(1F, 1F, 1F);
+                    for (int _y = 0; _y < Height; _y += 2)
+                    {
+                        for (int _x = 0; _x < Width; _x += 2)
+                        {
+                            Ray _r = FromScreen(_x, _y, mtx);
+                            TraceResult _tr = _r.Trace(cam, false, false, true);
+                            if (_tr.ToolHit != -1)
+                            {
+                                GL.Color3(1F, 1F, 0);
+                                GL.Vertex3(_r.pos + _r.dir * 100);
+                            }
+                        }
+                    }
+                }
+                GL.End();
                 SwapBuffers();
             }
             if (Forward || Backward || SideLeft || SideRight || SideUp || SideDown || (_targetObj != null))
@@ -617,9 +605,13 @@ namespace MarioKartTrackMaker.ViewerResources
         }
         public Ray FromMousePos(Matrix4 mtx)
         {
+            return FromScreen(mx,my,mtx);
+        }
+        public Ray FromScreen(float x, float y, Matrix4 mtx)
+        {
             return new Ray(cam.position,
                     Matrix4.Mult(
-                        Matrix4.CreateTranslation(new Vector3(-1 + (mx / 1F / Width) * 2, 1 - (my / 1F / Height) * 2, 1)),
+                        Matrix4.CreateTranslation(new Vector3(-1 + (x / 1F / Width) * 2, 1 - (y / 1F / Height) * 2, 1)),
                         mtx.ClearTranslation().Inverted()
                     ).ExtractTranslation(),
                     cam);
@@ -730,6 +722,59 @@ namespace MarioKartTrackMaker.ViewerResources
                         Ray Move = new Ray(Vector3.TransformPosition(Vector3.Zero, tnsfm), Vector3.TransformNormal((tr.ToolHit == 0) ? Vector3.UnitX : ((tr.ToolHit == 1) ? Vector3.UnitY : Vector3.UnitZ), tnsfm));
                         Vector3[] cp = OtherMathUtils.ClosestPointsBetweenRays(FromMousePos(mtx), Move);
                         _ObjectToDragPreviousPosition = cp[1] - _ObjectToDrag.position;
+                        _ObjectToDragPreviousMatrix = tnsfm;
+                    }
+                }
+            }
+            else if (Form1.current_tool == Tools.Rotate)
+            {
+                Matrix4 mtx = cam.matrix;
+                if (e.Button == MouseButtons.Left)
+                {
+                    if (tr.ToolHit == 0)
+                    {
+                        _IsDragging = tr.ToolHit;
+                        _ObjectToDrag = tr.HitObject;
+                        Matrix4 tnsfm = _ObjectToDrag.transform;
+                        float size = 100;
+                        Ray __r = FromMousePos(mtx);
+                        float __t = 0;
+                        size = _ObjectToDrag.model.size.maxS * 2;
+                        __t = OtherMathUtils.intersectPlane(__r, Vector3.TransformNormal(Vector3.UnitX, tnsfm), Vector3.TransformPosition(Vector3.Zero, tnsfm));
+                        Vector3 PlaneHitPos = Vector3.TransformPosition(__r.pos + __r.dir * Math.Abs(__t), tnsfm.Inverted());
+                        float angle = (float)Math.Atan2(-PlaneHitPos.Z, -PlaneHitPos.Y);
+                        _ObjectToDragPreviousPosition = new object[] { _ObjectToDrag.rotation, angle };
+                        _ObjectToDragPreviousMatrix = tnsfm;
+                    }
+                    else if (tr.ToolHit == 1)
+                    {
+                        _IsDragging = tr.ToolHit;
+                        _ObjectToDrag = tr.HitObject;
+                        Matrix4 tnsfm = _ObjectToDrag.transform;
+                        float size = 100;
+                        Ray __r = FromMousePos(mtx);
+                        float __t = 0;
+                        size = _ObjectToDrag.model.size.maxS * 2;
+                        __t = OtherMathUtils.intersectPlane(__r, Vector3.TransformNormal(Vector3.UnitY, tnsfm), Vector3.TransformPosition(Vector3.Zero, tnsfm));
+                        Vector3 PlaneHitPos = Vector3.TransformPosition(__r.pos + __r.dir * Math.Abs(__t), tnsfm.Inverted());
+                        float angle = (float)Math.Atan2(PlaneHitPos.X, PlaneHitPos.Z);
+                        _ObjectToDragPreviousPosition = new object[] { _ObjectToDrag.rotation, angle };
+                        _ObjectToDragPreviousMatrix = tnsfm;
+                    }
+                    else if (tr.ToolHit == 2)
+                    {
+                        _IsDragging = tr.ToolHit;
+                        _ObjectToDrag = tr.HitObject;
+                        Matrix4 tnsfm = _ObjectToDrag.transform;
+                        float size = 100;
+                        Ray __r = FromMousePos(mtx);
+                        float __t = 0;
+                        size = _ObjectToDrag.model.size.maxS * 2;
+                        __t = OtherMathUtils.intersectPlane(__r, Vector3.TransformNormal(Vector3.UnitZ, tnsfm), Vector3.TransformPosition(Vector3.Zero, tnsfm));
+                        Vector3 PlaneHitPos = Vector3.TransformPosition(__r.pos + __r.dir * Math.Abs(__t), tnsfm.Inverted());
+                        float angle = (float)Math.Atan2(PlaneHitPos.Y, PlaneHitPos.X);
+                        _ObjectToDragPreviousPosition = new object[] { _ObjectToDrag.rotation, angle };
+                        _ObjectToDragPreviousMatrix = tnsfm;
                     }
                 }
             }
@@ -740,11 +785,13 @@ namespace MarioKartTrackMaker.ViewerResources
             cam.zoom = Math.Max(cam.clip_near, cam.zoom+e.Delta/12F* (float)Math.Pow(cam.zoom, 0.375F));
             Matrix4 mtx = cam.matrix;
             MPray = FromMousePos(mtx);
-            tr = MPray.Trace(cam, Form1.current_tool == Tools.Select || Form1.current_tool == Tools.Snap || Form1.current_tool == Tools.Decorate, Form1.current_tool == Tools.Move && _IsDragging == -1);
+            tr = MPray.Trace(cam, Form1.current_tool == Tools.Select || Form1.current_tool == Tools.Snap || Form1.current_tool == Tools.Decorate, Form1.current_tool == Tools.Move && _IsDragging == -1, Form1.current_tool == Tools.Rotate && _IsDragging == -1);
 
             Invalidate();
         }
         bool _prevhit = false;
+        private Matrix4 _ObjectToDragPreviousMatrix;
+
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
@@ -772,12 +819,12 @@ namespace MarioKartTrackMaker.ViewerResources
             }
             Matrix4 mtx = cam.matrix;
             MPray = FromMousePos(mtx);
-            tr = MPray.Trace(cam, Form1.current_tool == Tools.Select || Form1.current_tool == Tools.Snap || Form1.current_tool == Tools.Decorate, Form1.current_tool == Tools.Move && _IsDragging == -1);
+            tr = MPray.Trace(cam, Form1.current_tool == Tools.Select || Form1.current_tool == Tools.Snap || Form1.current_tool == Tools.Decorate, Form1.current_tool == Tools.Move && _IsDragging == -1, Form1.current_tool == Tools.Rotate && _IsDragging == -1);
             if (Form1.current_tool == Tools.Move)
             {
                 if (_ObjectToDrag != null)
                 {
-                    Matrix4 tnsfm = _ObjectToDrag.transform;
+                    Matrix4 tnsfm = _ObjectToDragPreviousMatrix;
                     if (_IsDragging == 0)
                     {
                         Ray MoveX = new Ray(Vector3.TransformPosition(Vector3.Zero, tnsfm), Vector3.TransformNormal(Vector3.UnitX, tnsfm));
@@ -800,6 +847,52 @@ namespace MarioKartTrackMaker.ViewerResources
                         Vector3[] cp = OtherMathUtils.ClosestPointsBetweenRays(FromMousePos(mtx), MoveZ);
                         Vector3 prevpos = (Vector3)_ObjectToDragPreviousPosition;
                         _ObjectToDrag.position = cp[1] - prevpos;
+                        invalidate = true;
+                    }
+                }
+            }
+            if (Form1.current_tool == Tools.Rotate)
+            {
+                if (_ObjectToDrag != null)
+                {
+                    Matrix4 tnsfm = _ObjectToDrag.transform;
+                    if (_IsDragging == 0)
+                    {
+                        float size = 100;
+                        Ray __r = FromMousePos(mtx);
+                        float __t = 0;
+                        size = _ObjectToDrag.model.size.maxS * 2;
+                        tnsfm = _ObjectToDragPreviousMatrix;
+                        __t = OtherMathUtils.intersectPlane(__r, Vector3.TransformNormal(Vector3.UnitX, tnsfm), Vector3.TransformPosition(Vector3.Zero, tnsfm));
+                        Vector3 PlaneHitPos = Vector3.TransformPosition(__r.pos + __r.dir * Math.Abs(__t), tnsfm.Inverted());
+                        float angle = (float)Math.Atan2(-PlaneHitPos.Z, -PlaneHitPos.Y);
+                        _ObjectToDrag.rotation = ((Quaternion)((object[])(_ObjectToDragPreviousPosition))[0]) * Quaternion.FromAxisAngle(Vector3.UnitX, angle - ((float)((object[])(_ObjectToDragPreviousPosition))[1]));
+                        invalidate = true;
+                    }
+                    else if (_IsDragging == 1)
+                    {
+                        float size = 100;
+                        Ray __r = FromMousePos(mtx);
+                        float __t = 0;
+                        size = _ObjectToDrag.model.size.maxS * 2;
+                        tnsfm = _ObjectToDragPreviousMatrix;
+                        __t = OtherMathUtils.intersectPlane(__r, Vector3.TransformNormal(Vector3.UnitY, tnsfm), Vector3.TransformPosition(Vector3.Zero, tnsfm));
+                        Vector3 PlaneHitPos = Vector3.TransformPosition(__r.pos + __r.dir * Math.Abs(__t), tnsfm.Inverted());
+                        float angle = (float)Math.Atan2(PlaneHitPos.X, PlaneHitPos.Z);
+                        _ObjectToDrag.rotation = ((Quaternion)((object[])(_ObjectToDragPreviousPosition))[0]) * Quaternion.FromAxisAngle(Vector3.UnitY, angle - ((float)((object[])(_ObjectToDragPreviousPosition))[1]));
+                        invalidate = true;
+                    }
+                    else if (_IsDragging == 2)
+                    {
+                        float size = 100;
+                        Ray __r = FromMousePos(mtx);
+                        float __t = 0;
+                        size = _ObjectToDrag.model.size.maxS * 2;
+                        tnsfm = _ObjectToDragPreviousMatrix;
+                        __t = OtherMathUtils.intersectPlane(__r, Vector3.TransformNormal(Vector3.UnitZ, tnsfm), Vector3.TransformPosition(Vector3.Zero, tnsfm));
+                        Vector3 PlaneHitPos = Vector3.TransformPosition(__r.pos + __r.dir * Math.Abs(__t), tnsfm.Inverted());
+                        float angle = (float)Math.Atan2(PlaneHitPos.Y, PlaneHitPos.X);
+                        _ObjectToDrag.rotation = ((Quaternion)((object[])(_ObjectToDragPreviousPosition))[0]) * Quaternion.FromAxisAngle(Vector3.UnitZ, angle - ((float)((object[])(_ObjectToDragPreviousPosition))[1]));
                         invalidate = true;
                     }
                 }

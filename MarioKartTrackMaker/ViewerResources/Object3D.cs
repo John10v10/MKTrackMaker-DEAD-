@@ -90,7 +90,7 @@ namespace MarioKartTrackMaker.ViewerResources
                     ToolModels.DrawMoveTool(HoverState, model.size.maxS * ((this == Active_Object)?1:0.25f));
                     break;
                 case Tools.Rotate:
-                    ToolModels.DrawRotateTool(HoverState, model.size.maxS * ((this == Active_Object) ? 1 : 0.25f));
+                    ToolModels.DrawRotateTool(HoverState, model.size.maxS * ((this == Active_Object) ? 1 : 0.5f));
                     break;
                 case Tools.Scale:
                     ToolModels.DrawScaleTool(HoverState, model.size.maxS * ((this == Active_Object) ? 1 : 0.25f));
