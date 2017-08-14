@@ -1,5 +1,4 @@
-Program Rotation Tool
-Program Scale Tool
+*Fix Macintosh Invisibility Bug*
 Program Attach Tool
 Program Decoration Tool
 	-Create Decoration Classes

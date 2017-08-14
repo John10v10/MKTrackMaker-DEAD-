@@ -182,20 +182,32 @@ namespace MarioKartTrackMaker.ViewerResources
             Matrix4 Scale = Matrix4.CreateScale(v);
             GL.MultMatrix(ref Scale);
             GL.Begin(PrimitiveType.Lines);
-            GL.Color3(1F, 0, 0);
+            if (HoverState == 0)
+                GL.Color3(1F, 1F, 1F);
+            else
+                GL.Color3(1F, 0, 0);
             GL.Vertex3(0, 0, 0);
             GL.Vertex3(0.75, 0, 0);
-            GL.Color3(0, 1F, 0);
+            if (HoverState == 1)
+                GL.Color3(1F, 1F, 1F);
+            else
+                GL.Color3(0, 1F, 0);
             GL.Vertex3(0, 0, 0);
             GL.Vertex3(0, 0.75, 0);
-            GL.Color3(0, 0, 1F);
+            if (HoverState == 2)
+                GL.Color3(1F, 1F, 1F);
+            else
+                GL.Color3(0, 0, 1F);
             GL.Vertex3(0, 0, 0);
             GL.Vertex3(0, 0, 0.75);
             GL.End();
             GL.Begin(PrimitiveType.Quads);
             {
                 //Bull hate red, so when it wins, the fighte has Xes on for eyes!
-                GL.Color3(1F, 0, 0);
+                if (HoverState == 0)
+                    GL.Color3(1F, 1F, 1F);
+                else
+                    GL.Color3(1F, 0, 0);
                 GL.Vertex3(0.75, -0.125, -0.125);
                 GL.Vertex3(0.75, -0.125, 0.125);
                 GL.Vertex3(0.75, 0.125, 0.125);
@@ -221,7 +233,10 @@ namespace MarioKartTrackMaker.ViewerResources
                 GL.Vertex3(1, -0.125, 0.125);
                 GL.Vertex3(0.75, -0.125, 0.125);
                 //Y is this GREEN instead of Yellow?
-                GL.Color3(0, 1F, 0);
+                if (HoverState == 1)
+                    GL.Color3(1F, 1F, 1F);
+                else
+                    GL.Color3(0, 1F, 0);
                 GL.Vertex3(0.125, 0.75, -0.125);
                 GL.Vertex3(0.125, 0.75, 0.125);
                 GL.Vertex3(-0.125, 0.75, 0.125);
@@ -247,7 +262,10 @@ namespace MarioKartTrackMaker.ViewerResources
                 GL.Vertex3(-0.125,0.75, 0.125);
                 GL.Vertex3(-0.125,1, 0.125);
                 //Deep BLUE Z!
-                GL.Color3(0, 0, 1F);
+                if (HoverState == 2)
+                    GL.Color3(1F, 1F, 1F);
+                else
+                    GL.Color3(0, 0, 1F);
                 GL.Vertex3(-0.125, -0.125, 0.75);
                 GL.Vertex3(-0.125, 0.125, 0.75);
                 GL.Vertex3(0.125, 0.125, 0.75);
@@ -274,6 +292,11 @@ namespace MarioKartTrackMaker.ViewerResources
                 GL.Vertex3(-0.125, 0.125, 0.75);
             }
             GL.End();
+            if (HoverState == 3)
+                GL.Color3(1F, 1F, 1F);
+            else
+                GL.Color3(0.75F, 0.75F, 0.75F);
+            DrawBall(Vector3.Zero, 0.25F, 16);
             GL.PopMatrix();
         }
 

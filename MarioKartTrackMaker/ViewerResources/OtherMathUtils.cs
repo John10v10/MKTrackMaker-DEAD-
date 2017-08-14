@@ -9,6 +9,61 @@ namespace MarioKartTrackMaker.ViewerResources
 {
     public static class OtherMathUtils
     {
+        //Credits: www.scratchapixel.com
+        public static double? intersectSphere(ViewPortPanel.Ray ray, double radius, Matrix4 tnsfm)
+        {
+            double t0; // solutions for t if the ray intersects 
+            // geometric solution
+            Vector3 O = Vector3.TransformPosition(ray.pos, tnsfm.Inverted());
+            Vector3 D = (Vector3.TransformPosition(ray.pos+ray.dir, tnsfm.Inverted()) - O).Normalized();
+            Vector3 L = -O;
+            double tca = Vector3.Dot(L, D);
+            Console.WriteLine(tca);
+            // if (tca < 0) return false;
+            double d2 = Vector3.Dot(L, L) - tca * tca;
+            if (d2 < 0) return null;
+            if (d2 > radius*radius)
+                return null;
+            double thc = Math.Sqrt(radius * radius - d2);
+            t0 = tca - thc;
+
+            if (t0 < 0)
+            {
+                return null;
+            }
+
+            return t0;
+        }
+//Special thanks to DLBmaths's Youtube Video Here: https://youtu.be/9wznbg_aKOo?t=6m59s
+public static Vector3 ClosestPointFromLine(ViewPortPanel.Ray L, Vector3 pos)
+        {
+            //Step 1: Setting up the input values.
+            float tMx1 = L.dir.X;
+            float tMy1 = L.dir.Y;
+            float tMz1 = L.dir.Z;
+            float Mx1 = L.pos.X-pos.X;
+            float My1 = L.pos.Y-pos.Y;
+            float Mz1 = L.pos.Z-pos.Z;
+
+            //Step 2: Dot and arithmetic
+            float tMx2 = tMx1 * L.dir.X;
+            float tMy2 = tMy1 * L.dir.Y;
+            float tMz2 = tMz1 * L.dir.Z;
+            float Mx2 = Mx1 * L.dir.X;
+            float My2 = My1 * L.dir.Y;
+            float Mz2 = Mz1 * L.dir.Z;
+
+            //Step 3: Finally we find t!
+            //f for Mf stands for final.
+            float tMf = tMx2 + tMy2 + tMz2;
+            float Mf = Mx2 + My2 + Mz2;
+
+            float t = -Mf / tMf;
+
+            //Return the vector! :)
+            return L.pos + L.dir * t;
+        }
+
         //Special thanks to DLBmaths's Youtube Video Here: https://www.youtube.com/watch?v=HC5YikQxwZA
         public static Vector3[] ClosestPointsBetweenRays(ViewPortPanel.Ray L1, ViewPortPanel.Ray L2, float Min_1 = float.NegativeInfinity, float Min_2 = float.NegativeInfinity, float Max_1 = float.PositiveInfinity, float Max_2 = float.PositiveInfinity)
         {
