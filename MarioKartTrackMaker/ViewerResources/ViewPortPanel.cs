@@ -172,7 +172,6 @@ namespace MarioKartTrackMaker.ViewerResources
                         return null;
                     return maxT.Y;
                 }
-                else //Z
                 {
                     if (maxT.Z < 0.0f)
                         return null;// ray go on opposite of face
@@ -438,14 +437,14 @@ namespace MarioKartTrackMaker.ViewerResources
                     _transtime = 0;
                     cam.pivot = _targetObj.position;
                     if (_panzoom) cam.position = _fromcampos-_frompos+_targetObj.position;
-                    cam.zoom = _targetObj.model.size.maxS * 4F;
+                    cam.zoom = _targetObj.model.size.maxS * 4F * Math.Max(_targetObj.scale.X, Math.Max(_targetObj.scale.Y, _targetObj.scale.Z));
                     _targetObj = null;
                 }
                 else
                 {
                     cam.pivot = Vector3.Lerp(_targetObj.position, _frompos, _smoothtranstime);
                     if (_panzoom) cam.position = Vector3.Lerp(_fromcampos - _frompos + _targetObj.position, _fromcampos, _smoothtranstime);
-                    cam.zoom = lerp(_targetObj.model.size.maxS * 4F, _fromzoom, _smoothtranstime);
+                    cam.zoom = lerp(_targetObj.model.size.maxS * 4F * Math.Max(_targetObj.scale.X, Math.Max(_targetObj.scale.Y, _targetObj.scale.Z)), _fromzoom, _smoothtranstime);
                 }
             }
             if (Forward)
@@ -719,7 +718,7 @@ namespace MarioKartTrackMaker.ViewerResources
         {
 
             Vector3 proj = Vector3.TransformPosition(pos, cam.matrix);
-            return new Vector3(proj.X / proj.Z, proj.Y / proj.Z, proj.Z);
+            return new Vector3(proj.X / proj.Z * (proj.Z/Math.Abs(proj.Z)), proj.Y / proj.Z * (proj.Z / Math.Abs(proj.Z)), proj.Z);
         }
         Point _prev = new Point();
         bool Forward, Backward, SideLeft, SideRight, SideUp, SideDown = false;
@@ -737,42 +736,6 @@ namespace MarioKartTrackMaker.ViewerResources
             SideDown |= (e.KeyCode == Keys.Q);
             if (e.KeyCode == Keys.F)
                 GoToObject(Object3D.Active_Object, ModifierKeys == Keys.Shift);
-            if (e.KeyCode == Keys.D1)
-            {
-
-                Form1.current_tool = Tools.Select;
-                ((Form1)Form.ActiveForm).UpdateToolStats();
-            }
-            else if (e.KeyCode == Keys.D2)
-            {
-
-                Form1.current_tool = Tools.Move;
-                ((Form1)Form.ActiveForm).UpdateToolStats();
-            }
-            else if (e.KeyCode == Keys.D3)
-            {
-
-                Form1.current_tool = Tools.Rotate;
-                ((Form1)Form.ActiveForm).UpdateToolStats();
-            }
-            else if (e.KeyCode == Keys.D4)
-            {
-
-                Form1.current_tool = Tools.Scale;
-                ((Form1)Form.ActiveForm).UpdateToolStats();
-            }
-            else if (e.KeyCode == Keys.D5)
-            {
-
-                Form1.current_tool = Tools.Snap;
-                ((Form1)Form.ActiveForm).UpdateToolStats();
-            }
-            else if (e.KeyCode == Keys.D6)
-            {
-
-                Form1.current_tool = Tools.Decorate;
-                ((Form1)Form.ActiveForm).UpdateToolStats();
-            }
             //if(e.KeyCode == Keys.G)
             //{
             //}
@@ -879,7 +842,8 @@ namespace MarioKartTrackMaker.ViewerResources
                         size = _ObjectToDrag.model.size.maxS * 2;
                         __t = OtherMathUtils.intersectPlane(__r, Vector3.TransformNormal(Vector3.UnitX, tnsfm), Vector3.TransformPosition(Vector3.Zero, tnsfm));
                         Vector3 PlaneHitPos = Vector3.TransformPosition(__r.pos + __r.dir * Math.Abs(__t), tnsfm.Inverted());
-                        float angle = (float)Math.Atan2(-PlaneHitPos.Z, -PlaneHitPos.Y);
+                        Vector3 Size = tnsfm.ExtractScale();
+                        float angle = (float)Math.Atan2(-PlaneHitPos.Z * Size.Z, -PlaneHitPos.Y * Size.Y);
                         _ObjectToDragPreviousPosition = new object[] { _ObjectToDrag.rotation, angle };
                         _ObjectToDragPreviousMatrix = tnsfm;
                     }
@@ -894,7 +858,8 @@ namespace MarioKartTrackMaker.ViewerResources
                         size = _ObjectToDrag.model.size.maxS * 2;
                         __t = OtherMathUtils.intersectPlane(__r, Vector3.TransformNormal(Vector3.UnitY, tnsfm), Vector3.TransformPosition(Vector3.Zero, tnsfm));
                         Vector3 PlaneHitPos = Vector3.TransformPosition(__r.pos + __r.dir * Math.Abs(__t), tnsfm.Inverted());
-                        float angle = (float)Math.Atan2(PlaneHitPos.X, PlaneHitPos.Z);
+                        Vector3 Size = tnsfm.ExtractScale();
+                        float angle = (float)Math.Atan2(PlaneHitPos.X* Size.X, PlaneHitPos.Z * Size.Z);
                         _ObjectToDragPreviousPosition = new object[] { _ObjectToDrag.rotation, angle };
                         _ObjectToDragPreviousMatrix = tnsfm;
                     }
@@ -909,7 +874,8 @@ namespace MarioKartTrackMaker.ViewerResources
                         size = _ObjectToDrag.model.size.maxS * 2;
                         __t = OtherMathUtils.intersectPlane(__r, Vector3.TransformNormal(Vector3.UnitZ, tnsfm), Vector3.TransformPosition(Vector3.Zero, tnsfm));
                         Vector3 PlaneHitPos = Vector3.TransformPosition(__r.pos + __r.dir * Math.Abs(__t), tnsfm.Inverted());
-                        float angle = (float)Math.Atan2(PlaneHitPos.Y, PlaneHitPos.X);
+                        Vector3 Size = tnsfm.ExtractScale();
+                        float angle = (float)Math.Atan2(PlaneHitPos.Y * Size.Y, PlaneHitPos.X * Size.X);
                         _ObjectToDragPreviousPosition = new object[] { _ObjectToDrag.rotation, angle };
                         _ObjectToDragPreviousMatrix = tnsfm;
                     }
@@ -1041,7 +1007,7 @@ namespace MarioKartTrackMaker.ViewerResources
             {
                 if (_ObjectToDrag != null)
                 {
-                    Matrix4 tnsfm = _ObjectToDrag.transform;
+                    Matrix4 tnsfm = _ObjectToDragPreviousMatrix;
                     if (_IsDragging == 0)
                     {
                         float size = 100;
@@ -1051,7 +1017,8 @@ namespace MarioKartTrackMaker.ViewerResources
                         tnsfm = _ObjectToDragPreviousMatrix;
                         __t = OtherMathUtils.intersectPlane(__r, Vector3.TransformNormal(Vector3.UnitX, tnsfm), Vector3.TransformPosition(Vector3.Zero, tnsfm));
                         Vector3 PlaneHitPos = Vector3.TransformPosition(__r.pos + __r.dir * Math.Abs(__t), tnsfm.Inverted());
-                        float angle = (float)Math.Atan2(-PlaneHitPos.Z, -PlaneHitPos.Y);
+                        Vector3 Size = tnsfm.ExtractScale();
+                        float angle = (float)Math.Atan2(-PlaneHitPos.Z*Size.Z, -PlaneHitPos.Y * Size.Y);
                         _ObjectToDrag.rotation = ((Quaternion)((object[])(_ObjectToDragPreviousPosition))[0]) * Quaternion.FromAxisAngle(Vector3.UnitX, angle - ((float)((object[])(_ObjectToDragPreviousPosition))[1]));
                         invalidate = true;
                     }
@@ -1064,7 +1031,8 @@ namespace MarioKartTrackMaker.ViewerResources
                         tnsfm = _ObjectToDragPreviousMatrix;
                         __t = OtherMathUtils.intersectPlane(__r, Vector3.TransformNormal(Vector3.UnitY, tnsfm), Vector3.TransformPosition(Vector3.Zero, tnsfm));
                         Vector3 PlaneHitPos = Vector3.TransformPosition(__r.pos + __r.dir * Math.Abs(__t), tnsfm.Inverted());
-                        float angle = (float)Math.Atan2(PlaneHitPos.X, PlaneHitPos.Z);
+                        Vector3 Size = tnsfm.ExtractScale();
+                        float angle = (float)Math.Atan2(PlaneHitPos.X * Size.X, PlaneHitPos.Z * Size.Z);
                         _ObjectToDrag.rotation = ((Quaternion)((object[])(_ObjectToDragPreviousPosition))[0]) * Quaternion.FromAxisAngle(Vector3.UnitY, angle - ((float)((object[])(_ObjectToDragPreviousPosition))[1]));
                         invalidate = true;
                     }
@@ -1077,7 +1045,8 @@ namespace MarioKartTrackMaker.ViewerResources
                         tnsfm = _ObjectToDragPreviousMatrix;
                         __t = OtherMathUtils.intersectPlane(__r, Vector3.TransformNormal(Vector3.UnitZ, tnsfm), Vector3.TransformPosition(Vector3.Zero, tnsfm));
                         Vector3 PlaneHitPos = Vector3.TransformPosition(__r.pos + __r.dir * Math.Abs(__t), tnsfm.Inverted());
-                        float angle = (float)Math.Atan2(PlaneHitPos.Y, PlaneHitPos.X);
+                        Vector3 Size = tnsfm.ExtractScale();
+                        float angle = (float)Math.Atan2(PlaneHitPos.Y*Size.Y, PlaneHitPos.X * Size.X);
                         _ObjectToDrag.rotation = ((Quaternion)((object[])(_ObjectToDragPreviousPosition))[0]) * Quaternion.FromAxisAngle(Vector3.UnitZ, angle - ((float)((object[])(_ObjectToDragPreviousPosition))[1]));
                         invalidate = true;
                     }

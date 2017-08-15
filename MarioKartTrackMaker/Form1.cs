@@ -487,6 +487,51 @@ namespace MarioKartTrackMaker
                 viewPortPanel1.Invalidate();
             }
         }
-        
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.D1)
+            {
+
+                current_tool = Tools.Select;
+                UpdateToolStats();
+                viewPortPanel1.Invalidate();
+            }
+            else if (e.KeyCode == Keys.D2)
+            {
+
+                current_tool = Tools.Move;
+                UpdateToolStats();
+                viewPortPanel1.Invalidate();
+            }
+            else if (e.KeyCode == Keys.D3)
+            {
+
+                current_tool = Tools.Rotate;
+                UpdateToolStats();
+                viewPortPanel1.Invalidate();
+            }
+            else if (e.KeyCode == Keys.D4)
+            {
+
+                current_tool = Tools.Scale;
+                UpdateToolStats();
+                viewPortPanel1.Invalidate();
+            }
+            else if (e.KeyCode == Keys.D5)
+            {
+
+                current_tool = Tools.Snap;
+                UpdateToolStats();
+                viewPortPanel1.Invalidate();
+            }
+            else if (e.KeyCode == Keys.D6)
+            {
+
+                current_tool = Tools.Decorate;
+                UpdateToolStats();
+                viewPortPanel1.Invalidate();
+            }
+        }
     }
 }
