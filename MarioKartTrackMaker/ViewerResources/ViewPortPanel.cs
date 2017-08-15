@@ -46,6 +46,7 @@ namespace MarioKartTrackMaker.ViewerResources
                 _pgm = Shader.ProgramLink(_vs, _fs);
                 loaded = true;
             }
+            _test = new DecorationMesh(@"C:\Users\Jonathan\Documents\Visual Studio 2015\Projects\MKTrackMaker\MarioKartTrackMaker\Decorations\Grassland\kusamura.obj");
         }
         private int mx, my = 0;
 
@@ -550,6 +551,7 @@ namespace MarioKartTrackMaker.ViewerResources
                     GL.Vertex3(Math.Sin(i * Math.PI / 180) * 20 + mx - Width / 2, Math.Cos(i * Math.PI / 180) * 20 - my + Height / 2, -5);
                 }
                 GL.End();*/
+                _test.DrawMesh(_pgm, _wf);
                 foreach (Object3D obj in Object3D.database)
                 {
                         obj.DrawObject(_pgm, _coll, _wf, inSight(obj, cam));
@@ -724,7 +726,7 @@ namespace MarioKartTrackMaker.ViewerResources
         bool Forward, Backward, SideLeft, SideRight, SideUp, SideDown = false;
         private Ray MPray;
         private TraceResult tr = new TraceResult();
-
+        DecorationMesh _test;
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
