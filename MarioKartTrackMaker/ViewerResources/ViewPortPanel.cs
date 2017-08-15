@@ -409,7 +409,7 @@ namespace MarioKartTrackMaker.ViewerResources
                                     outobj = obj;
                                 }
                             }
-                            double? sph_t = OtherMathUtils.intersectSphere(this, 25.0, tnsfm);
+                            double? sph_t = OtherMathUtils.intersectSphere(this, obj.model.size.maxS * ((obj == Object3D.Active_Object) ? 1 : 0.25f)/4F, tnsfm);
                             if(sph_t != null)
                             {
                                 if (sph_t < depth)
@@ -500,6 +500,9 @@ namespace MarioKartTrackMaker.ViewerResources
                     {
                         Object3D obj = new Object3D(objectpath);
                         if (_AttachmentToAttachTo == null) goto no;
+                        foreach (Object3D.attachmentInfo atif in Object3D.Active_Object.atch_info)
+                            if (atif.thisAtch == _AttachmentToAttachTo)
+                                goto no;
                         if (!obj.attachTo(_AttachmentToAttachTo, Object3D.Active_Object)) goto no;
                         goto yes;
                         no:;
@@ -561,6 +564,35 @@ namespace MarioKartTrackMaker.ViewerResources
                             ToolModels.DrawBall(tr.HitPos, cam.zoom / 120F, 16);
                         }
                         break;
+                    case Tools.Snap:
+                        if (tr.Hit)
+                        {
+                            float distance = float.PositiveInfinity;
+                            Attachment closestAtch = null;
+                            foreach (Attachment atch in tr.HitObject.model.attachments)
+                            {
+                                if (tr.HitObject == Object3D.Active_Object) goto no;
+                                foreach (Object3D.attachmentInfo atif in tr.HitObject.atch_info)
+                                    if (atif.thisAtch == atch)
+                                        goto no;
+                                float this_dist = (atch.get_world_transform(tr.HitObject.transform).ExtractTranslation() - tr.HitPos).Length;
+                                if (distance > this_dist && Object3D.Active_Object != null  && Object3D.Active_Object.Active_Attachment != null && atch.isFemale != Object3D.Active_Object.Active_Attachment.isFemale)
+                                {
+                                    closestAtch = atch;
+                                    distance = this_dist;
+                                }
+                                no:;
+                            }
+                            if (closestAtch != null && Object3D.Active_Object != null) {
+                                GL.Color3(0, 0.75F, 0);
+                                GL.LineWidth(2F);
+                                GL.Begin(PrimitiveType.Lines);
+                                GL.Vertex3(Object3D.Active_Object.Active_Attachment.get_world_transform(Object3D.Active_Object.transform).ExtractTranslation());
+                                GL.Vertex3(closestAtch.get_world_transform(tr.HitObject.transform).ExtractTranslation());
+                                GL.End();
+                            }
+                        }
+                        break;
                     case Tools.Decorate:
                         if (tr.Hit)
                         {
@@ -581,7 +613,7 @@ namespace MarioKartTrackMaker.ViewerResources
                     obj.DrawTool((_IsDragging != -1 && (obj == _ObjectToDrag)) ?_IsDragging:((obj == tr.HitObject) ? tr.ToolHit : -1));
                 }
                 //Testing Out Collisions
-                if (ModifierKeys == Keys.Alt) {
+                /*if (ModifierKeys == Keys.Alt) {
                     GL.PointSize(1F);
                     GL.Begin(PrimitiveType.Points);
                     GL.Color3(1F, 1F, 1F);
@@ -599,7 +631,7 @@ namespace MarioKartTrackMaker.ViewerResources
                         }
                     }
                     GL.End();
-                }
+                }*/
                 
                 SwapBuffers();
             }
@@ -705,6 +737,42 @@ namespace MarioKartTrackMaker.ViewerResources
             SideDown |= (e.KeyCode == Keys.Q);
             if (e.KeyCode == Keys.F)
                 GoToObject(Object3D.Active_Object, ModifierKeys == Keys.Shift);
+            if (e.KeyCode == Keys.D1)
+            {
+
+                Form1.current_tool = Tools.Select;
+                ((Form1)Form.ActiveForm).UpdateToolStats();
+            }
+            else if (e.KeyCode == Keys.D2)
+            {
+
+                Form1.current_tool = Tools.Move;
+                ((Form1)Form.ActiveForm).UpdateToolStats();
+            }
+            else if (e.KeyCode == Keys.D3)
+            {
+
+                Form1.current_tool = Tools.Rotate;
+                ((Form1)Form.ActiveForm).UpdateToolStats();
+            }
+            else if (e.KeyCode == Keys.D4)
+            {
+
+                Form1.current_tool = Tools.Scale;
+                ((Form1)Form.ActiveForm).UpdateToolStats();
+            }
+            else if (e.KeyCode == Keys.D5)
+            {
+
+                Form1.current_tool = Tools.Snap;
+                ((Form1)Form.ActiveForm).UpdateToolStats();
+            }
+            else if (e.KeyCode == Keys.D6)
+            {
+
+                Form1.current_tool = Tools.Decorate;
+                ((Form1)Form.ActiveForm).UpdateToolStats();
+            }
             //if(e.KeyCode == Keys.G)
             //{
             //}
@@ -858,9 +926,41 @@ namespace MarioKartTrackMaker.ViewerResources
                         _ObjectToDrag = tr.HitObject;
                         Matrix4 tnsfm = _ObjectToDrag.transform;
                         Vector3 objpos = Vector3.TransformPosition(Vector3.Zero, tnsfm);
-                        float ScalePoint = (OtherMathUtils.ClosestPointFromLine(FromMousePos(mtx), objpos)-objpos).Length;
+                        float ScalePoint = (OtherMathUtils.ClosestPointFromLine(FromMousePos(mtx), objpos) - objpos).Length;
                         _ObjectToDragPreviousPosition = new object[] { _ObjectToDrag.scale, ScalePoint };
                         _ObjectToDragPreviousMatrix = tnsfm;
+                    }
+                }
+            }
+            else if (Form1.current_tool == Tools.Snap)
+            {
+
+                if (tr.Hit)
+                {
+                    float distance = float.PositiveInfinity;
+                    Attachment closestAtch = null;
+                    foreach (Attachment atch in tr.HitObject.model.attachments)
+                    {
+                        if (tr.HitObject == Object3D.Active_Object) goto no;
+                        foreach (Object3D.attachmentInfo atif in tr.HitObject.atch_info)
+                            if (atif.thisAtch == atch)
+                                goto no;
+                        float this_dist = (atch.get_world_transform(tr.HitObject.transform).ExtractTranslation() - tr.HitPos).Length;
+                        if (distance > this_dist && atch.isFemale != Object3D.Active_Object.Active_Attachment.isFemale)
+                        {
+                            closestAtch = atch;
+                            distance = this_dist;
+                        }
+                        no:;
+                    }
+                    if (closestAtch != null && Object3D.Active_Object != null)
+                    {
+                        if (Object3D.Active_Object.Active_Attachment != null)
+                        {
+                            Object3D.Active_Object.attachTo(Object3D.Active_Object.Active_Attachment, closestAtch, tr.HitObject);
+                        }
+                        else
+                            Object3D.Active_Object.attachTo(closestAtch, tr.HitObject);
                     }
                 }
             }
@@ -868,7 +968,7 @@ namespace MarioKartTrackMaker.ViewerResources
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             base.OnMouseWheel(e);
-            cam.zoom = Math.Max(cam.clip_near, cam.zoom+e.Delta/12F* (float)Math.Pow(cam.zoom, 0.375F));
+            cam.zoom = Math.Max(cam.clip_near, cam.zoom-e.Delta/12F* (float)Math.Pow(cam.zoom, 0.375F));
             Matrix4 mtx = cam.matrix;
             MPray = FromMousePos(mtx);
             tr = MPray.Trace(cam, Form1.current_tool == Tools.Select || Form1.current_tool == Tools.Snap || Form1.current_tool == Tools.Decorate, Form1.current_tool == Tools.Move && _IsDragging == -1, Form1.current_tool == Tools.Rotate && _IsDragging == -1, Form1.current_tool == Tools.Scale && _IsDragging == -1);
@@ -997,8 +1097,9 @@ namespace MarioKartTrackMaker.ViewerResources
 
                         else
                         {
-                            _ObjectToDrag.scale = ((Vector3)((object[])(_ObjectToDragPreviousPosition))[0]);
-                            _ObjectToDrag.scale.X *= (ScalePoint / ((float)((object[])(_ObjectToDragPreviousPosition))[1]));
+                            Vector3 scale = ((Vector3)((object[])(_ObjectToDragPreviousPosition))[0]);
+                            scale.X *= (ScalePoint / ((float)((object[])(_ObjectToDragPreviousPosition))[1]));
+                            _ObjectToDrag.scale = scale;
                         }
                         invalidate = true;
                     }
@@ -1011,8 +1112,9 @@ namespace MarioKartTrackMaker.ViewerResources
 
                         else
                         {
-                            _ObjectToDrag.scale = ((Vector3)((object[])(_ObjectToDragPreviousPosition))[0]);
-                            _ObjectToDrag.scale.Y *= (ScalePoint / ((float)((object[])(_ObjectToDragPreviousPosition))[1]));
+                            Vector3 scale = ((Vector3)((object[])(_ObjectToDragPreviousPosition))[0]);
+                            scale.Y *= (ScalePoint / ((float)((object[])(_ObjectToDragPreviousPosition))[1]));
+                            _ObjectToDrag.scale = scale;
                         }
                         invalidate = true;
                     }
@@ -1025,8 +1127,9 @@ namespace MarioKartTrackMaker.ViewerResources
 
                         else
                         {
-                            _ObjectToDrag.scale = ((Vector3)((object[])(_ObjectToDragPreviousPosition))[0]);
-                            _ObjectToDrag.scale.Z *= (ScalePoint / ((float)((object[])(_ObjectToDragPreviousPosition))[1]));
+                            Vector3 scale = ((Vector3)((object[])(_ObjectToDragPreviousPosition))[0]);
+                            scale.Z *= (ScalePoint / ((float)((object[])(_ObjectToDragPreviousPosition))[1]));
+                            _ObjectToDrag.scale = scale;
                         }
                         invalidate = true;
                     }

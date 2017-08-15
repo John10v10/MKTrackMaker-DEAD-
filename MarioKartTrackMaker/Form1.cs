@@ -276,7 +276,7 @@ namespace MarioKartTrackMaker
 
         }
 
-        void UpdateToolStats()
+        public void UpdateToolStats()
         {
             Color sc = Color.LightSkyBlue;
             pictureBox1.BackColor = (current_tool == Tools.Select) ? sc : Color.White;
@@ -357,7 +357,9 @@ namespace MarioKartTrackMaker
         {
             if (((NumericUpDown)sender).Enabled)
             {
-                Object3D.Active_Object.position.X = (float)((NumericUpDown)sender).Value;
+                Vector3 pos = Object3D.Active_Object.position;
+                pos.X = (float)((NumericUpDown)sender).Value;
+                Object3D.Active_Object.position = pos;
                 viewPortPanel1.Invalidate();
                 DisplayObjectList();
             }
@@ -368,7 +370,9 @@ namespace MarioKartTrackMaker
 
             if (((NumericUpDown)sender).Enabled)
             {
-                Object3D.Active_Object.position.Y = (float)((NumericUpDown)sender).Value;
+                Vector3 pos = Object3D.Active_Object.position;
+                pos.Y = (float)((NumericUpDown)sender).Value;
+                Object3D.Active_Object.position = pos;
                 viewPortPanel1.Invalidate();
                 DisplayObjectList();
             }
@@ -378,7 +382,9 @@ namespace MarioKartTrackMaker
         {
             if (((NumericUpDown)sender).Enabled)
             {
-                Object3D.Active_Object.position.Z = (float)((NumericUpDown)sender).Value;
+                Vector3 pos = Object3D.Active_Object.position;
+                pos.Z = (float)((NumericUpDown)sender).Value;
+                Object3D.Active_Object.position = pos;
                 viewPortPanel1.Invalidate();
                 DisplayObjectList();
             }
@@ -421,7 +427,9 @@ namespace MarioKartTrackMaker
 
             if (((NumericUpDown)sender).Enabled)
             {
-                Object3D.Active_Object.scale.X = (float)((NumericUpDown)sender).Value;
+                Vector3 scale = Object3D.Active_Object.scale;
+                scale.X = (float)((NumericUpDown)sender).Value;
+                Object3D.Active_Object.scale = scale;
                 viewPortPanel1.Invalidate();
                 DisplayObjectList();
             }
@@ -432,7 +440,9 @@ namespace MarioKartTrackMaker
 
             if (((NumericUpDown)sender).Enabled)
             {
-                Object3D.Active_Object.scale.Y = (float)((NumericUpDown)sender).Value;
+                Vector3 scale = Object3D.Active_Object.scale;
+                scale.Y = (float)((NumericUpDown)sender).Value;
+                Object3D.Active_Object.scale = scale;
                 viewPortPanel1.Invalidate();
                 DisplayObjectList();
             }
@@ -442,7 +452,9 @@ namespace MarioKartTrackMaker
         {
             if (((NumericUpDown)sender).Enabled)
             {
-                Object3D.Active_Object.scale.Z = (float)((NumericUpDown)sender).Value;
+                Vector3 scale = Object3D.Active_Object.scale;
+                scale.Z = (float)((NumericUpDown)sender).Value;
+                Object3D.Active_Object.scale = scale;
                 viewPortPanel1.Invalidate();
                 DisplayObjectList();
             }

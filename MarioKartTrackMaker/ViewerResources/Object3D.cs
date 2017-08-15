@@ -48,24 +48,55 @@ namespace MarioKartTrackMaker.ViewerResources
                 return Model.database[_model];
             }
         }
-        public Vector3 position = Vector3.Zero;
-        public Quaternion rotation = Quaternion.Identity;
-        public Vector3 scale = Vector3.One;
+        private Vector3 _position = Vector3.Zero;
+        private Quaternion _rotation = Quaternion.Identity;
+        private Vector3 _scale = Vector3.One;
+        public Vector3 position {
+            get { return _position; }
+            set
+            {
+                _position = value;
+                FixTransform();
+            }
+        }
+        public Quaternion rotation
+        {
+            get { return _rotation; }
+            set
+            {
+                _rotation = value;
+                FixTransform();
+            }
+        }
+        public Vector3 scale
+        {
+            get { return _scale; }
+            set
+            {
+                _scale = value;
+                FixTransform();
+            }
+        }
+        private Matrix4 _transform = Matrix4.Identity;
+
         public Matrix4 transform
         {
             get
             {
-                Matrix4 mat = Matrix4.Mult(Matrix4.CreateScale(scale), Matrix4.Mult(Matrix4.CreateFromQuaternion(rotation), Matrix4.CreateTranslation(position)));
-                return mat;
+                return _transform;
             }
             set
             {
-                position = value.ExtractTranslation();
-                rotation = value.ExtractRotation();
-                scale = value.ExtractScale();
+                _transform = value;
+                _position = value.ExtractTranslation();
+                _rotation = value.ExtractRotation();
+                _scale = value.ExtractScale();
             }
         }
-
+        private void FixTransform()
+        {
+            _transform = Matrix4.Mult(Matrix4.CreateScale(scale), Matrix4.Mult(Matrix4.CreateFromQuaternion(rotation), Matrix4.CreateTranslation(position)));
+        }
         public Attachment Active_Attachment;
 
         public Object3D(string filepath)
@@ -112,9 +143,14 @@ namespace MarioKartTrackMaker.ViewerResources
             GL.MultMatrix(ref matnoscale);
             int sclloc = GL.GetUniformLocation(program, "scale");
             GL.ProgramUniform3(program, sclloc, ref matscale);
-            if (this == Active_Object)
+            if (this == Active_Object || Form1.current_tool == Tools.Snap)
             {
+
+                GL.PushMatrix();
+                Matrix4 matscalemtx = Matrix4.CreateScale(matscale);
+                GL.MultMatrix(ref matscalemtx);
                 DrawAttachments();
+                GL.PopMatrix();
             }
             if (inSight)
                 model.DrawModel(program, collision_mode, wireframe, this == Active_Object && (Form1.current_tool == Tools.Select || Form1.current_tool == Tools.Snap));
@@ -163,6 +199,9 @@ namespace MarioKartTrackMaker.ViewerResources
             new_atif.AttachedTo = targetObj;
             new_atif.Attach();
             atch_info.Add(new_atif);
+            if (Active_Attachment == thisatch)
+                Active_Attachment = null;
+            no:;
         }
     }
 }
