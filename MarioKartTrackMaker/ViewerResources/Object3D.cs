@@ -12,7 +12,6 @@ namespace MarioKartTrackMaker.ViewerResources
         public static List<Object3D> database = new List<Object3D>();
         public static Object3D Active_Object;
         public static List<Object3D> Selected_Objects = new List<Object3D>();
-        private int _model;
         public struct attachmentInfo
         {
             public Attachment thisAtch;
@@ -41,6 +40,8 @@ namespace MarioKartTrackMaker.ViewerResources
             }
         }
         public List<attachmentInfo> atch_info = new List<attachmentInfo>();
+        public List<DecorationObject> Decorations = new List<DecorationObject>();
+        private int _model;
         public Model model
         {
             get
@@ -134,7 +135,7 @@ namespace MarioKartTrackMaker.ViewerResources
             }
             GL.PopMatrix();
         }
-        public void DrawObject(int program, int collision_mode, bool wireframe, bool inSight)
+        public void DrawObject(int program, int collision_mode, bool wireframe, bool inSight, Camera cam)
         {
             GL.PushMatrix();
             Matrix4 mat = transform;
@@ -154,6 +155,15 @@ namespace MarioKartTrackMaker.ViewerResources
             }
             if (inSight)
                 model.DrawModel(program, collision_mode, wireframe, this == Active_Object && (Form1.current_tool == Tools.Select || Form1.current_tool == Tools.Snap));
+
+            GL.PopMatrix();
+            GL.PushMatrix();
+            GL.MultMatrix(ref mat);
+            foreach (DecorationObject decobj in Decorations)
+            {
+                if(ViewPortPanel.inSight(decobj, this, cam))
+                    decobj.DrawObject(program, wireframe);
+            }
             GL.PopMatrix();
         }
 

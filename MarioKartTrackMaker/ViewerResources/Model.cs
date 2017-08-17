@@ -15,10 +15,10 @@ namespace MarioKartTrackMaker.ViewerResources
     {
         public static List<Model> database = new List<Model>();
 
-        public static bool runningOnMac;
-        public static string filepathSlash;
+        private static bool runningOnMac;
+        private static string filepathSlash;
 
-        public static void DoMacStuff() {
+        private static void DoMacStuff() {
 			int plat = (int)Environment.OSVersion.Platform;
 			if ((plat == 4) || (plat == 128))
 			{

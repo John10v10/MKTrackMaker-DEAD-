@@ -13,7 +13,7 @@ namespace MarioKartTrackMaker.ViewerResources
         public Vector3 pivot;
         private Vector3 _p;
         public Vector3 UpDirection = Vector3.UnitZ;
-        public float clip_near = 10F;
+        public float clip_near = 50F;
         public float clip_far = 100000F;
         private float _z = 100F;
         public float zoom { get { return _z; }set { _z = value; position = position; } }

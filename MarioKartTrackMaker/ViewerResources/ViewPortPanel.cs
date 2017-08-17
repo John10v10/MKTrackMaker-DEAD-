@@ -34,19 +34,22 @@ namespace MarioKartTrackMaker.ViewerResources
         {
             base.OnLoad(e);
             cam = new Camera(new Vector3(0F,0F,-10F), new Vector3(0F, 0F, 0F), this);
-            cam.position = new Vector3(100f, -120f, 200f);
+            cam.position = new Vector3(1000f, -1200f, 2000f);
             if (!DesignMode)
             {
                 GL.ClearColor(Color.Black);
                 GL.Enable(EnableCap.DepthTest);
                 GL.Enable(EnableCap.Multisample);
                 GL.Enable(EnableCap.CullFace);
+                GL.Enable(EnableCap.Blend);
+                GL.Enable(EnableCap.AlphaTest);
+                GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
                 _fs = Shader.CompileFragmentShader();
                 _vs = Shader.CompileVertexShader();
                 _pgm = Shader.ProgramLink(_vs, _fs);
                 loaded = true;
             }
-            _test = new DecorationMesh(@"C:\Users\Jonathan\Documents\Visual Studio 2015\Projects\MKTrackMaker\MarioKartTrackMaker\Decorations\Grassland\kusamura.obj");
+            
         }
         private int mx, my = 0;
 
@@ -423,7 +426,7 @@ namespace MarioKartTrackMaker.ViewerResources
                         }
                     }
                 }
-                return new TraceResult(intersects, dir.Normalized() * depth + pos, normal, outobj, ToolHit);
+                return new TraceResult(intersects, dir * depth + pos, normal, outobj, ToolHit);
 
             }
         }
@@ -551,10 +554,9 @@ namespace MarioKartTrackMaker.ViewerResources
                     GL.Vertex3(Math.Sin(i * Math.PI / 180) * 20 + mx - Width / 2, Math.Cos(i * Math.PI / 180) * 20 - my + Height / 2, -5);
                 }
                 GL.End();*/
-                _test.DrawMesh(_pgm, _wf);
                 foreach (Object3D obj in Object3D.database)
                 {
-                        obj.DrawObject(_pgm, _coll, _wf, inSight(obj, cam));
+                        obj.DrawObject(_pgm, _coll, _wf, inSight(obj, cam), cam);
                 }
                 switch (Form1.current_tool)
                 {
@@ -647,15 +649,22 @@ namespace MarioKartTrackMaker.ViewerResources
 
         public static bool inSight(Object3D obj, Camera cam)
         {
-            Matrix4 mtx = obj.transform;
-            Vector3 pos1 = ToScreen(Vector3.TransformPosition(obj.model.size.nXnYnZ, mtx), cam);
-            Vector3 pos2 = ToScreen(Vector3.TransformPosition(obj.model.size.pXnYnZ, mtx), cam);
-            Vector3 pos3 = ToScreen(Vector3.TransformPosition(obj.model.size.nXpYnZ, mtx), cam);
-            Vector3 pos4 = ToScreen(Vector3.TransformPosition(obj.model.size.nXnYpZ, mtx), cam);
-            Vector3 pos5 = ToScreen(Vector3.TransformPosition(obj.model.size.pXpYnZ, mtx), cam);
-            Vector3 pos6 = ToScreen(Vector3.TransformPosition(obj.model.size.pXnYpZ, mtx), cam);
-            Vector3 pos7 = ToScreen(Vector3.TransformPosition(obj.model.size.nXpYpZ, mtx), cam);
-            Vector3 pos8 = ToScreen(Vector3.TransformPosition(obj.model.size.pXpYpZ, mtx), cam);
+            return inSight(obj.model.size, obj.transform, cam);
+        }
+        public static bool inSight(DecorationObject dec, Object3D obj, Camera cam)
+        {
+            return inSight(dec.mesh.size, dec.transform*obj.transform, cam);
+        }
+        public static bool inSight(Bounds bounds, Matrix4 mtx, Camera cam)
+        {
+            Vector3 pos1 = ToScreen(Vector3.TransformPosition(bounds.nXnYnZ, mtx), cam);
+            Vector3 pos2 = ToScreen(Vector3.TransformPosition(bounds.pXnYnZ, mtx), cam);
+            Vector3 pos3 = ToScreen(Vector3.TransformPosition(bounds.nXpYnZ, mtx), cam);
+            Vector3 pos4 = ToScreen(Vector3.TransformPosition(bounds.nXnYpZ, mtx), cam);
+            Vector3 pos5 = ToScreen(Vector3.TransformPosition(bounds.pXpYnZ, mtx), cam);
+            Vector3 pos6 = ToScreen(Vector3.TransformPosition(bounds.pXnYpZ, mtx), cam);
+            Vector3 pos7 = ToScreen(Vector3.TransformPosition(bounds.nXpYpZ, mtx), cam);
+            Vector3 pos8 = ToScreen(Vector3.TransformPosition(bounds.pXpYpZ, mtx), cam);
             float Left =
                 Math.Min(pos1.X,
                 Math.Min(pos2.X,
@@ -726,7 +735,6 @@ namespace MarioKartTrackMaker.ViewerResources
         bool Forward, Backward, SideLeft, SideRight, SideUp, SideDown = false;
         private Ray MPray;
         private TraceResult tr = new TraceResult();
-        DecorationMesh _test;
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
@@ -903,35 +911,72 @@ namespace MarioKartTrackMaker.ViewerResources
             else if (Form1.current_tool == Tools.Snap)
             {
 
-                if (tr.Hit)
+                if (e.Button == MouseButtons.Left)
                 {
-                    float distance = float.PositiveInfinity;
-                    Attachment closestAtch = null;
-                    foreach (Attachment atch in tr.HitObject.model.attachments)
+                    if (tr.Hit)
                     {
-                        if (tr.HitObject == Object3D.Active_Object) goto no;
-                        foreach (Object3D.attachmentInfo atif in tr.HitObject.atch_info)
-                            if (atif.thisAtch == atch)
-                                goto no;
-                        float this_dist = (atch.get_world_transform(tr.HitObject.transform).ExtractTranslation() - tr.HitPos).Length;
-                        if (distance > this_dist && atch.isFemale != Object3D.Active_Object.Active_Attachment.isFemale)
+                        float distance = float.PositiveInfinity;
+                        Attachment closestAtch = null;
+                        foreach (Attachment atch in tr.HitObject.model.attachments)
                         {
-                            closestAtch = atch;
-                            distance = this_dist;
+                            if (tr.HitObject == Object3D.Active_Object) goto no;
+                            foreach (Object3D.attachmentInfo atif in tr.HitObject.atch_info)
+                                if (atif.thisAtch == atch)
+                                    goto no;
+                            float this_dist = (atch.get_world_transform(tr.HitObject.transform).ExtractTranslation() - tr.HitPos).Length;
+                            if (distance > this_dist && atch.isFemale != Object3D.Active_Object.Active_Attachment.isFemale)
+                            {
+                                closestAtch = atch;
+                                distance = this_dist;
+                            }
+                            no:;
                         }
-                        no:;
-                    }
-                    if (closestAtch != null && Object3D.Active_Object != null)
-                    {
-                        if (Object3D.Active_Object.Active_Attachment != null)
+                        if (closestAtch != null && Object3D.Active_Object != null)
                         {
-                            Object3D.Active_Object.attachTo(Object3D.Active_Object.Active_Attachment, closestAtch, tr.HitObject);
+                            if (Object3D.Active_Object.Active_Attachment != null)
+                            {
+                                Object3D.Active_Object.attachTo(Object3D.Active_Object.Active_Attachment, closestAtch, tr.HitObject);
+                            }
+                            else
+                                Object3D.Active_Object.attachTo(closestAtch, tr.HitObject);
                         }
-                        else
-                            Object3D.Active_Object.attachTo(closestAtch, tr.HitObject);
                     }
                 }
             }
+            else if (Form1.current_tool == Tools.Decorate)
+            {
+
+                if (e.Button == MouseButtons.Left)
+                {
+                    if (tr.Hit)
+                    {
+                        DecorationObject dec = new DecorationObject(@"C:\Users\jbcJo\Documents\Visual Studio 2017\Projects\MarioKartTrackMaker\MarioKartTrackMaker\Decorations\Grassland\kusamura.obj");
+                        Matrix4 dirmtx = FromNormal(tr.HitNormal);
+                        Vector3 relativeCamVector = Vector3.TransformPosition((cam.position-tr.HitPos), dirmtx.Inverted());
+                        float tilt = (float)Math.Atan2(relativeCamVector.X, -relativeCamVector.Y);
+                        dec.transform = dirmtx * Matrix4.CreateFromAxisAngle(tr.HitNormal, tilt) * Matrix4.CreateTranslation(tr.HitPos)*tr.HitObject.transform.Inverted();
+                        tr.HitObject.Decorations.Add(dec);
+                    }
+                }
+            }
+        }
+        Matrix4 FromNormal(Vector3 normal)
+        {
+            Vector3 axisZ = new Vector3(normal.X, normal.Y, 0).Normalized();
+            float sinY = -axisZ.X;
+            float cosY = axisZ.Y;
+            if (float.IsNaN(axisZ.Length))
+            {
+                sinY = 0;
+                cosY = 1;
+            }
+            Matrix4 mtxZ = new Matrix4(cosY, sinY, 0, 0, -sinY, cosY, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            Matrix4 mtxAngle = new Matrix4(cosY, -sinY, 0, 0, sinY, cosY, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+            Vector3 axisX = Vector3.TransformVector(normal, mtxAngle).Normalized();
+            float cosX = axisX.Z;
+            float sinX = axisX.Y;
+            Matrix4 mtxX = new Matrix4(1, 0, 0, 0, 0, cosX, -sinX, 0, 0, sinX, cosX, 0, 0, 0, 0, 1);
+            return mtxX * mtxZ;
         }
         protected override void OnMouseWheel(MouseEventArgs e)
         {

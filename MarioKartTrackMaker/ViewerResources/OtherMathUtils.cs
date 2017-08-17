@@ -187,44 +187,44 @@ public static Vector3 ClosestPointFromLine(ViewPortPanel.Ray L, Vector3 pos)
                 normal = n;
             }
         }
+        //somewhat credits: scratchapixel.com
         public static TriangleIntersection RayIntersectsTriangle(ViewPortPanel.Ray r, Vector3 v0, Vector3 v1, Vector3 v2, Vector3 n0, Vector3 n1, Vector3 n2)
         {
-            Vector3 e1, e2, h, s, q;
-            float a, f, u, v;
-            e1 = v1 - v0;
-            e2 = v2 - v0;
+            // compute plane's normal
+            Vector3 v0v1 = v1 - v0;
+            Vector3 v0v2 = v2 - v0;
+            Vector3 N = Vector3.Cross(v0v1, v0v2); // N
+            Vector3 dir = r.dir;
+            // Step 1: finding P
 
-            h = Vector3.Cross(r.dir, e2);
-            a = Vector3.Dot(e1, h);
-
-
-            if (a > -0.00001 && a < 0.00001)
+            float denom = Vector3.Dot(-N, dir);
+            if (Math.Abs(denom) < float.Epsilon) // almost 0 
                 return new TriangleIntersection(false);
+            Vector3 p0l0 = v0 - r.pos;
+            float t = Vector3.Dot(p0l0, -N) / denom;
+            // check if the triangle is in behind the ray
+            if (t < 0) return new TriangleIntersection(false); // the triangle is behind 
 
-            f = 1 / a;
-            s = r.pos - v0;
-            u = f * (Vector3.Dot(s, h));
+            Vector3 C;
+            Vector3 p = r.pos + dir * t;
+            // edge 0
+            Vector3 edge0 = v1 - v0;
+            Vector3 vp0 = p - v0;
+            C = Vector3.Cross(edge0,vp0);
+            if (Vector3.Dot(N,C) < 0) return new TriangleIntersection(false); // P is on the right side 
 
-            if (u < 0.0 || u > 1.0)
-                return new TriangleIntersection(false);
+            // edge 1
+            Vector3 edge1 = v2 - v1;
+            Vector3 vp1 = p - v1;
+            C = Vector3.Cross(edge1, vp1);
+            if (Vector3.Dot(N, C) < 0) return new TriangleIntersection(false); // P is on the right side 
 
-            q = Vector3.Cross(s, e1);
-            v = f * Vector3.Dot(r.dir, q);
-
-            if (v < 0.0 || u + v > 1.0)
-                return new TriangleIntersection(false);
-
-            // at this stage we can compute t to find out where
-            // the intersection point is on the line
-            float t = f * Vector3.Dot(e2, q);
-
+            // edge 2
+            Vector3 edge2 = v0 - v2;
+            Vector3 vp2 = p - v2;
+            C = Vector3.Cross(edge2, vp2);
+            if (Vector3.Dot(N, C) < 0) return new TriangleIntersection(false); // P is on the right side; 
             Vector3 normal = new Vector3();
-            if (t <= 0.00001) // ray intersection
-            {
-                return new TriangleIntersection(false, t, normal);
-            }
-            Vector3 p = r.pos + r.dir * t;
-
             float area;
             float w0, w1, w2;
             area = edgeFunction(v0, v1, v2, 0);

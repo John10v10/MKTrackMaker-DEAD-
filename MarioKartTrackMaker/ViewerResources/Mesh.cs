@@ -147,6 +147,7 @@ namespace MarioKartTrackMaker.ViewerResources
         public List<int[]> fuvs;
         public Vector3 Color = Vector3.One;
         public int texture;
+        public bool isShadeless = false;
         public Bounds size = new Bounds();
         public Mesh(List<Vector3> Vertices, List<Vector3> Normals, List<Vector2> UVs, List<int[]> faces, List<int[]> fnmls, List<int[]> fuvs, Vector3 Color, int texture)
         {
@@ -350,6 +351,8 @@ namespace MarioKartTrackMaker.ViewerResources
             int usetexLoc = GL.GetUniformLocation(program, "useTexture");
             int selloc = GL.GetUniformLocation(program, "selected");
             GL.Uniform1(selloc, (selected)?1:0);
+            int shlloc = GL.GetUniformLocation(program, "shadeless");
+            GL.Uniform1(shlloc, (isShadeless) ? 1 : 0);
             if (texture != -1)
             {
                 GL.Uniform1(texloc, texture - 1);
@@ -411,7 +414,6 @@ namespace MarioKartTrackMaker.ViewerResources
                 }
                 GL.End();
             }
-            GL.Color3(Vector3.One);
             GL.UseProgram(0);
         }
     }
