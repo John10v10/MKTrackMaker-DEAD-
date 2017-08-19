@@ -496,7 +496,7 @@ namespace MarioKartTrackMaker.ViewerResources
             if (!DesignMode)
             {
                 GL.MatrixMode(MatrixMode.Modelview);
-                //Import Objects if necessary
+                //Import Objects if signaled
                 if (_ObjectsToLoad.Count > 0)
                 {
                     foreach (string objectpath in _ObjectsToLoad)
@@ -558,7 +558,7 @@ namespace MarioKartTrackMaker.ViewerResources
                 {
                         obj.DrawObject(_pgm, _coll, _wf, inSight(obj, cam), cam);
                 }
-                switch (Form1.current_tool)
+                switch (MainForm.current_tool)
                 {
                     case Tools.Select:
                         if (tr.Hit)
@@ -579,7 +579,8 @@ namespace MarioKartTrackMaker.ViewerResources
                                     if (atif.thisAtch == atch)
                                         goto no;
                                 float this_dist = (atch.get_world_transform(tr.HitObject.transform).ExtractTranslation() - tr.HitPos).Length;
-                                if (distance > this_dist && Object3D.Active_Object != null  && Object3D.Active_Object.Active_Attachment != null && atch.isFemale != Object3D.Active_Object.Active_Attachment.isFemale)
+                                if (distance > this_dist && Object3D.Active_Object != null  && Object3D.Active_Object.Active_Attachment != null && atch.isFemale != Object3D.Active_Object.Active_Attachment.isFemale
+                                    && !Object3D.Active_Object.ContainsObjectInChain(tr.HitObject))
                                 {
                                     closestAtch = atch;
                                     distance = this_dist;
@@ -728,7 +729,7 @@ namespace MarioKartTrackMaker.ViewerResources
         public static Vector3 ToScreen(Vector3 pos, Camera cam)
         {
 
-            Vector3 proj = Vector3.TransformPosition(pos, cam.matrix);
+            Vector3 proj = Vector3.TransformPosition(pos, cam.matrix_toScreen);
             return new Vector3(proj.X / proj.Z * (proj.Z/Math.Abs(proj.Z)), proj.Y / proj.Z * (proj.Z / Math.Abs(proj.Z)), proj.Z);
         }
         Point _prev = new Point();
@@ -772,15 +773,15 @@ namespace MarioKartTrackMaker.ViewerResources
                 if (_IsDragging != -1)
                 {
                     _IsDragging = -1;
-                    ((Form1)Form.ActiveForm).UpdateObjectStats();
-                    ((Form1)Form.ActiveForm).DisplayObjectList();
+                    if(Form.ActiveForm is MainForm)((MainForm)Form.ActiveForm).UpdateObjectStats();
+                    if(Form.ActiveForm is MainForm)((MainForm)Form.ActiveForm).DisplayObjectList();
                 }
         }
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
             _prev = e.Location;
-            if (Form1.current_tool == Tools.Select)
+            if (MainForm.current_tool == Tools.Select)
             {
                 if (e.Button == MouseButtons.Left)
                 {
@@ -806,20 +807,20 @@ namespace MarioKartTrackMaker.ViewerResources
                         {
                             Object3D.Active_Object.Active_Attachment = closestAtch;
                         }
-                        ((Form1)Form.ActiveForm).listBox1_DoStuffWhenIndexChanged = false;
-                        ((Form1)Form.ActiveForm).UpdateActiveObject();
-                        ((Form1)Form.ActiveForm).listBox1_DoStuffWhenIndexChanged = true;
+                        if(Form.ActiveForm is MainForm)((MainForm)Form.ActiveForm).listBox1_DoStuffWhenIndexChanged = false;
+                        if(Form.ActiveForm is MainForm)((MainForm)Form.ActiveForm).UpdateActiveObject();
+                        if(Form.ActiveForm is MainForm)((MainForm)Form.ActiveForm).listBox1_DoStuffWhenIndexChanged = true;
                     }
                     else {
                         Object3D.Active_Object = null;
                         Invalidate();
-                        ((Form1)Form.ActiveForm).listBox1_DoStuffWhenIndexChanged = false;
-                        ((Form1)Form.ActiveForm).UpdateActiveObject();
-                        ((Form1)Form.ActiveForm).listBox1_DoStuffWhenIndexChanged = true;
+                        if(Form.ActiveForm is MainForm)((MainForm)Form.ActiveForm).listBox1_DoStuffWhenIndexChanged = false;
+                        if(Form.ActiveForm is MainForm)((MainForm)Form.ActiveForm).UpdateActiveObject();
+                        if(Form.ActiveForm is MainForm)((MainForm)Form.ActiveForm).listBox1_DoStuffWhenIndexChanged = true;
                     }
                 }
             }
-            else if (Form1.current_tool == Tools.Move)
+            else if (MainForm.current_tool == Tools.Move)
             {
                 Matrix4 mtx = cam.matrix;
                 if (e.Button == MouseButtons.Left)
@@ -836,7 +837,7 @@ namespace MarioKartTrackMaker.ViewerResources
                     }
                 }
             }
-            else if (Form1.current_tool == Tools.Rotate)
+            else if (MainForm.current_tool == Tools.Rotate)
             {
                 Matrix4 mtx = cam.matrix;
                 if (e.Button == MouseButtons.Left)
@@ -891,7 +892,7 @@ namespace MarioKartTrackMaker.ViewerResources
                     }
                 }
             }
-            else if (Form1.current_tool == Tools.Scale)
+            else if (MainForm.current_tool == Tools.Scale)
             {
                 Matrix4 mtx = cam.matrix;
                 if (e.Button == MouseButtons.Left)
@@ -908,7 +909,7 @@ namespace MarioKartTrackMaker.ViewerResources
                     }
                 }
             }
-            else if (Form1.current_tool == Tools.Snap)
+            else if (MainForm.current_tool == Tools.Snap)
             {
 
                 if (e.Button == MouseButtons.Left)
@@ -924,7 +925,8 @@ namespace MarioKartTrackMaker.ViewerResources
                                 if (atif.thisAtch == atch)
                                     goto no;
                             float this_dist = (atch.get_world_transform(tr.HitObject.transform).ExtractTranslation() - tr.HitPos).Length;
-                            if (distance > this_dist && atch.isFemale != Object3D.Active_Object.Active_Attachment.isFemale)
+                            if (distance > this_dist && Object3D.Active_Object.Active_Attachment != null && atch.isFemale != Object3D.Active_Object.Active_Attachment.isFemale
+                                && !Object3D.Active_Object.ContainsObjectInChain(tr.HitObject))
                             {
                                 closestAtch = atch;
                                 distance = this_dist;
@@ -943,20 +945,30 @@ namespace MarioKartTrackMaker.ViewerResources
                     }
                 }
             }
-            else if (Form1.current_tool == Tools.Decorate)
+            else if (MainForm.current_tool == Tools.Decorate)
             {
 
                 if (e.Button == MouseButtons.Left)
                 {
-                    if (tr.Hit)
-                    {
-                        DecorationObject dec = new DecorationObject(@"C:\Users\jbcJo\Documents\Visual Studio 2017\Projects\MarioKartTrackMaker\MarioKartTrackMaker\Decorations\Grassland\kusamura.obj");
-                        Matrix4 dirmtx = FromNormal(tr.HitNormal);
-                        Vector3 relativeCamVector = Vector3.TransformPosition((cam.position-tr.HitPos), dirmtx.Inverted());
-                        float tilt = (float)Math.Atan2(relativeCamVector.X, -relativeCamVector.Y);
-                        dec.transform = dirmtx * Matrix4.CreateFromAxisAngle(tr.HitNormal, tilt) * Matrix4.CreateTranslation(tr.HitPos)*tr.HitObject.transform.Inverted();
-                        tr.HitObject.Decorations.Add(dec);
-                    }
+                    if (Form.ActiveForm is MainForm)
+                        if (((MainForm)Form.ActiveForm).DF.listView1.SelectedItems.Count > 0)
+                        {
+                            float jit = (float)( ((MainForm)Form.ActiveForm).DF.numericUpDown5.Value);
+                            TraceResult ltr = FromScreen(mx + lerp(-jit, jit, (float)(r.NextDouble())), my + lerp(-jit, jit, (float)(r.NextDouble())), cam.matrix).Trace(cam, true, false, false, false);
+
+                            if (ltr.Hit)
+                            {
+                                DecorationObject dec = new DecorationObject((string)((MainForm)Form.ActiveForm).DF.listView1.SelectedItems[0].Tag);
+                                Matrix4 dirmtx = FromNormal(ltr.HitNormal);
+                                Vector3 relativeCamVector = Vector3.TransformPosition((cam.position - ltr.HitPos), dirmtx.Inverted());
+                                float tilt = (float)Math.Atan2(relativeCamVector.X, -relativeCamVector.Y);
+                                float tiltjitrange = (float)((float)(((MainForm)Form.ActiveForm).DF.numericUpDown4.Value) *Math.PI / 180);
+                                tilt += lerp(-tiltjitrange / 2, tiltjitrange / 2, (float)(r.NextDouble()));
+                                PrevDP = ltr.HitPos;
+                                dec.transform = dirmtx * Matrix4.CreateFromAxisAngle(ltr.HitNormal, tilt) * Matrix4.CreateScale(lerp((float)((MainForm)Form.ActiveForm).DF.numericUpDown2.Value, (float)((MainForm)Form.ActiveForm).DF.numericUpDown3.Value, (float)(r.NextDouble()))) *Matrix4.CreateTranslation(ltr.HitPos) * ltr.HitObject.transform.Inverted();
+                                ltr.HitObject.Decorations.Add(dec);
+                            }
+                        }
                 }
             }
         }
@@ -984,13 +996,13 @@ namespace MarioKartTrackMaker.ViewerResources
             cam.zoom = Math.Max(cam.clip_near, cam.zoom-e.Delta/12F* (float)Math.Pow(cam.zoom, 0.375F));
             Matrix4 mtx = cam.matrix;
             MPray = FromMousePos(mtx);
-            tr = MPray.Trace(cam, Form1.current_tool == Tools.Select || Form1.current_tool == Tools.Snap || Form1.current_tool == Tools.Decorate, Form1.current_tool == Tools.Move && _IsDragging == -1, Form1.current_tool == Tools.Rotate && _IsDragging == -1, Form1.current_tool == Tools.Scale && _IsDragging == -1);
+            tr = MPray.Trace(cam, MainForm.current_tool == Tools.Select || MainForm.current_tool == Tools.Snap || MainForm.current_tool == Tools.Decorate, MainForm.current_tool == Tools.Move && _IsDragging == -1, MainForm.current_tool == Tools.Rotate && _IsDragging == -1, MainForm.current_tool == Tools.Scale && _IsDragging == -1);
 
             Invalidate();
         }
         bool _prevhit = false;
         private Matrix4 _ObjectToDragPreviousMatrix;
-
+        Vector3 PrevDP = new Vector3();
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
@@ -1018,8 +1030,8 @@ namespace MarioKartTrackMaker.ViewerResources
             }
             Matrix4 mtx = cam.matrix;
             MPray = FromMousePos(mtx);
-            tr = MPray.Trace(cam, Form1.current_tool == Tools.Select || Form1.current_tool == Tools.Snap || Form1.current_tool == Tools.Decorate, Form1.current_tool == Tools.Move && _IsDragging == -1, Form1.current_tool == Tools.Rotate && _IsDragging == -1, Form1.current_tool == Tools.Scale && _IsDragging == -1);
-            if (Form1.current_tool == Tools.Move)
+            tr = MPray.Trace(cam, MainForm.current_tool == Tools.Select || MainForm.current_tool == Tools.Snap || MainForm.current_tool == Tools.Decorate, MainForm.current_tool == Tools.Move && _IsDragging == -1, MainForm.current_tool == Tools.Rotate && _IsDragging == -1, MainForm.current_tool == Tools.Scale && _IsDragging == -1);
+            if (MainForm.current_tool == Tools.Move)
             {
                 if (_ObjectToDrag != null)
                 {
@@ -1030,6 +1042,7 @@ namespace MarioKartTrackMaker.ViewerResources
                         Vector3[] cp = OtherMathUtils.ClosestPointsBetweenRays(FromMousePos(mtx), MoveX);
                         Vector3 prevpos = (Vector3)_ObjectToDragPreviousPosition;
                         _ObjectToDrag.position = cp[1] - prevpos;
+                        _ObjectToDrag.FixAttachments();
                         invalidate = true;
                     }
                     if (_IsDragging == 1)
@@ -1038,6 +1051,7 @@ namespace MarioKartTrackMaker.ViewerResources
                         Vector3[] cp = OtherMathUtils.ClosestPointsBetweenRays(FromMousePos(mtx), MoveY);
                         Vector3 prevpos = (Vector3)_ObjectToDragPreviousPosition;
                         _ObjectToDrag.position = cp[1] - prevpos;
+                        _ObjectToDrag.FixAttachments();
                         invalidate = true;
                     }
                     if (_IsDragging == 2)
@@ -1046,11 +1060,12 @@ namespace MarioKartTrackMaker.ViewerResources
                         Vector3[] cp = OtherMathUtils.ClosestPointsBetweenRays(FromMousePos(mtx), MoveZ);
                         Vector3 prevpos = (Vector3)_ObjectToDragPreviousPosition;
                         _ObjectToDrag.position = cp[1] - prevpos;
+                        _ObjectToDrag.FixAttachments();
                         invalidate = true;
                     }
                 }
             }
-            if (Form1.current_tool == Tools.Rotate)
+            if (MainForm.current_tool == Tools.Rotate)
             {
                 if (_ObjectToDrag != null)
                 {
@@ -1065,8 +1080,9 @@ namespace MarioKartTrackMaker.ViewerResources
                         __t = OtherMathUtils.intersectPlane(__r, Vector3.TransformNormal(Vector3.UnitX, tnsfm), Vector3.TransformPosition(Vector3.Zero, tnsfm));
                         Vector3 PlaneHitPos = Vector3.TransformPosition(__r.pos + __r.dir * Math.Abs(__t), tnsfm.Inverted());
                         Vector3 Size = tnsfm.ExtractScale();
-                        float angle = (float)Math.Atan2(-PlaneHitPos.Z*Size.Z, -PlaneHitPos.Y * Size.Y);
+                        float angle = (float)Math.Atan2(-PlaneHitPos.Z * Size.Z, -PlaneHitPos.Y * Size.Y);
                         _ObjectToDrag.rotation = ((Quaternion)((object[])(_ObjectToDragPreviousPosition))[0]) * Quaternion.FromAxisAngle(Vector3.UnitX, angle - ((float)((object[])(_ObjectToDragPreviousPosition))[1]));
+                        _ObjectToDrag.FixAttachments();
                         invalidate = true;
                     }
                     else if (_IsDragging == 1)
@@ -1081,6 +1097,7 @@ namespace MarioKartTrackMaker.ViewerResources
                         Vector3 Size = tnsfm.ExtractScale();
                         float angle = (float)Math.Atan2(PlaneHitPos.X * Size.X, PlaneHitPos.Z * Size.Z);
                         _ObjectToDrag.rotation = ((Quaternion)((object[])(_ObjectToDragPreviousPosition))[0]) * Quaternion.FromAxisAngle(Vector3.UnitY, angle - ((float)((object[])(_ObjectToDragPreviousPosition))[1]));
+                        _ObjectToDrag.FixAttachments();
                         invalidate = true;
                     }
                     else if (_IsDragging == 2)
@@ -1093,13 +1110,14 @@ namespace MarioKartTrackMaker.ViewerResources
                         __t = OtherMathUtils.intersectPlane(__r, Vector3.TransformNormal(Vector3.UnitZ, tnsfm), Vector3.TransformPosition(Vector3.Zero, tnsfm));
                         Vector3 PlaneHitPos = Vector3.TransformPosition(__r.pos + __r.dir * Math.Abs(__t), tnsfm.Inverted());
                         Vector3 Size = tnsfm.ExtractScale();
-                        float angle = (float)Math.Atan2(PlaneHitPos.Y*Size.Y, PlaneHitPos.X * Size.X);
+                        float angle = (float)Math.Atan2(PlaneHitPos.Y * Size.Y, PlaneHitPos.X * Size.X);
                         _ObjectToDrag.rotation = ((Quaternion)((object[])(_ObjectToDragPreviousPosition))[0]) * Quaternion.FromAxisAngle(Vector3.UnitZ, angle - ((float)((object[])(_ObjectToDragPreviousPosition))[1]));
+                        _ObjectToDrag.FixAttachments();
                         invalidate = true;
                     }
                 }
             }
-            if (Form1.current_tool == Tools.Scale)
+            if (MainForm.current_tool == Tools.Scale)
             {
                 if (_ObjectToDrag != null)
                 {
@@ -1117,6 +1135,7 @@ namespace MarioKartTrackMaker.ViewerResources
                             scale.X *= (ScalePoint / ((float)((object[])(_ObjectToDragPreviousPosition))[1]));
                             _ObjectToDrag.scale = scale;
                         }
+                        _ObjectToDrag.FixAttachments();
                         invalidate = true;
                     }
                     if (_IsDragging == 1)
@@ -1132,6 +1151,7 @@ namespace MarioKartTrackMaker.ViewerResources
                             scale.Y *= (ScalePoint / ((float)((object[])(_ObjectToDragPreviousPosition))[1]));
                             _ObjectToDrag.scale = scale;
                         }
+                        _ObjectToDrag.FixAttachments();
                         invalidate = true;
                     }
                     if (_IsDragging == 2)
@@ -1147,6 +1167,7 @@ namespace MarioKartTrackMaker.ViewerResources
                             scale.Z *= (ScalePoint / ((float)((object[])(_ObjectToDragPreviousPosition))[1]));
                             _ObjectToDrag.scale = scale;
                         }
+                        _ObjectToDrag.FixAttachments();
                         invalidate = true;
                     }
                     if (_IsDragging == 3)
@@ -1158,7 +1179,39 @@ namespace MarioKartTrackMaker.ViewerResources
 
                         else
                             _ObjectToDrag.scale = ((Vector3)((object[])(_ObjectToDragPreviousPosition))[0]) * (float)Math.Pow((ScalePoint / ((float)((object[])(_ObjectToDragPreviousPosition))[1])), 1 / 2F);
+
+                        _ObjectToDrag.FixAttachments();
                         invalidate = true;
+                    }
+                }
+            }
+            if (MainForm.current_tool == Tools.Decorate)
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    if (Form.ActiveForm is MainForm)
+                        if (((MainForm)Form.ActiveForm).DF.listView1.SelectedItems.Count > 0)
+                    {
+                        float jit = (float)(((MainForm)Form.ActiveForm).DF.numericUpDown5.Value);
+                    TraceResult ltr = FromScreen(mx + lerp(-jit, jit, (float)(r.NextDouble())), my + lerp(-jit, jit, (float)(r.NextDouble())), cam.matrix).Trace(cam, true, false, false, false);
+                        if (ltr.Hit)
+                        {
+                            if (!((MainForm)Form.ActiveForm).DF.place_mode)
+                            {
+                                if ((PrevDP - ltr.HitPos).Length >= (float)((MainForm)Form.ActiveForm).DF.numericUpDown1.Value * 10)
+                                {
+                                    DecorationObject dec = new DecorationObject((string)((MainForm)Form.ActiveForm).DF.listView1.SelectedItems[0].Tag);
+                                    Matrix4 dirmtx = FromNormal(ltr.HitNormal);
+                                    Vector3 relativeCamVector = Vector3.TransformPosition((cam.position - ltr.HitPos), dirmtx.Inverted());
+                                    float tilt = (float)Math.Atan2(relativeCamVector.X, -relativeCamVector.Y);
+                                    float tiltjitrange = (float)((float)(((MainForm)Form.ActiveForm).DF.numericUpDown4.Value) * Math.PI / 180);
+                                    tilt += lerp(-tiltjitrange / 2, tiltjitrange / 2, (float)(r.NextDouble()));
+                                    PrevDP = ltr.HitPos;
+                                    dec.transform = dirmtx * Matrix4.CreateFromAxisAngle(ltr.HitNormal, tilt) * Matrix4.CreateScale(lerp((float)((MainForm)Form.ActiveForm).DF.numericUpDown2.Value, (float)((MainForm)Form.ActiveForm).DF.numericUpDown3.Value, (float)(r.NextDouble()))) * Matrix4.CreateTranslation(ltr.HitPos) * ltr.HitObject.transform.Inverted();
+                                    ltr.HitObject.Decorations.Add(dec);
+                                }
+                            }
+                        }
                     }
                 }
             }

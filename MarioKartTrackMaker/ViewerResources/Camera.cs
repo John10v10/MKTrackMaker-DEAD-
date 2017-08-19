@@ -32,5 +32,10 @@ namespace MarioKartTrackMaker.ViewerResources
         {
             get { return look_at_mtx * Matrix4.CreatePerspectiveFieldOfView(1F, vpc.Width * 1F / vpc.Height, clip_near, clip_far); }
         }
+
+        public Matrix4 matrix_toScreen
+        {
+            get { return look_at_mtx * Matrix4.CreatePerspectiveFieldOfView(1F, vpc.Width * 1F / vpc.Height, 0.01F, clip_far); }
+        }
     }
 }

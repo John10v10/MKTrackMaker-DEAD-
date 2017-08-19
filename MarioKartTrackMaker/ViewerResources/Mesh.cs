@@ -145,11 +145,10 @@ namespace MarioKartTrackMaker.ViewerResources
         public List<int[]> faces;
         public List<int[]> fnmls;
         public List<int[]> fuvs;
-        public Vector3 Color = Vector3.One;
         public int texture;
         public bool isShadeless = false;
         public Bounds size = new Bounds();
-        public Mesh(List<Vector3> Vertices, List<Vector3> Normals, List<Vector2> UVs, List<int[]> faces, List<int[]> fnmls, List<int[]> fuvs, Vector3 Color, int texture)
+        public Mesh(List<Vector3> Vertices, List<Vector3> Normals, List<Vector2> UVs, List<int[]> faces, List<int[]> fnmls, List<int[]> fuvs, int texture)
         {
             this.Vertices = Vertices;
             this.Normals = Normals;
@@ -157,7 +156,6 @@ namespace MarioKartTrackMaker.ViewerResources
             this.faces = faces;
             this.fnmls = fnmls;
             this.fuvs = fuvs;
-            this.Color = Color;
             this.texture = texture;
             Optimize();
             CalculateBounds();
@@ -344,7 +342,7 @@ namespace MarioKartTrackMaker.ViewerResources
             }
         }
 
-        public void DrawMesh(int program, bool wireframe, bool selected)
+        public void DrawMesh(int program, bool wireframe, bool selected, Vector3 Color)
         {
             GL.UseProgram(program);
             int texloc = GL.GetUniformLocation(program, "texture");

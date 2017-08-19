@@ -18,7 +18,6 @@ namespace MarioKartTrackMaker.ViewerResources
             Vector3 D = (Vector3.TransformPosition(ray.pos+ray.dir, tnsfm.Inverted()) - O).Normalized();
             Vector3 L = -O;
             double tca = Vector3.Dot(L, D);
-            Console.WriteLine(tca);
             // if (tca < 0) return false;
             double d2 = Vector3.Dot(L, L) - tca * tca;
             if (d2 < 0) return null;

@@ -22,9 +22,9 @@ namespace MarioKartTrackMaker
         Snap = 4,
         Decorate = 5
     }
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
@@ -34,8 +34,12 @@ namespace MarioKartTrackMaker
             LoadSets(listView2);
             UpdateToolStats();
             UpdateObjectStats();
+            listBox1.Height = (int)((Height - listBox1.Top - 48.0) / 2.0 - 8.0);
+            listBox2.Top = (int)(listBox1.Top + listBox1.Height + 8.0);
+            listBox2.Height = (int)((Height - listBox2.Top - 48.0));
         }
         public static Tools current_tool = Tools.Select;
+        public Decorations_Form DF = new Decorations_Form();
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
 
@@ -212,7 +216,7 @@ namespace MarioKartTrackMaker
         public void UpdateObjectStats()
         {
             listBox2.Items.Clear();
-            posXnm.Enabled = posYnm.Enabled = posZnm.Enabled = rotXnm.Enabled = rotYnm.Enabled = rotZnm.Enabled = sclXnm.Enabled = sclYnm.Enabled = sclZnm.Enabled = false;
+            ColorButton.Enabled = posXnm.Enabled = posYnm.Enabled = posZnm.Enabled = rotXnm.Enabled = rotYnm.Enabled = rotZnm.Enabled = sclXnm.Enabled = sclYnm.Enabled = sclZnm.Enabled = false;
             if (Object3D.Active_Object != null)
             {
                 posXnm.Value = (decimal)Object3D.Active_Object.position.X;
@@ -225,8 +229,10 @@ namespace MarioKartTrackMaker
                 sclXnm.Value = (decimal)Object3D.Active_Object.scale.X;
                 sclYnm.Value = (decimal)Object3D.Active_Object.scale.Y;
                 sclZnm.Value = (decimal)Object3D.Active_Object.scale.Z;
+                ColorButton.BackColor = Color.FromArgb((int)(Object3D.Active_Object.Color.X * 255), (int)(Object3D.Active_Object.Color.Y * 255), (int)(Object3D.Active_Object.Color.Z * 255));
+                ColorButton.ForeColor = Color.FromArgb(255-(int)(Object3D.Active_Object.Color.X * 255), 255 - (int)(Object3D.Active_Object.Color.Y * 255), 255 - (int)(Object3D.Active_Object.Color.Z * 255));
                 posXnm.Enabled = posYnm.Enabled = posZnm.Enabled = rotXnm.Enabled = rotYnm.Enabled = rotZnm.Enabled = sclXnm.Enabled = sclYnm.Enabled = sclZnm.Enabled = true;
-
+                ColorButton.Enabled = Object3D.Active_Object.model.useColor;
             }
             else
             {
@@ -239,6 +245,8 @@ namespace MarioKartTrackMaker
                 sclXnm.Value = 1;
                 sclYnm.Value = 1;
                 sclYnm.Value = 1;
+                ColorButton.BackColor = Color.White;
+                ColorButton.ForeColor = Color.Black;
             }
             listBox2.Items.Clear();
             listBox2.SelectedItems.Clear();
@@ -289,6 +297,10 @@ namespace MarioKartTrackMaker
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
+            if (DF.Visible)
+            {
+                DF.Hide();
+            }
             current_tool = Tools.Select;
             UpdateToolStats();
             viewPortPanel1.Invalidate();
@@ -297,6 +309,10 @@ namespace MarioKartTrackMaker
         private void pictureBox2_Click(object sender, EventArgs e)
         {
 
+            if (DF.Visible)
+            {
+                DF.Hide();
+            }
             current_tool = Tools.Move;
             UpdateToolStats();
             viewPortPanel1.Invalidate();
@@ -304,6 +320,10 @@ namespace MarioKartTrackMaker
 
         private void pictureBox3_Click(object sender, EventArgs e)
         {
+            if (DF.Visible)
+            {
+                DF.Hide();
+            }
             current_tool = Tools.Rotate;
             UpdateToolStats();
             viewPortPanel1.Invalidate();
@@ -312,6 +332,10 @@ namespace MarioKartTrackMaker
         private void pictureBox4_Click(object sender, EventArgs e)
         {
 
+            if (DF.Visible)
+            {
+                DF.Hide();
+            }
             current_tool = Tools.Scale;
             UpdateToolStats();
             viewPortPanel1.Invalidate();
@@ -319,7 +343,10 @@ namespace MarioKartTrackMaker
 
         private void pictureBox5_Click(object sender, EventArgs e)
         {
-
+            if (DF.Visible)
+            {
+                DF.Hide();
+            }
             current_tool = Tools.Snap;
             UpdateToolStats();
             viewPortPanel1.Invalidate();
@@ -327,7 +354,10 @@ namespace MarioKartTrackMaker
 
         private void pictureBox6_Click(object sender, EventArgs e)
         {
-
+            if (!DF.Visible) {
+                DF.Show();
+                this.Activate();
+            }
             current_tool = Tools.Decorate;
             UpdateToolStats();
             viewPortPanel1.Invalidate();
@@ -360,6 +390,7 @@ namespace MarioKartTrackMaker
                 Vector3 pos = Object3D.Active_Object.position;
                 pos.X = (float)((NumericUpDown)sender).Value;
                 Object3D.Active_Object.position = pos;
+                Object3D.Active_Object.FixAttachments();
                 viewPortPanel1.Invalidate();
                 DisplayObjectList();
             }
@@ -373,6 +404,7 @@ namespace MarioKartTrackMaker
                 Vector3 pos = Object3D.Active_Object.position;
                 pos.Y = (float)((NumericUpDown)sender).Value;
                 Object3D.Active_Object.position = pos;
+                Object3D.Active_Object.FixAttachments();
                 viewPortPanel1.Invalidate();
                 DisplayObjectList();
             }
@@ -385,6 +417,7 @@ namespace MarioKartTrackMaker
                 Vector3 pos = Object3D.Active_Object.position;
                 pos.Z = (float)((NumericUpDown)sender).Value;
                 Object3D.Active_Object.position = pos;
+                Object3D.Active_Object.FixAttachments();
                 viewPortPanel1.Invalidate();
                 DisplayObjectList();
             }
@@ -396,6 +429,8 @@ namespace MarioKartTrackMaker
             if (((NumericUpDown)sender).Enabled)
             {
                 Object3D.Active_Object.rotation = Quaternion.FromEulerAngles(new Vector3((float)((double)(rotZnm.Value) / 180 * Math.PI), (float)((double)(rotYnm.Value) / 180 * Math.PI), (float)((double)(rotXnm.Value) / 180 * Math.PI)));
+
+                Object3D.Active_Object.FixAttachments();
                 viewPortPanel1.Invalidate();
                 DisplayObjectList();
             }
@@ -407,6 +442,8 @@ namespace MarioKartTrackMaker
             if (((NumericUpDown)sender).Enabled)
             {
                 Object3D.Active_Object.rotation = Quaternion.FromEulerAngles(new Vector3((float)((double)(rotZnm.Value) / 180 * Math.PI), (float)((double)(rotYnm.Value) / 180 * Math.PI), (float)((double)(rotXnm.Value) / 180 * Math.PI)));
+
+                Object3D.Active_Object.FixAttachments();
                 viewPortPanel1.Invalidate();
                 DisplayObjectList();
             }
@@ -417,6 +454,8 @@ namespace MarioKartTrackMaker
             if (((NumericUpDown)sender).Enabled)
             {
                 Object3D.Active_Object.rotation = Quaternion.FromEulerAngles(new Vector3((float)((double)(rotZnm.Value) / 180 * Math.PI), (float)((double)(rotYnm.Value) / 180 * Math.PI), (float)((double)(rotXnm.Value) / 180 * Math.PI)));
+
+                Object3D.Active_Object.FixAttachments();
                 viewPortPanel1.Invalidate();
                 DisplayObjectList();
             }
@@ -430,6 +469,7 @@ namespace MarioKartTrackMaker
                 Vector3 scale = Object3D.Active_Object.scale;
                 scale.X = (float)((NumericUpDown)sender).Value;
                 Object3D.Active_Object.scale = scale;
+                Object3D.Active_Object.FixAttachments();
                 viewPortPanel1.Invalidate();
                 DisplayObjectList();
             }
@@ -443,6 +483,7 @@ namespace MarioKartTrackMaker
                 Vector3 scale = Object3D.Active_Object.scale;
                 scale.Y = (float)((NumericUpDown)sender).Value;
                 Object3D.Active_Object.scale = scale;
+                Object3D.Active_Object.FixAttachments();
                 viewPortPanel1.Invalidate();
                 DisplayObjectList();
             }
@@ -455,6 +496,7 @@ namespace MarioKartTrackMaker
                 Vector3 scale = Object3D.Active_Object.scale;
                 scale.Z = (float)((NumericUpDown)sender).Value;
                 Object3D.Active_Object.scale = scale;
+                Object3D.Active_Object.FixAttachments();
                 viewPortPanel1.Invalidate();
                 DisplayObjectList();
             }
@@ -490,48 +532,84 @@ namespace MarioKartTrackMaker
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.D1)
-            {
+            if (!(ActiveControl is NumericUpDown)) {
+                if (e.KeyCode == Keys.D1)
+                {
 
-                current_tool = Tools.Select;
-                UpdateToolStats();
-                viewPortPanel1.Invalidate();
-            }
-            else if (e.KeyCode == Keys.D2)
-            {
+                    if (DF.Visible)
+                    {
+                        DF.Hide();
+                    }
+                    current_tool = Tools.Select;
+                    UpdateToolStats();
+                    viewPortPanel1.Invalidate();
+                }
+                else if (e.KeyCode == Keys.D2)
+                {
 
-                current_tool = Tools.Move;
-                UpdateToolStats();
-                viewPortPanel1.Invalidate();
-            }
-            else if (e.KeyCode == Keys.D3)
-            {
+                    if (DF.Visible)
+                    {
+                        DF.Hide();
+                    }
+                    current_tool = Tools.Move;
+                    UpdateToolStats();
+                    viewPortPanel1.Invalidate();
+                }
+                else if (e.KeyCode == Keys.D3)
+                {
 
-                current_tool = Tools.Rotate;
-                UpdateToolStats();
-                viewPortPanel1.Invalidate();
-            }
-            else if (e.KeyCode == Keys.D4)
-            {
+                    if (DF.Visible)
+                    {
+                        DF.Hide();
+                    }
+                    current_tool = Tools.Rotate;
+                    UpdateToolStats();
+                    viewPortPanel1.Invalidate();
+                }
+                else if (e.KeyCode == Keys.D4)
+                {
+                    if (DF.Visible)
+                    {
+                        DF.Hide();
+                    }
 
-                current_tool = Tools.Scale;
-                UpdateToolStats();
-                viewPortPanel1.Invalidate();
-            }
-            else if (e.KeyCode == Keys.D5)
-            {
+                    current_tool = Tools.Scale;
+                    UpdateToolStats();
+                    viewPortPanel1.Invalidate();
+                }
+                else if (e.KeyCode == Keys.D5)
+                {
+                    if (DF.Visible)
+                    {
+                        DF.Hide();
+                    }
 
-                current_tool = Tools.Snap;
-                UpdateToolStats();
-                viewPortPanel1.Invalidate();
-            }
-            else if (e.KeyCode == Keys.D6)
-            {
+                    current_tool = Tools.Snap;
+                    UpdateToolStats();
+                    viewPortPanel1.Invalidate();
+                }
+                else if (e.KeyCode == Keys.D6)
+                {
 
-                current_tool = Tools.Decorate;
-                UpdateToolStats();
-                viewPortPanel1.Invalidate();
+                    if (!DF.Visible)
+                    {
+                        DF.Show();
+                        this.Activate();
+                    }
+                    current_tool = Tools.Decorate;
+                    UpdateToolStats();
+                    viewPortPanel1.Invalidate();
+                }
             }
+        }
+
+        private void ColorButton_Click(object sender, EventArgs e)
+        {
+            colorDialog1.ShowDialog();
+            Object3D.Active_Object.Color = new Vector3(colorDialog1.Color.R / 255F, colorDialog1.Color.G / 255F, colorDialog1.Color.B / 255F);
+            ColorButton.BackColor = colorDialog1.Color;
+            ColorButton.ForeColor = Color.FromArgb(255 - colorDialog1.Color.R, 255 - colorDialog1.Color.G, 255 - colorDialog1.Color.B);
+            viewPortPanel1.Invalidate();
         }
     }
 }

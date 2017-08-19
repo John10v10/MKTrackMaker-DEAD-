@@ -23,11 +23,11 @@ namespace MarioKartTrackMaker.ViewerResources
         {
             _mesh = DecorationMesh.AddMesh(filepath);
         }
-        public void DrawObject(int program, bool wireframe)
+        public void DrawObject(int program, int mode, bool wireframe)
         {
             GL.PushMatrix();
             GL.MultMatrix(ref transform);
-            mesh.DrawMesh(program, wireframe);
+            mesh.DrawMesh(program, mode, wireframe);
             GL.PopMatrix();
         }
     }

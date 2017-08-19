@@ -12,31 +12,37 @@ namespace MarioKartTrackMaker.ViewerResources
         public static List<Object3D> database = new List<Object3D>();
         public static Object3D Active_Object;
         public static List<Object3D> Selected_Objects = new List<Object3D>();
-        public struct attachmentInfo
+        public class attachmentInfo
         {
             public Attachment thisAtch;
             public Object3D thisObject;
             public Attachment thatAtch;
+            public attachmentInfo thatAtchInfo;
             public Object3D AttachedTo;
 
             public void Attach()
             {
                 thisObject.transform = thisAtch.transform.Inverted()*thatAtch.transform*AttachedTo.transform;
                 
-                attachmentInfo ata = new attachmentInfo();
-                for(int i = 0; i < AttachedTo.atch_info.Count; i++)
+                foreach (attachmentInfo atin in AttachedTo.atch_info)
                 {
-                    if (AttachedTo.atch_info[i].thisAtch == thatAtch)
-                    {
-                        AttachedTo.atch_info.RemoveAt(i);
-                        break;
-                    }
+                    if (
+                        (atin.thisObject == AttachedTo) &&
+                        (atin.thisAtch == thatAtch) &&
+                        (atin.thatAtch == thisAtch) &&
+                        (atin.AttachedTo == thisObject)
+                        )
+                        goto no;
                 }
+                attachmentInfo ata = new attachmentInfo();
                 ata.thisObject = AttachedTo;
                 ata.thisAtch = thatAtch;
+                ata.thatAtchInfo = this;
                 ata.thatAtch = thisAtch;
                 ata.AttachedTo = thisObject;
                 AttachedTo.atch_info.Add(ata);
+                thatAtchInfo = ata;
+                no:;
             }
         }
         public List<attachmentInfo> atch_info = new List<attachmentInfo>();
@@ -94,6 +100,9 @@ namespace MarioKartTrackMaker.ViewerResources
                 _scale = value.ExtractScale();
             }
         }
+
+        public Vector3 Color = Vector3.One;
+
         private void FixTransform()
         {
             _transform = Matrix4.Mult(Matrix4.CreateScale(scale), Matrix4.Mult(Matrix4.CreateFromQuaternion(rotation), Matrix4.CreateTranslation(position)));
@@ -109,12 +118,52 @@ namespace MarioKartTrackMaker.ViewerResources
             return string.Format("{0} [{1}, {2}, {3}]", model.name, Math.Round(position.X, 1), Math.Round(position.Y, 1), Math.Round(position.Z, 1));
         }
 
+        private void _FixAttachments(ref List<attachmentInfo> Fixed_Attachments)
+        {
+            for (int i = 0; i < atch_info.Count; i++)
+            {
+                if (!Fixed_Attachments.Contains(atch_info[i]))
+                {
+                    atch_info[i].thatAtchInfo.Attach();
+                    Fixed_Attachments.Add(atch_info[i]);
+                    Fixed_Attachments.Add(atch_info[i].thatAtchInfo);
+                    atch_info[i].AttachedTo._FixAttachments(ref Fixed_Attachments);
+                }
+            }
+        }
+        public void FixAttachments()
+        {
+            List<attachmentInfo> Fixed_Attachments = new List<attachmentInfo>();
+            _FixAttachments(ref Fixed_Attachments);
+        }
+
+        private bool _ContainsAttachmentInChain(Object3D obj, ref List<Object3D> Passed_Objects)
+        {
+            bool FOUND = false;
+            for (int i = 0; i < atch_info.Count; i++)
+            {
+                    if (atch_info[i].AttachedTo == obj) return true;
+                    Passed_Objects.Add(this);
+                    if(!Passed_Objects.Contains(atch_info[i].AttachedTo))
+                    {
+                        FOUND = atch_info[i].AttachedTo._ContainsAttachmentInChain(obj, ref Passed_Objects);
+                    if (FOUND) return true;
+                }
+            }
+            return FOUND;
+        }
+        public bool ContainsObjectInChain(Object3D obj)
+        {
+            List<Object3D> Passed_Objects = new List<Object3D>();
+            return _ContainsAttachmentInChain(obj, ref Passed_Objects);
+        }
+
         public void DrawTool(int HoverState)
         {
             GL.PushMatrix();
             Matrix4 mat = transform;
             GL.MultMatrix(ref mat);
-            switch (Form1.current_tool)
+            switch (MainForm.current_tool)
             {
                 case Tools.Select:
                     break;
@@ -139,22 +188,16 @@ namespace MarioKartTrackMaker.ViewerResources
         {
             GL.PushMatrix();
             Matrix4 mat = transform;
-            Matrix4 matnoscale = mat.ClearScale();
-            Vector3 matscale = mat.ExtractScale();
-            GL.MultMatrix(ref matnoscale);
-            int sclloc = GL.GetUniformLocation(program, "scale");
-            GL.ProgramUniform3(program, sclloc, ref matscale);
-            if (this == Active_Object || Form1.current_tool == Tools.Snap)
+            if (this == Active_Object || MainForm.current_tool == Tools.Snap)
             {
 
                 GL.PushMatrix();
-                Matrix4 matscalemtx = Matrix4.CreateScale(matscale);
-                GL.MultMatrix(ref matscalemtx);
+                GL.MultMatrix(ref mat);
                 DrawAttachments();
                 GL.PopMatrix();
             }
             if (inSight)
-                model.DrawModel(program, collision_mode, wireframe, this == Active_Object && (Form1.current_tool == Tools.Select || Form1.current_tool == Tools.Snap));
+                model.DrawModel(program, mat, collision_mode, wireframe, this == Active_Object && (MainForm.current_tool == Tools.Select || MainForm.current_tool == Tools.Snap), (model.useColor)?(Color):(Vector3.One));
 
             GL.PopMatrix();
             GL.PushMatrix();
@@ -162,7 +205,7 @@ namespace MarioKartTrackMaker.ViewerResources
             foreach (DecorationObject decobj in Decorations)
             {
                 if(ViewPortPanel.inSight(decobj, this, cam))
-                    decobj.DrawObject(program, wireframe);
+                    decobj.DrawObject(program, collision_mode, wireframe);
             }
             GL.PopMatrix();
         }
@@ -194,13 +237,16 @@ namespace MarioKartTrackMaker.ViewerResources
         }
         public void attachTo(Attachment thisatch, Attachment thatatch, Object3D targetObj)
         {
-            for (int i = 0; i < atch_info.Count; i++)
+            
+            foreach (attachmentInfo atin in atch_info)
             {
-                if (atch_info[i].thisAtch == thatatch)
-                {
-                    atch_info.RemoveAt(i);
-                    break;
-                }
+                if (
+                    (atin.thisObject == this) &&
+                    (atin.thisAtch == thisatch) &&
+                    (atin.thatAtch == thatatch) &&
+                    (atin.AttachedTo == targetObj)
+                    )
+                    goto no;
             }
             attachmentInfo new_atif = new attachmentInfo();
             new_atif.thisAtch = thisatch;
@@ -210,7 +256,19 @@ namespace MarioKartTrackMaker.ViewerResources
             new_atif.Attach();
             atch_info.Add(new_atif);
             if (Active_Attachment == thisatch)
+            {
                 Active_Attachment = null;
+                foreach (Attachment atch in model.attachments)
+                {
+                    foreach (attachmentInfo atif in atch_info)
+                        if (atif.thisAtch == atch)
+                            continue;
+                    Active_Attachment = atch;
+                }
+            }
+            List<attachmentInfo> Fixed_Attachments = new List<attachmentInfo>();
+            Fixed_Attachments.Add(new_atif);
+            _FixAttachments(ref Fixed_Attachments);
             no:;
         }
     }
