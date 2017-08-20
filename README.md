@@ -11,4 +11,4 @@ The basic idea is to make custom Mario Kart tracks as easy as putting a toy trai
 My drawing shown above is an illustration that is supposed to be a kid putting a toy race car track together as he imagines the track as a rainbow road Mario is riding on.
 
 
-This is what the program currently looks like: <img src="https://snag.gy/upm6Bj.jpg" width="80%">
+Current Screenshots:<br><br>Here's a simple track that was created in seconds.<br><img src="https://i.snag.gy/DCtolT.jpg" width="80%"><br><br>You can now paint decorations on any surface.<br><img src="https://i.snag.gy/sADIW1.jpg" width="80%"><br><br>Yet attach a track part to another with just one click.<br><img src="https://i.snag.gy/lD5bHY.jpg" width="80%"><br><br>And hey what's this? Planets can be placed anywhere!<br><img src="https://i.snag.gy/kHzeWU.jpg" width="80%">
