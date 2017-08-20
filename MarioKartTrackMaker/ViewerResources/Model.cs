@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MarioKartTrackMaker.IO;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -11,39 +8,49 @@ using ObjParser;
 
 namespace MarioKartTrackMaker.ViewerResources
 {
+    /// <summary>
+    /// A display model. Contains multiple meshes.
+    /// </summary>
     public class Model
     {
+        /// <summary>
+        /// This is the database that holds all the models in the program's memory.
+        /// </summary>
         public static List<Model> database = new List<Model>();
 
-        private static bool runningOnMac;
-        private static string filepathSlash;
+        /// <summary>
+        /// This indicates whether this program is running on a Macintosh or not.
+        /// </summary>
+        private static bool runningOnMac { get {
+                int plat = (int)Environment.OSVersion.Platform;
+                return ((plat == 4) || (plat == 128));
+            } }
+        /// <summary>
+        /// This is dynamic due to the fact that a Windows computer uses \\ when a Macintosh uses //.
+        /// </summary>
+        private static string filepathSlash { get {
+                if (runningOnMac) return "//";
+                return "\\";
+            } }
+        
 
-        private static void DoMacStuff() {
-			int plat = (int)Environment.OSVersion.Platform;
-			if ((plat == 4) || (plat == 128))
-			{
-				runningOnMac = true;
-			}
-			else
-			{
-				runningOnMac = false;
-			}
-
-            filepathSlash = "\\";
-            if (runningOnMac)
-            {
-                filepathSlash = "//";
-            }
-			}
-
+        /// <summary>
+        /// Checks if the model is already loaded. If so, it'll return the database's index of the model, otherwise -1;
+        /// </summary>
+        /// <param name="path">The path of the model file to check.</param>
+        /// <returns></returns>
         public static int IsLoaded(string path)
         {
-            DoMacStuff();
             for (int i = 0; i < database.Count; i++)
                 if (database[i].path == path)
                     return i;
             return -1;
         }
+        /// <summary>
+        /// Loads and adds a new model from a file into the database.
+        /// </summary>
+        /// <param name="path">The path of the model file to load.</param>
+        /// <returns></returns>
         public static int AddModel(string path)
         {
             int id = IsLoaded(path);
@@ -55,12 +62,33 @@ namespace MarioKartTrackMaker.ViewerResources
             }
             return id;
         }
+        /// <summary>
+        /// The path that this model was loaded from.
+        /// </summary>
         public string path;
+        /// <summary>
+        /// The name of this model.
+        /// </summary>
         public string name;
+        /// <summary>
+        /// The bounding box size of this model.
+        /// </summary>
         public Bounds size = new Bounds();
+        /// <summary>
+        /// All the meshes contained inside this model.
+        /// </summary>
         public List<Mesh> meshes = new List<Mesh>();
+        /// <summary>
+        /// All the collision meshes contained inside this model.
+        /// </summary>
         public List<Collision_Mesh> KCLs = new List<Collision_Mesh>();
+        /// <summary>
+        /// All the attachments (connection points) contained inside this model.
+        /// </summary>
         public List<Attachment> attachments = new List<Attachment>();
+        /// <summary>
+        /// Defines whether the color picker will affect this model or not.
+        /// </summary>
         public bool useColor
         {
             get
@@ -71,6 +99,10 @@ namespace MarioKartTrackMaker.ViewerResources
                 return true;
             }
         }
+        /// <summary>
+        /// Constructor. Loads the model from file.
+        /// </summary>
+        /// <param name="filepath">The path of the file.</param>
         public Model(string filepath)
         {
             path = filepath;
@@ -192,6 +224,10 @@ namespace MarioKartTrackMaker.ViewerResources
             ImportAttachments(Path.GetDirectoryName(filepath) + filepathSlash + Path.GetFileNameWithoutExtension(filepath) + "_Atch.txt");
         }
 
+        /// <summary>
+        /// Imports attachments from a text file.
+        /// </summary>
+        /// <param name="path">The path of the text file.</param>
         private void ImportAttachments(string path)
         {
             if (File.Exists(path))
@@ -286,6 +322,9 @@ namespace MarioKartTrackMaker.ViewerResources
             }
         }
 
+        /// <summary>
+        /// Calculates the boundaries of this model.
+        /// </summary>
         private void CalculateBounds()
         {
             size.minX = float.PositiveInfinity;
@@ -306,6 +345,15 @@ namespace MarioKartTrackMaker.ViewerResources
             }
         }
 
+        /// <summary>
+        /// Renders the model.
+        /// </summary>
+        /// <param name="program">The id of the shader program.</param>
+        /// <param name="mtx">The transform matrix. Where do you want the model rendered?</param>
+        /// <param name="mode">The collision mode. 1 displays only the model, 2 displays only the model's collisions, and 3 displays both.</param>
+        /// <param name="wireframe">Render this as wireframe?</param>
+        /// <param name="selected">Make the model look highlighted/selected?</param>
+        /// <param name="Color">The diffuse color.</param>
         public void DrawModel(int program, Matrix4 mtx, int mode, bool wireframe, bool selected, Vector3 Color)
         {
             if ((mode & 1) == 1)

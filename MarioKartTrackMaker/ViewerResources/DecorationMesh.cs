@@ -5,42 +5,36 @@ using OpenTK;
 using ObjParser;
 using MarioKartTrackMaker.IO;
 using OpenTK.Graphics.OpenGL;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MarioKartTrackMaker.ViewerResources
 {
+    /// <summary>
+    /// This class defines a decoration, which is to add pretty details to track elements. It is recommended to place them on background 3D objects.
+    /// </summary>
     public class DecorationMesh
     {
+        /// <summary>
+        /// This is the database that holds all the decoration meshes in the program's memory.
+        /// </summary>
         public static List<DecorationMesh> database = new List<DecorationMesh>();
-        private static void DoMacStuff()
-        {
-            int plat = (int)Environment.OSVersion.Platform;
-            if ((plat == 4) || (plat == 128))
-            {
-                runningOnMac = true;
-            }
-            else
-            {
-                runningOnMac = false;
-            }
 
-            filepathSlash = "\\";
-            if (runningOnMac)
-            {
-                filepathSlash = "//";
-            }
-        }
-
+        /// <summary>
+        /// Checks if the model is already loaded. If so, it'll return the database's index of the model, otherwise -1;
+        /// </summary>
+        /// <param name="path">The path of the model file to check.</param>
+        /// <returns></returns>
         public static int IsLoaded(string path)
         {
-            DoMacStuff();
             for (int i = 0; i < database.Count; i++)
                 if (database[i].path == path)
                     return i;
             return -1;
         }
+        /// <summary>
+        /// Loads and adds a new decoration mesh from a file into the database.
+        /// </summary>
+        /// <param name="path">The path of the model file to load.</param>
+        /// <returns></returns>
         public static int AddMesh(string path)
         {
             int id = IsLoaded(path);
@@ -52,31 +46,97 @@ namespace MarioKartTrackMaker.ViewerResources
             }
             return id;
         }
+        /// <summary>
+        /// The path that this decoration mesh was loaded from.
+        /// </summary>
         public string path;
+        /// <summary>
+        /// The name of this decoration mesh.
+        /// </summary>
         public string name;
+        /// <summary>
+        /// The defined amount of data elements.
+        /// </summary>
         public int Vertex_Count, Normal_Count, UV_Count, Face_Count, Face_Normal_Count, Face_UV_Count;
+        /// <summary>
+        /// The limited array of vertices.
+        /// </summary>
         public Vector3[] Vertices = new Vector3[128];
+        /// <summary>
+        /// The limited array of normals.
+        /// </summary>
         public Vector3[] Normals = new Vector3[128];
+        /// <summary>
+        /// The limited array of UVs.
+        /// </summary>
         public Vector2[] UVs = new Vector2[128];
+        /// <summary>
+        /// The limited array of vertex indices.
+        /// </summary>
         public byte[] faces = new byte[256];
+        /// <summary>
+        /// The limited array of normal indices.
+        /// </summary>
         public byte[] fnmls = new byte[256];
+        /// <summary>
+        /// The limited array of UV indices.
+        /// </summary>
         public byte[] fuvs = new byte[256];
+        /// <summary>
+        /// All the collision meshes contained inside this decoration mesh.
+        /// </summary>
         public List<Collision_Mesh> KCLs = new List<Collision_Mesh>();
+        /// <summary>
+        /// Currently useless, but in the future, I definately want to include the feature to use simple 2D figures for decoration meshes. 
+        /// </summary>
         public bool is2D = false;
+        /// <summary>
+        /// Currently useless, but hope to make decoration meshes shadeless if they hold a shadeless flag in their setting. 
+        /// </summary>
         public bool isShadeless = false;
-        private static bool runningOnMac;
-        private static string filepathSlash;
+        /// <summary>
+        /// This indicates whether this program is running on a Macintosh or not.
+        /// </summary>
+        private static bool runningOnMac
+        {
+            get
+            {
+                int plat = (int)Environment.OSVersion.Platform;
+                return ((plat == 4) || (plat == 128));
+            }
+        }
+        /// <summary>
+        /// This is dynamic due to the fact that a Windows computer uses \\ when a Macintosh uses //.
+        /// </summary>
+        private static string filepathSlash
+        {
+            get
+            {
+                if (runningOnMac) return "//";
+                return "\\";
+            }
+        }
 
 
+
+        /// <summary>
+        /// The texture id of the decoration mesh.
+        /// </summary>
         public int texture;
+        /// <summary>
+        /// The bounding box size of this decoration mesh.
+        /// </summary>
         public Bounds size = new Bounds();
+        /// <summary>
+        /// Constructor. Loads the decoration mesh from file.
+        /// </summary>
+        /// <param name="filepath">The path of the file.</param>
         public DecorationMesh(string filepath)
         {
             path = filepath;
             name = Path.GetFileNameWithoutExtension(filepath).Replace('_', ' ');
             Obj tobj = new Obj();
             tobj.LoadObj(filepath);
-            DoMacStuff();
             Mtl tmtl = new Mtl();
             tmtl.LoadMtl(Path.GetDirectoryName(filepath) + filepathSlash + tobj.Mtl);
             if (tobj.VertexList.Count > 128)
@@ -237,6 +297,9 @@ namespace MarioKartTrackMaker.ViewerResources
                 throw new OverflowException(string.Format(error_message, max));
             }
         }
+        /// <summary>
+        /// Calculates the boundaries of this decoration mesh.
+        /// </summary>
         private void CalculateBounds()
         {
             size.minX = float.PositiveInfinity;
@@ -256,6 +319,13 @@ namespace MarioKartTrackMaker.ViewerResources
                 size.maxZ = Math.Max(size.maxZ, v.Z);
             }
         }
+
+        /// <summary>
+        /// Renders the decoration mesh.
+        /// </summary>
+        /// <param name="program">The id of the shader program.</param>
+        /// <param name="mode">The collision mode. 1 displays only the model, 2 displays only the model's collisions, and 3 displays both.</param>
+        /// <param name="wireframe">Render this as wireframe?</param>
         public void DrawMesh(int program, int mode, bool wireframe)
         {
             if ((mode & 1) == 1)

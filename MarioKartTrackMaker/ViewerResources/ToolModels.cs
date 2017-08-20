@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL;
 using OpenTK;
-using MarioKartTrackMaker;
 namespace MarioKartTrackMaker.ViewerResources
 {
     public static class ToolModels
     {
-        //DrawBall Function copied from BrawlLib, originally known as DrawSphere
+        /// <summary>
+        /// Draws a ball in the viewport (DrawBall Function copied from BrawlLib, originally known as DrawSphere).
+        /// </summary>
+        /// <param name="center">The position to where the ball should be rendered.</param>
+        /// <param name="radius">The size of the ball.</param>
+        /// <param name="precision">The quality of the ball.</param>
         public static void DrawBall(Vector3 center, float radius, uint precision)
         {
             if (radius < 0.0f)
@@ -63,6 +63,11 @@ namespace MarioKartTrackMaker.ViewerResources
         }
         
 
+        /// <summary>
+        /// Draws the move tool.
+        /// </summary>
+        /// <param name="HoverState">Which one apears white? Set to -1 if you don't want that.</param>
+        /// <param name="size">How big do you want the move tool to be rendered?</param>
         public static void DrawMoveTool(int HoverState, float size)
         {
 
@@ -168,14 +173,11 @@ namespace MarioKartTrackMaker.ViewerResources
             GL.PopMatrix();
         }
 
-        internal static void DrawDecorateTool(float v)
-        {
-        }
-
-        internal static void DrawConnectTool(float v)
-        {
-        }
-
+        /// <summary>
+        /// Draws the scale tool.
+        /// </summary>
+        /// <param name="HoverState">Which one apears white? Set to -1 if you don't want that.</param>
+        /// <param name="v">How big do you want the scale tool to be rendered?</param>
         internal static void DrawScaleTool(int HoverState, float v)
         {
             GL.PushMatrix();
@@ -300,6 +302,11 @@ namespace MarioKartTrackMaker.ViewerResources
             GL.PopMatrix();
         }
 
+        /// <summary>
+        /// Draws the rotation tool.
+        /// </summary>
+        /// <param name="HoverState">Which one apears white? Set to -1 if you don't want that.</param>
+        /// <param name="v">How big do you want the rotation tool to be rendered?</param>
         internal static void DrawRotateTool(int HoverState, float v)
         {
 

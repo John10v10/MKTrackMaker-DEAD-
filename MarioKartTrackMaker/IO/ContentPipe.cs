@@ -3,17 +3,23 @@ using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL;
 
 namespace MarioKartTrackMaker.IO
 {
-    
+
+    /// <summary>
+    /// The content pipe is the bridge to import all the textures into the viewport.
+    /// </summary>
     class ContentPipe
     {
+        /// <summary>
+        /// This database contains all the loaded textures.
+        /// </summary>
         public static List<TextureInfo> TextureInfoDatabase = new List<TextureInfo>();
+        /// <summary>
+        /// This structure contains all the required fields of a texture.
+        /// </summary>
         public struct TextureInfo
         {
             public string path;
@@ -27,7 +33,15 @@ namespace MarioKartTrackMaker.IO
                 this.textureUnit = textureUnit;
             }
         }
+        /// <summary>
+        /// I don't recommend you touch this, but it counts how many new textures are imported.
+        /// </summary>
         static int txi = 0;
+        /// <summary>
+        /// Gets the texture unit of a texture with just the texture id.
+        /// </summary>
+        /// <param name="texture">The id of the texture to find the texture unit.</param>
+        /// <returns></returns>
         public static TextureUnit GetUnitFromID(int texture)
         {
             foreach (TextureInfo tinfo in TextureInfoDatabase)
@@ -39,6 +53,12 @@ namespace MarioKartTrackMaker.IO
             }
             return TextureUnit.Texture31;
         }
+        /// <summary>
+        /// Using the filepath of the texture, it checks to see if it has already been loaded. If it has, it'll return the id of the already loaded texture.
+        /// Otherwise it'll return -1.
+        /// </summary>
+        /// <param name="path">The filepath to check.</param>
+        /// <returns></returns>
         public static int TextureAlreadyLoaded(string path)
         {
             foreach(TextureInfo tinfo in TextureInfoDatabase)
@@ -50,6 +70,11 @@ namespace MarioKartTrackMaker.IO
             }
             return -1;
         }
+        /// <summary>
+        /// This will load and add a new texture into the program's memory.
+        /// </summary>
+        /// <param name="path">The path of the texture file to load...</param>
+        /// <returns></returns>
         public static int Load_and_AddTexture(string path)
         {
             if (!File.Exists(path)) return -1;
@@ -72,6 +97,12 @@ namespace MarioKartTrackMaker.IO
             }
             return texture;
         }
+        /// <summary>
+        /// Loads the texture into the graphics memory...
+        /// </summary>
+        /// <param name="path">The path of the texture file to load...</param>
+        /// <param name="id">The target texture id...</param>
+        /// <param name="Unit">The target texture unit...</param>
         public static void LoadTexture(string path, int id, TextureUnit Unit)
         {
             GL.ActiveTexture(Unit);

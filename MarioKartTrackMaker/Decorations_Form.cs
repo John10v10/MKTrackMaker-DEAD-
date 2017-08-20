@@ -1,30 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MarioKartTrackMaker
 {
+    /// <summary>
+    /// The form that controls the settings for the decoration tool.
+    /// </summary>
     public partial class Decorations_Form : Form
     {
-        public bool place_mode { get { return radioButton1.Checked && !radioButton2.Checked; } }
+        /// <summary>
+        /// This value defines whether the decoration tool should place, or paint. Returns true if place.
+        /// </summary>
+        public bool place_mode { get { return PlaceRadioButton.Checked && !PaintRadioButton.Checked; } }
         public Decorations_Form()
         {
             InitializeComponent();
         }
 
-        private void Decorations_Form_Load(object sender, EventArgs e)
+        /// <summary>
+        /// Do this stuff after the form is initiated.
+        /// </summary>
+        private void OnLoad(object sender, EventArgs e)
         {
-            radioButton1.Checked = true;
-            LoadCategories(listView2);
+            PlaceRadioButton.Checked = true;
+            LoadCategories(CategoriesList);
         }
 
+        /// <summary>
+        /// Loads the categories in the Decorations folder.
+        /// </summary>
+        /// <param name="sender">Target ListView.</param>
         private void LoadCategories(ListView sender)
         {
             int imageIndex = 0;
@@ -32,6 +39,7 @@ namespace MarioKartTrackMaker
             sender.LargeImageList.Images.Clear();
             try
             {
+                CheckDirectory("Decorations");
                 foreach (string dir in Directory.GetDirectories("Decorations"))
                 {
                     int plat = (int)Environment.OSVersion.Platform;
@@ -56,37 +64,45 @@ namespace MarioKartTrackMaker
                 sender.LargeImageList.Images.Clear();
             }
         }
-        private void numericUpDown3_ValueChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Checks to see if the directory exists. If it doesn't it will pop up an error message.
+        /// </summary>
+        /// <param name="v">The directory to check</param>
+        private void CheckDirectory(string v)
         {
-            numericUpDown2.Maximum = numericUpDown3.Value;
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void listView2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (listView2.SelectedItems.Count > 0)
+            if (!Directory.Exists(v))
             {
-                LoadParts(listView1, (string)listView2.SelectedItems[0].Tag);
+                MessageBox.Show(string.Format("{0} directory is not found. Please add {0} in the directory of this program.", v), "Missing Directory:");
+            }
+        }
+        /// <summary>
+        /// Sets the maximum value of the minimum numeric control with the maximum numeric value.
+        /// </summary>
+        private void OnSizeJitterMaxNumericChanged(object sender, EventArgs e)
+        {
+            SizeJitterMinNumeric.Maximum = SizeJitterMaxNumeric.Value;
+        }
+        
+        /// <summary>
+        /// Tells this form to load all the decorations of the selected decoration category.
+        /// </summary>
+        private void OnCategoriesListSelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (CategoriesList.SelectedItems.Count > 0)
+            {
+                LoadParts(DecorationsList, (string)CategoriesList.SelectedItems[0].Tag);
             }
             else
             {
-                listView1.Items.Clear();
-                listView1.LargeImageList.Images.Clear();
+                DecorationsList.Items.Clear();
+                DecorationsList.LargeImageList.Images.Clear();
             }
         }
+        /// <summary>
+        /// Loads the decorations of the selected decoration category.
+        /// </summary>
+        /// <param name="listView">The target ListView.</param>
+        /// <param name="dir">The directory to find all the decoration pieces.</param>
         private void LoadParts(ListView listView, string dir)
         {
             int imageIndex = 0;

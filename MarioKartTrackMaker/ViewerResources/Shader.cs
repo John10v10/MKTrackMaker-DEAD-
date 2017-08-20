@@ -1,15 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
 using OpenTK.Graphics.OpenGL;
 
 namespace MarioKartTrackMaker.ViewerResources
 {
+    /// <summary>
+    /// The class that creates the one and only model shader other than GL's default.
+    /// </summary>
     class Shader
     {
+        /// <summary>
+        /// Compiles the fragment shader and returns the shader id.
+        /// </summary>
         public static int CompileFragmentShader()
         {
             int s;
@@ -59,6 +60,9 @@ void main(){
             Console.WriteLine(stats);
             return s;
         }
+        /// <summary>
+        /// Compiles the vertex shader and returns the shader id.
+        /// </summary>
         public static int CompileVertexShader()
         {
             int s;
@@ -91,6 +95,9 @@ void main(){
             Console.WriteLine(stats);
             return s;
         }
+        /// <summary>
+        /// Creates the shader program and links the program to the graphics memory (GL).
+        /// </summary>
         public static int ProgramLink(int vs, int fs)
         {
             int pgm = GL.CreateProgram();

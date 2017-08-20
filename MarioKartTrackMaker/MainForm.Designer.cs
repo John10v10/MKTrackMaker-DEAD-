@@ -42,82 +42,82 @@ namespace MarioKartTrackMaker
             this.closeTrackToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.PartList = new System.Windows.Forms.ListView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.label1 = new System.Windows.Forms.Label();
-            this.listView2 = new System.Windows.Forms.ListView();
+            this.SetList = new System.Windows.Forms.ListView();
             this.imageList2 = new System.Windows.Forms.ImageList(this.components);
             this.label2 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.WireframeCheckBox = new System.Windows.Forms.CheckBox();
+            this.CollisionsCheckBox = new System.Windows.Forms.CheckBox();
+            this.ObjectList = new System.Windows.Forms.ListBox();
+            this.ClipNearNumeric = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.ClipFarNumeric = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.pictureBox6 = new System.Windows.Forms.PictureBox();
-            this.pictureBox5 = new System.Windows.Forms.PictureBox();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.ToolTab = new System.Windows.Forms.TabPage();
+            this.DecorationToolButton = new System.Windows.Forms.PictureBox();
+            this.SnapToolButton = new System.Windows.Forms.PictureBox();
+            this.ScaleToolButton = new System.Windows.Forms.PictureBox();
+            this.RotationToolButton = new System.Windows.Forms.PictureBox();
+            this.MoveToolButton = new System.Windows.Forms.PictureBox();
+            this.SelectToolButton = new System.Windows.Forms.PictureBox();
+            this.ObjectTab = new System.Windows.Forms.TabPage();
             this.ColorButton = new System.Windows.Forms.Button();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.ScalePanel = new System.Windows.Forms.GroupBox();
             this.sclZnm = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
             this.sclYnm = new System.Windows.Forms.NumericUpDown();
             this.label12 = new System.Windows.Forms.Label();
             this.sclXnm = new System.Windows.Forms.NumericUpDown();
             this.label13 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.RotationPanel = new System.Windows.Forms.GroupBox();
             this.rotZnm = new System.Windows.Forms.NumericUpDown();
             this.label8 = new System.Windows.Forms.Label();
             this.rotYnm = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
             this.rotXnm = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.PositionPanel = new System.Windows.Forms.GroupBox();
             this.posZnm = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
             this.posYnm = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.posXnm = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.ViewToolTab = new System.Windows.Forms.TabPage();
+            this.OrbitViewResetButton = new System.Windows.Forms.Button();
+            this.AlignOrbitButton = new System.Windows.Forms.Button();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.listBox2 = new System.Windows.Forms.ListBox();
-            this.viewPortPanel1 = new MarioKartTrackMaker.ViewerResources.ViewPortPanel();
+            this.AttachmentList = new System.Windows.Forms.ListBox();
+            this.ViewPort = new MarioKartTrackMaker.ViewerResources.ViewPortPanel();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ClipNearNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ClipFarNumeric)).BeginInit();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.tabPage3.SuspendLayout();
-            this.groupBox3.SuspendLayout();
+            this.ToolTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DecorationToolButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SnapToolButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ScaleToolButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RotationToolButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MoveToolButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SelectToolButton)).BeginInit();
+            this.ObjectTab.SuspendLayout();
+            this.ScalePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sclZnm)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sclYnm)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sclXnm)).BeginInit();
-            this.groupBox2.SuspendLayout();
+            this.RotationPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.rotZnm)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rotYnm)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rotXnm)).BeginInit();
-            this.groupBox1.SuspendLayout();
+            this.PositionPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.posZnm)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.posYnm)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.posXnm)).BeginInit();
-            this.tabPage2.SuspendLayout();
+            this.ViewToolTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -130,8 +130,6 @@ namespace MarioKartTrackMaker
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1326, 38);
             this.menuStrip1.TabIndex = 1;
-            this.menuStrip1.Text = "menuStrip1";
-            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // fileToolStripMenuItem
             // 
@@ -158,7 +156,6 @@ namespace MarioKartTrackMaker
             this.openATrackToolStripMenuItem1.Name = "openATrackToolStripMenuItem1";
             this.openATrackToolStripMenuItem1.Size = new System.Drawing.Size(255, 34);
             this.openATrackToolStripMenuItem1.Text = "Open Track";
-            this.openATrackToolStripMenuItem1.Click += new System.EventHandler(this.openATrackToolStripMenuItem1_Click);
             // 
             // saveATrackToolStripMenuItem
             // 
@@ -183,7 +180,6 @@ namespace MarioKartTrackMaker
             this.closeTrackToolStripMenuItem.Name = "closeTrackToolStripMenuItem";
             this.closeTrackToolStripMenuItem.Size = new System.Drawing.Size(255, 34);
             this.closeTrackToolStripMenuItem.Text = "Export this Track";
-            this.closeTrackToolStripMenuItem.Click += new System.EventHandler(this.closeTrackToolStripMenuItem_Click);
             // 
             // closeTrackToolStripMenuItem1
             // 
@@ -205,21 +201,21 @@ namespace MarioKartTrackMaker
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(161, 34);
             this.aboutToolStripMenuItem.Text = "About";
             // 
-            // listView1
+            // PartList
             // 
-            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.PartList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.listView1.GridLines = true;
-            this.listView1.LargeImageList = this.imageList1;
-            this.listView1.Location = new System.Drawing.Point(22, 214);
-            this.listView1.Margin = new System.Windows.Forms.Padding(4);
-            this.listView1.MultiSelect = false;
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(429, 515);
-            this.listView1.TabIndex = 2;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged_1);
-            this.listView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseDoubleClick);
+            this.PartList.GridLines = true;
+            this.PartList.LargeImageList = this.imageList1;
+            this.PartList.Location = new System.Drawing.Point(22, 214);
+            this.PartList.Margin = new System.Windows.Forms.Padding(4);
+            this.PartList.MultiSelect = false;
+            this.PartList.Name = "PartList";
+            this.PartList.Size = new System.Drawing.Size(429, 515);
+            this.PartList.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.PartList, "Double-click on a part to add it in the scene.");
+            this.PartList.UseCompatibleStateImageBehavior = false;
+            this.PartList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.OnPartsListDoubleClick);
             // 
             // imageList1
             // 
@@ -237,19 +233,20 @@ namespace MarioKartTrackMaker
             this.label1.TabIndex = 3;
             this.label1.Text = "Pick a Part:";
             // 
-            // listView2
+            // SetList
             // 
-            this.listView2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.SetList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listView2.LargeImageList = this.imageList2;
-            this.listView2.Location = new System.Drawing.Point(22, 70);
-            this.listView2.Margin = new System.Windows.Forms.Padding(4);
-            this.listView2.MultiSelect = false;
-            this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(616, 113);
-            this.listView2.TabIndex = 4;
-            this.listView2.UseCompatibleStateImageBehavior = false;
-            this.listView2.SelectedIndexChanged += new System.EventHandler(this.listView2_SelectedIndexChanged);
+            this.SetList.LargeImageList = this.imageList2;
+            this.SetList.Location = new System.Drawing.Point(22, 70);
+            this.SetList.Margin = new System.Windows.Forms.Padding(4);
+            this.SetList.MultiSelect = false;
+            this.SetList.Name = "SetList";
+            this.SetList.Size = new System.Drawing.Size(616, 113);
+            this.SetList.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.SetList, "Select a set to load parts.");
+            this.SetList.UseCompatibleStateImageBehavior = false;
+            this.SetList.SelectedIndexChanged += new System.EventHandler(this.OnSelectedSetChanged);
             // 
             // imageList2
             // 
@@ -267,69 +264,72 @@ namespace MarioKartTrackMaker
             this.label2.TabIndex = 3;
             this.label2.Text = "Pick a Set:";
             // 
-            // checkBox1
+            // WireframeCheckBox
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(249, 7);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(4);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(128, 29);
-            this.checkBox1.TabIndex = 5;
-            this.checkBox1.Text = "Wireframe";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.WireframeCheckBox.AutoSize = true;
+            this.WireframeCheckBox.Location = new System.Drawing.Point(249, 7);
+            this.WireframeCheckBox.Margin = new System.Windows.Forms.Padding(4);
+            this.WireframeCheckBox.Name = "WireframeCheckBox";
+            this.WireframeCheckBox.Size = new System.Drawing.Size(128, 29);
+            this.WireframeCheckBox.TabIndex = 5;
+            this.WireframeCheckBox.Text = "Wireframe";
+            this.toolTip1.SetToolTip(this.WireframeCheckBox, "Set the viewport to draw everything in wireframe mode.");
+            this.WireframeCheckBox.UseVisualStyleBackColor = true;
+            this.WireframeCheckBox.CheckedChanged += new System.EventHandler(this.OnWireframeCheckBoxChanged);
             // 
-            // checkBox2
+            // CollisionsCheckBox
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(385, 7);
-            this.checkBox2.Margin = new System.Windows.Forms.Padding(4);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(177, 29);
-            this.checkBox2.TabIndex = 5;
-            this.checkBox2.Text = "Show Collisions";
-            this.checkBox2.ThreeState = true;
-            this.checkBox2.UseVisualStyleBackColor = true;
-            this.checkBox2.CheckStateChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            this.CollisionsCheckBox.AutoSize = true;
+            this.CollisionsCheckBox.Location = new System.Drawing.Point(385, 7);
+            this.CollisionsCheckBox.Margin = new System.Windows.Forms.Padding(4);
+            this.CollisionsCheckBox.Name = "CollisionsCheckBox";
+            this.CollisionsCheckBox.Size = new System.Drawing.Size(177, 29);
+            this.CollisionsCheckBox.TabIndex = 5;
+            this.CollisionsCheckBox.Text = "Show Collisions";
+            this.CollisionsCheckBox.ThreeState = true;
+            this.toolTip1.SetToolTip(this.CollisionsCheckBox, "Display the collisions of objects.");
+            this.CollisionsCheckBox.UseVisualStyleBackColor = true;
+            this.CollisionsCheckBox.CheckStateChanged += new System.EventHandler(this.OnCollisionCheckBoxChanged);
             // 
-            // listBox1
+            // ObjectList
             // 
-            this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 24;
-            this.listBox1.Location = new System.Drawing.Point(963, 214);
-            this.listBox1.Margin = new System.Windows.Forms.Padding(4);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(351, 244);
-            this.listBox1.TabIndex = 6;
-            this.toolTip1.SetToolTip(this.listBox1, "This is FUNY!");
-            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
-            this.listBox1.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
+            this.ObjectList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ObjectList.FormattingEnabled = true;
+            this.ObjectList.ItemHeight = 24;
+            this.ObjectList.Location = new System.Drawing.Point(963, 214);
+            this.ObjectList.Margin = new System.Windows.Forms.Padding(4);
+            this.ObjectList.Name = "ObjectList";
+            this.ObjectList.Size = new System.Drawing.Size(351, 244);
+            this.ObjectList.TabIndex = 6;
+            this.toolTip1.SetToolTip(this.ObjectList, "All the track parts are displayed in this list.");
+            this.ObjectList.SelectedIndexChanged += new System.EventHandler(this.OnObjectListIndexChanged);
+            this.ObjectList.DoubleClick += new System.EventHandler(this.OnObjectListDoubleClick);
             // 
-            // numericUpDown1
+            // ClipNearNumeric
             // 
-            this.numericUpDown1.DecimalPlaces = 1;
-            this.numericUpDown1.Location = new System.Drawing.Point(105, 7);
-            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(4);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
+            this.ClipNearNumeric.DecimalPlaces = 1;
+            this.ClipNearNumeric.Location = new System.Drawing.Point(105, 7);
+            this.ClipNearNumeric.Margin = new System.Windows.Forms.Padding(4);
+            this.ClipNearNumeric.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.numericUpDown1.Minimum = new decimal(new int[] {
+            this.ClipNearNumeric.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             65536});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(128, 29);
-            this.numericUpDown1.TabIndex = 7;
-            this.numericUpDown1.Value = new decimal(new int[] {
+            this.ClipNearNumeric.Name = "ClipNearNumeric";
+            this.ClipNearNumeric.Size = new System.Drawing.Size(128, 29);
+            this.ClipNearNumeric.TabIndex = 7;
+            this.toolTip1.SetToolTip(this.ClipNearNumeric, "Set the nearest value to render.");
+            this.ClipNearNumeric.Value = new decimal(new int[] {
             50,
             0,
             0,
             0});
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            this.ClipNearNumeric.ValueChanged += new System.EventHandler(this.OnClipNearValueChanged);
             // 
             // label3
             // 
@@ -341,30 +341,30 @@ namespace MarioKartTrackMaker
             this.label3.TabIndex = 8;
             this.label3.Text = "Clip Near";
             // 
-            // numericUpDown2
+            // ClipFarNumeric
             // 
-            this.numericUpDown2.DecimalPlaces = 1;
-            this.numericUpDown2.Location = new System.Drawing.Point(105, 41);
-            this.numericUpDown2.Margin = new System.Windows.Forms.Padding(4);
-            this.numericUpDown2.Maximum = new decimal(new int[] {
+            this.ClipFarNumeric.DecimalPlaces = 1;
+            this.ClipFarNumeric.Location = new System.Drawing.Point(105, 41);
+            this.ClipFarNumeric.Margin = new System.Windows.Forms.Padding(4);
+            this.ClipFarNumeric.Maximum = new decimal(new int[] {
             10000000,
             0,
             0,
             0});
-            this.numericUpDown2.Minimum = new decimal(new int[] {
+            this.ClipFarNumeric.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             65536});
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(128, 29);
-            this.numericUpDown2.TabIndex = 7;
-            this.numericUpDown2.Value = new decimal(new int[] {
+            this.ClipFarNumeric.Name = "ClipFarNumeric";
+            this.ClipFarNumeric.Size = new System.Drawing.Size(128, 29);
+            this.ClipFarNumeric.TabIndex = 7;
+            this.toolTip1.SetToolTip(this.ClipFarNumeric, "Set the farthest value to render.");
+            this.ClipFarNumeric.Value = new decimal(new int[] {
             100000,
             0,
             0,
             0});
-            this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
             // 
             // label4
             // 
@@ -379,9 +379,9 @@ namespace MarioKartTrackMaker
             // tabControl1
             // 
             this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.ToolTab);
+            this.tabControl1.Controls.Add(this.ObjectTab);
+            this.tabControl1.Controls.Add(this.ViewToolTab);
             this.tabControl1.Location = new System.Drawing.Point(644, 28);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
@@ -389,129 +389,128 @@ namespace MarioKartTrackMaker
             this.tabControl1.Size = new System.Drawing.Size(669, 160);
             this.tabControl1.TabIndex = 10;
             // 
-            // tabPage1
+            // ToolTab
             // 
-            this.tabPage1.Controls.Add(this.pictureBox6);
-            this.tabPage1.Controls.Add(this.pictureBox5);
-            this.tabPage1.Controls.Add(this.pictureBox4);
-            this.tabPage1.Controls.Add(this.pictureBox3);
-            this.tabPage1.Controls.Add(this.pictureBox2);
-            this.tabPage1.Controls.Add(this.pictureBox1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 33);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage1.Size = new System.Drawing.Size(661, 129);
-            this.tabPage1.TabIndex = 2;
-            this.tabPage1.Text = "Transform Tools";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
+            this.ToolTab.Controls.Add(this.DecorationToolButton);
+            this.ToolTab.Controls.Add(this.SnapToolButton);
+            this.ToolTab.Controls.Add(this.ScaleToolButton);
+            this.ToolTab.Controls.Add(this.RotationToolButton);
+            this.ToolTab.Controls.Add(this.MoveToolButton);
+            this.ToolTab.Controls.Add(this.SelectToolButton);
+            this.ToolTab.Location = new System.Drawing.Point(4, 33);
+            this.ToolTab.Margin = new System.Windows.Forms.Padding(4);
+            this.ToolTab.Name = "ToolTab";
+            this.ToolTab.Padding = new System.Windows.Forms.Padding(4);
+            this.ToolTab.Size = new System.Drawing.Size(661, 123);
+            this.ToolTab.TabIndex = 2;
+            this.ToolTab.Text = "Transform Tools";
+            this.ToolTab.UseVisualStyleBackColor = true;
             // 
-            // pictureBox6
+            // DecorationToolButton
             // 
-            this.pictureBox6.BackColor = System.Drawing.Color.White;
-            this.pictureBox6.BackgroundImage = global::MarioKartTrackMaker.Properties.Resources.DecorateIcon;
-            this.pictureBox6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox6.Location = new System.Drawing.Point(469, 33);
-            this.pictureBox6.Margin = new System.Windows.Forms.Padding(4);
-            this.pictureBox6.Name = "pictureBox6";
-            this.pictureBox6.Size = new System.Drawing.Size(65, 65);
-            this.pictureBox6.TabIndex = 0;
-            this.pictureBox6.TabStop = false;
-            this.toolTip1.SetToolTip(this.pictureBox6, "Decoration Tool");
-            this.pictureBox6.Click += new System.EventHandler(this.pictureBox6_Click);
+            this.DecorationToolButton.BackColor = System.Drawing.Color.White;
+            this.DecorationToolButton.BackgroundImage = global::MarioKartTrackMaker.Properties.Resources.DecorateIcon;
+            this.DecorationToolButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.DecorationToolButton.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.DecorationToolButton.Location = new System.Drawing.Point(469, 33);
+            this.DecorationToolButton.Margin = new System.Windows.Forms.Padding(4);
+            this.DecorationToolButton.Name = "DecorationToolButton";
+            this.DecorationToolButton.Size = new System.Drawing.Size(65, 65);
+            this.DecorationToolButton.TabIndex = 0;
+            this.DecorationToolButton.TabStop = false;
+            this.toolTip1.SetToolTip(this.DecorationToolButton, "Decoration Tool");
+            this.DecorationToolButton.Click += new System.EventHandler(this.OnDecorationToolClick);
             // 
-            // pictureBox5
+            // SnapToolButton
             // 
-            this.pictureBox5.BackColor = System.Drawing.Color.White;
-            this.pictureBox5.BackgroundImage = global::MarioKartTrackMaker.Properties.Resources.ConnectToolIcon;
-            this.pictureBox5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox5.Location = new System.Drawing.Point(400, 33);
-            this.pictureBox5.Margin = new System.Windows.Forms.Padding(4);
-            this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(65, 65);
-            this.pictureBox5.TabIndex = 0;
-            this.pictureBox5.TabStop = false;
-            this.toolTip1.SetToolTip(this.pictureBox5, "Connect Tool");
-            this.pictureBox5.Click += new System.EventHandler(this.pictureBox5_Click);
+            this.SnapToolButton.BackColor = System.Drawing.Color.White;
+            this.SnapToolButton.BackgroundImage = global::MarioKartTrackMaker.Properties.Resources.ConnectToolIcon;
+            this.SnapToolButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.SnapToolButton.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.SnapToolButton.Location = new System.Drawing.Point(400, 33);
+            this.SnapToolButton.Margin = new System.Windows.Forms.Padding(4);
+            this.SnapToolButton.Name = "SnapToolButton";
+            this.SnapToolButton.Size = new System.Drawing.Size(65, 65);
+            this.SnapToolButton.TabIndex = 0;
+            this.SnapToolButton.TabStop = false;
+            this.toolTip1.SetToolTip(this.SnapToolButton, "Attach Tool");
+            this.SnapToolButton.Click += new System.EventHandler(this.OnAttachToolClick);
             // 
-            // pictureBox4
+            // ScaleToolButton
             // 
-            this.pictureBox4.BackColor = System.Drawing.Color.White;
-            this.pictureBox4.BackgroundImage = global::MarioKartTrackMaker.Properties.Resources.ScaleToolIcon;
-            this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox4.Location = new System.Drawing.Point(328, 33);
-            this.pictureBox4.Margin = new System.Windows.Forms.Padding(4);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(65, 65);
-            this.pictureBox4.TabIndex = 0;
-            this.pictureBox4.TabStop = false;
-            this.toolTip1.SetToolTip(this.pictureBox4, "Scale Tool");
-            this.pictureBox4.Click += new System.EventHandler(this.pictureBox4_Click);
+            this.ScaleToolButton.BackColor = System.Drawing.Color.White;
+            this.ScaleToolButton.BackgroundImage = global::MarioKartTrackMaker.Properties.Resources.ScaleToolIcon;
+            this.ScaleToolButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ScaleToolButton.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ScaleToolButton.Location = new System.Drawing.Point(328, 33);
+            this.ScaleToolButton.Margin = new System.Windows.Forms.Padding(4);
+            this.ScaleToolButton.Name = "ScaleToolButton";
+            this.ScaleToolButton.Size = new System.Drawing.Size(65, 65);
+            this.ScaleToolButton.TabIndex = 0;
+            this.ScaleToolButton.TabStop = false;
+            this.toolTip1.SetToolTip(this.ScaleToolButton, "Scale Tool");
+            this.ScaleToolButton.Click += new System.EventHandler(this.OnScaleToolClick);
             // 
-            // pictureBox3
+            // RotationToolButton
             // 
-            this.pictureBox3.BackColor = System.Drawing.Color.White;
-            this.pictureBox3.BackgroundImage = global::MarioKartTrackMaker.Properties.Resources.RotationToolIcon;
-            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox3.Location = new System.Drawing.Point(259, 33);
-            this.pictureBox3.Margin = new System.Windows.Forms.Padding(4);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(65, 65);
-            this.pictureBox3.TabIndex = 0;
-            this.pictureBox3.TabStop = false;
-            this.toolTip1.SetToolTip(this.pictureBox3, "Rotate Tool");
-            this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
+            this.RotationToolButton.BackColor = System.Drawing.Color.White;
+            this.RotationToolButton.BackgroundImage = global::MarioKartTrackMaker.Properties.Resources.RotationToolIcon;
+            this.RotationToolButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.RotationToolButton.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.RotationToolButton.Location = new System.Drawing.Point(259, 33);
+            this.RotationToolButton.Margin = new System.Windows.Forms.Padding(4);
+            this.RotationToolButton.Name = "RotationToolButton";
+            this.RotationToolButton.Size = new System.Drawing.Size(65, 65);
+            this.RotationToolButton.TabIndex = 0;
+            this.RotationToolButton.TabStop = false;
+            this.toolTip1.SetToolTip(this.RotationToolButton, "Rotate Tool");
+            this.RotationToolButton.Click += new System.EventHandler(this.OnRotateToolClick);
             // 
-            // pictureBox2
+            // MoveToolButton
             // 
-            this.pictureBox2.BackColor = System.Drawing.Color.White;
-            this.pictureBox2.BackgroundImage = global::MarioKartTrackMaker.Properties.Resources.MoveToolIcon;
-            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox2.Location = new System.Drawing.Point(189, 33);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(4);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(65, 65);
-            this.pictureBox2.TabIndex = 0;
-            this.pictureBox2.TabStop = false;
-            this.toolTip1.SetToolTip(this.pictureBox2, "Move Tool");
-            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
+            this.MoveToolButton.BackColor = System.Drawing.Color.White;
+            this.MoveToolButton.BackgroundImage = global::MarioKartTrackMaker.Properties.Resources.MoveToolIcon;
+            this.MoveToolButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.MoveToolButton.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.MoveToolButton.Location = new System.Drawing.Point(189, 33);
+            this.MoveToolButton.Margin = new System.Windows.Forms.Padding(4);
+            this.MoveToolButton.Name = "MoveToolButton";
+            this.MoveToolButton.Size = new System.Drawing.Size(65, 65);
+            this.MoveToolButton.TabIndex = 0;
+            this.MoveToolButton.TabStop = false;
+            this.toolTip1.SetToolTip(this.MoveToolButton, "Move Tool");
+            this.MoveToolButton.Click += new System.EventHandler(this.OnMoveToolClick);
             // 
-            // pictureBox1
+            // SelectToolButton
             // 
-            this.pictureBox1.AccessibleDescription = "";
-            this.pictureBox1.BackColor = System.Drawing.Color.White;
-            this.pictureBox1.BackgroundImage = global::MarioKartTrackMaker.Properties.Resources.SelectToolIcon;
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox1.Location = new System.Drawing.Point(119, 33);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(65, 65);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            this.toolTip1.SetToolTip(this.pictureBox1, "Select Tool");
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.SelectToolButton.AccessibleDescription = "";
+            this.SelectToolButton.BackColor = System.Drawing.Color.White;
+            this.SelectToolButton.BackgroundImage = global::MarioKartTrackMaker.Properties.Resources.SelectToolIcon;
+            this.SelectToolButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.SelectToolButton.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.SelectToolButton.Location = new System.Drawing.Point(119, 33);
+            this.SelectToolButton.Margin = new System.Windows.Forms.Padding(4);
+            this.SelectToolButton.Name = "SelectToolButton";
+            this.SelectToolButton.Size = new System.Drawing.Size(65, 65);
+            this.SelectToolButton.TabIndex = 0;
+            this.SelectToolButton.TabStop = false;
+            this.toolTip1.SetToolTip(this.SelectToolButton, "Select Tool");
+            this.SelectToolButton.Click += new System.EventHandler(this.OnSelectToolClick);
             // 
-            // tabPage3
+            // ObjectTab
             // 
-            this.tabPage3.Controls.Add(this.ColorButton);
-            this.tabPage3.Controls.Add(this.groupBox3);
-            this.tabPage3.Controls.Add(this.groupBox2);
-            this.tabPage3.Controls.Add(this.groupBox1);
-            this.tabPage3.Location = new System.Drawing.Point(4, 33);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(4);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage3.Size = new System.Drawing.Size(661, 129);
-            this.tabPage3.TabIndex = 3;
-            this.tabPage3.Text = "Object Properties";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.ObjectTab.Controls.Add(this.ColorButton);
+            this.ObjectTab.Controls.Add(this.ScalePanel);
+            this.ObjectTab.Controls.Add(this.RotationPanel);
+            this.ObjectTab.Controls.Add(this.PositionPanel);
+            this.ObjectTab.Location = new System.Drawing.Point(4, 33);
+            this.ObjectTab.Margin = new System.Windows.Forms.Padding(4);
+            this.ObjectTab.Name = "ObjectTab";
+            this.ObjectTab.Padding = new System.Windows.Forms.Padding(4);
+            this.ObjectTab.Size = new System.Drawing.Size(661, 123);
+            this.ObjectTab.TabIndex = 3;
+            this.ObjectTab.Text = "Object Properties";
+            this.ObjectTab.UseVisualStyleBackColor = true;
             // 
             // ColorButton
             // 
@@ -525,25 +524,26 @@ namespace MarioKartTrackMaker
             this.ColorButton.Size = new System.Drawing.Size(121, 111);
             this.ColorButton.TabIndex = 1;
             this.ColorButton.Text = "Color";
+            this.toolTip1.SetToolTip(this.ColorButton, "Sets the color of the track part.");
             this.ColorButton.UseVisualStyleBackColor = false;
-            this.ColorButton.Click += new System.EventHandler(this.ColorButton_Click);
+            this.ColorButton.Click += new System.EventHandler(this.OnColorButtonClick);
             // 
-            // groupBox3
+            // ScalePanel
             // 
-            this.groupBox3.Controls.Add(this.sclZnm);
-            this.groupBox3.Controls.Add(this.label11);
-            this.groupBox3.Controls.Add(this.sclYnm);
-            this.groupBox3.Controls.Add(this.label12);
-            this.groupBox3.Controls.Add(this.sclXnm);
-            this.groupBox3.Controls.Add(this.label13);
-            this.groupBox3.Location = new System.Drawing.Point(354, 0);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(4);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox3.Size = new System.Drawing.Size(167, 114);
-            this.groupBox3.TabIndex = 0;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Scale";
+            this.ScalePanel.Controls.Add(this.sclZnm);
+            this.ScalePanel.Controls.Add(this.label11);
+            this.ScalePanel.Controls.Add(this.sclYnm);
+            this.ScalePanel.Controls.Add(this.label12);
+            this.ScalePanel.Controls.Add(this.sclXnm);
+            this.ScalePanel.Controls.Add(this.label13);
+            this.ScalePanel.Location = new System.Drawing.Point(354, 0);
+            this.ScalePanel.Margin = new System.Windows.Forms.Padding(4);
+            this.ScalePanel.Name = "ScalePanel";
+            this.ScalePanel.Padding = new System.Windows.Forms.Padding(4);
+            this.ScalePanel.Size = new System.Drawing.Size(167, 114);
+            this.ScalePanel.TabIndex = 0;
+            this.ScalePanel.TabStop = false;
+            this.ScalePanel.Text = "Scale";
             // 
             // sclZnm
             // 
@@ -653,22 +653,22 @@ namespace MarioKartTrackMaker
             this.label13.TabIndex = 0;
             this.label13.Text = "X:";
             // 
-            // groupBox2
+            // RotationPanel
             // 
-            this.groupBox2.Controls.Add(this.rotZnm);
-            this.groupBox2.Controls.Add(this.label8);
-            this.groupBox2.Controls.Add(this.rotYnm);
-            this.groupBox2.Controls.Add(this.label9);
-            this.groupBox2.Controls.Add(this.rotXnm);
-            this.groupBox2.Controls.Add(this.label10);
-            this.groupBox2.Location = new System.Drawing.Point(180, 0);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(167, 114);
-            this.groupBox2.TabIndex = 0;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Rotation";
+            this.RotationPanel.Controls.Add(this.rotZnm);
+            this.RotationPanel.Controls.Add(this.label8);
+            this.RotationPanel.Controls.Add(this.rotYnm);
+            this.RotationPanel.Controls.Add(this.label9);
+            this.RotationPanel.Controls.Add(this.rotXnm);
+            this.RotationPanel.Controls.Add(this.label10);
+            this.RotationPanel.Location = new System.Drawing.Point(180, 0);
+            this.RotationPanel.Margin = new System.Windows.Forms.Padding(4);
+            this.RotationPanel.Name = "RotationPanel";
+            this.RotationPanel.Padding = new System.Windows.Forms.Padding(4);
+            this.RotationPanel.Size = new System.Drawing.Size(167, 114);
+            this.RotationPanel.TabIndex = 0;
+            this.RotationPanel.TabStop = false;
+            this.RotationPanel.Text = "Rotation";
             // 
             // rotZnm
             // 
@@ -763,22 +763,22 @@ namespace MarioKartTrackMaker
             this.label10.TabIndex = 0;
             this.label10.Text = "X:";
             // 
-            // groupBox1
+            // PositionPanel
             // 
-            this.groupBox1.Controls.Add(this.posZnm);
-            this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.posYnm);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.posXnm);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Location = new System.Drawing.Point(7, 0);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(167, 114);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Position";
+            this.PositionPanel.Controls.Add(this.posZnm);
+            this.PositionPanel.Controls.Add(this.label7);
+            this.PositionPanel.Controls.Add(this.posYnm);
+            this.PositionPanel.Controls.Add(this.label6);
+            this.PositionPanel.Controls.Add(this.posXnm);
+            this.PositionPanel.Controls.Add(this.label5);
+            this.PositionPanel.Location = new System.Drawing.Point(7, 0);
+            this.PositionPanel.Margin = new System.Windows.Forms.Padding(4);
+            this.PositionPanel.Name = "PositionPanel";
+            this.PositionPanel.Padding = new System.Windows.Forms.Padding(4);
+            this.PositionPanel.Size = new System.Drawing.Size(167, 114);
+            this.PositionPanel.TabIndex = 0;
+            this.PositionPanel.TabStop = false;
+            this.PositionPanel.Text = "Position";
             // 
             // posZnm
             // 
@@ -873,79 +873,78 @@ namespace MarioKartTrackMaker
             this.label5.TabIndex = 0;
             this.label5.Text = "X:";
             // 
-            // tabPage2
+            // ViewToolTab
             // 
-            this.tabPage2.Controls.Add(this.button2);
-            this.tabPage2.Controls.Add(this.button1);
-            this.tabPage2.Controls.Add(this.label3);
-            this.tabPage2.Controls.Add(this.numericUpDown2);
-            this.tabPage2.Controls.Add(this.checkBox1);
-            this.tabPage2.Controls.Add(this.checkBox2);
-            this.tabPage2.Controls.Add(this.label4);
-            this.tabPage2.Controls.Add(this.numericUpDown1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 33);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Size = new System.Drawing.Size(661, 123);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "View Tools";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.ViewToolTab.Controls.Add(this.OrbitViewResetButton);
+            this.ViewToolTab.Controls.Add(this.AlignOrbitButton);
+            this.ViewToolTab.Controls.Add(this.label3);
+            this.ViewToolTab.Controls.Add(this.ClipFarNumeric);
+            this.ViewToolTab.Controls.Add(this.WireframeCheckBox);
+            this.ViewToolTab.Controls.Add(this.CollisionsCheckBox);
+            this.ViewToolTab.Controls.Add(this.label4);
+            this.ViewToolTab.Controls.Add(this.ClipNearNumeric);
+            this.ViewToolTab.Location = new System.Drawing.Point(4, 33);
+            this.ViewToolTab.Margin = new System.Windows.Forms.Padding(4);
+            this.ViewToolTab.Name = "ViewToolTab";
+            this.ViewToolTab.Padding = new System.Windows.Forms.Padding(4);
+            this.ViewToolTab.Size = new System.Drawing.Size(661, 123);
+            this.ViewToolTab.TabIndex = 1;
+            this.ViewToolTab.Text = "View Tools";
+            this.ViewToolTab.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // OrbitViewResetButton
             // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(242, 41);
-            this.button2.Margin = new System.Windows.Forms.Padding(6);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(73, 68);
-            this.button2.TabIndex = 9;
-            this.button2.Text = "Reset Orbit View";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.OrbitViewResetButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OrbitViewResetButton.Location = new System.Drawing.Point(242, 41);
+            this.OrbitViewResetButton.Margin = new System.Windows.Forms.Padding(6);
+            this.OrbitViewResetButton.Name = "OrbitViewResetButton";
+            this.OrbitViewResetButton.Size = new System.Drawing.Size(73, 68);
+            this.OrbitViewResetButton.TabIndex = 9;
+            this.OrbitViewResetButton.Text = "Reset Orbit View";
+            this.toolTip1.SetToolTip(this.OrbitViewResetButton, "Aligns the camera to the correct view for global space.");
+            this.OrbitViewResetButton.UseVisualStyleBackColor = true;
+            this.OrbitViewResetButton.Click += new System.EventHandler(this.OnOrbitViewResetButtonClick);
             // 
-            // button1
+            // AlignOrbitButton
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(314, 41);
-            this.button1.Margin = new System.Windows.Forms.Padding(6);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(73, 68);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "Align Orbit to Active";
-            this.toolTip1.SetToolTip(this.button1, "Aligns the camera to the correct view for rotated/tilted track pieces.");
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.AlignOrbitButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AlignOrbitButton.Location = new System.Drawing.Point(314, 41);
+            this.AlignOrbitButton.Margin = new System.Windows.Forms.Padding(6);
+            this.AlignOrbitButton.Name = "AlignOrbitButton";
+            this.AlignOrbitButton.Size = new System.Drawing.Size(73, 68);
+            this.AlignOrbitButton.TabIndex = 9;
+            this.AlignOrbitButton.Text = "Align Orbit to Active";
+            this.toolTip1.SetToolTip(this.AlignOrbitButton, "Aligns the camera to the correct view for rotated/tilted track pieces.");
+            this.AlignOrbitButton.UseVisualStyleBackColor = true;
+            this.AlignOrbitButton.Click += new System.EventHandler(this.OnAlignOrbitButtonClick);
             // 
-            // listBox2
+            // AttachmentList
             // 
-            this.listBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.listBox2.FormattingEnabled = true;
-            this.listBox2.ItemHeight = 24;
-            this.listBox2.Location = new System.Drawing.Point(963, 474);
-            this.listBox2.Margin = new System.Windows.Forms.Padding(4);
-            this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(351, 244);
-            this.listBox2.TabIndex = 6;
-            this.listBox2.SelectedIndexChanged += new System.EventHandler(this.listBox2_SelectedIndexChanged);
+            this.AttachmentList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.AttachmentList.FormattingEnabled = true;
+            this.AttachmentList.ItemHeight = 24;
+            this.AttachmentList.Location = new System.Drawing.Point(963, 474);
+            this.AttachmentList.Margin = new System.Windows.Forms.Padding(4);
+            this.AttachmentList.Name = "AttachmentList";
+            this.AttachmentList.Size = new System.Drawing.Size(351, 244);
+            this.AttachmentList.TabIndex = 6;
+            this.toolTip1.SetToolTip(this.AttachmentList, "This displays the attachments on the selected object.");
+            this.AttachmentList.SelectedIndexChanged += new System.EventHandler(this.OnSelectedAttachmentChanged);
             // 
-            // viewPortPanel1
+            // ViewPort
             // 
-            this.viewPortPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.ViewPort.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.viewPortPanel1.BackColor = System.Drawing.Color.Black;
-            this.viewPortPanel1.collisionviewmode = 1;
-            this.viewPortPanel1.Location = new System.Drawing.Point(460, 214);
-            this.viewPortPanel1.Margin = new System.Windows.Forms.Padding(11);
-            this.viewPortPanel1.Name = "viewPortPanel1";
-            this.viewPortPanel1.Size = new System.Drawing.Size(493, 511);
-            this.viewPortPanel1.TabIndex = 0;
-            this.viewPortPanel1.VSync = true;
-            this.viewPortPanel1.wireframemode = false;
-            this.viewPortPanel1.Load += new System.EventHandler(this.viewPortPanel1_Load);
-            this.viewPortPanel1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.viewPortPanel1_KeyDown);
-            this.viewPortPanel1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.viewPortPanel1_KeyUp);
+            this.ViewPort.BackColor = System.Drawing.Color.Black;
+            this.ViewPort.collisionviewmode = 1;
+            this.ViewPort.Location = new System.Drawing.Point(460, 214);
+            this.ViewPort.Margin = new System.Windows.Forms.Padding(11);
+            this.ViewPort.Name = "ViewPort";
+            this.ViewPort.Size = new System.Drawing.Size(493, 511);
+            this.ViewPort.TabIndex = 0;
+            this.ViewPort.VSync = true;
+            this.ViewPort.wireframemode = false;
             // 
             // MainForm
             // 
@@ -953,52 +952,52 @@ namespace MarioKartTrackMaker
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1326, 740);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.listBox2);
-            this.Controls.Add(this.listBox1);
-            this.Controls.Add(this.listView2);
+            this.Controls.Add(this.AttachmentList);
+            this.Controls.Add(this.ObjectList);
+            this.Controls.Add(this.SetList);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.listView1);
-            this.Controls.Add(this.viewPortPanel1);
+            this.Controls.Add(this.PartList);
+            this.Controls.Add(this.ViewPort);
             this.Controls.Add(this.menuStrip1);
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Text = "Mario Kart Track Maker";
-            this.Load += new System.EventHandler(this.Form1_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
-            this.Resize += new System.EventHandler(this.Form1_Resize);
+            this.Load += new System.EventHandler(this.OnLoad);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnKeyDown);
+            this.Resize += new System.EventHandler(this.OnResize);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ClipNearNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ClipFarNumeric)).EndInit();
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.tabPage3.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
+            this.ToolTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DecorationToolButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SnapToolButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ScaleToolButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RotationToolButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MoveToolButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SelectToolButton)).EndInit();
+            this.ObjectTab.ResumeLayout(false);
+            this.ScalePanel.ResumeLayout(false);
+            this.ScalePanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sclZnm)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.sclYnm)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.sclXnm)).EndInit();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.RotationPanel.ResumeLayout(false);
+            this.RotationPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.rotZnm)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rotYnm)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rotXnm)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.PositionPanel.ResumeLayout(false);
+            this.PositionPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.posZnm)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.posYnm)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.posXnm)).EndInit();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
+            this.ViewToolTab.ResumeLayout(false);
+            this.ViewToolTab.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1006,7 +1005,7 @@ namespace MarioKartTrackMaker
 
         #endregion
         
-        private ViewPortPanel viewPortPanel1;
+        private ViewPortPanel ViewPort;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openATrackToolStripMenuItem;
@@ -1018,31 +1017,31 @@ namespace MarioKartTrackMaker
         private System.Windows.Forms.ToolStripMenuItem closeTrackToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView PartList;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ListView listView2;
+        private System.Windows.Forms.ListView SetList;
         private System.Windows.Forms.ImageList imageList2;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.CheckBox WireframeCheckBox;
+        private System.Windows.Forms.CheckBox CollisionsCheckBox;
+        private System.Windows.Forms.ListBox ObjectList;
+        private System.Windows.Forms.NumericUpDown ClipNearNumeric;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.NumericUpDown ClipFarNumeric;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.PictureBox pictureBox6;
-        private System.Windows.Forms.PictureBox pictureBox5;
-        private System.Windows.Forms.PictureBox pictureBox4;
-        private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage ViewToolTab;
+        private System.Windows.Forms.TabPage ToolTab;
+        private System.Windows.Forms.PictureBox DecorationToolButton;
+        private System.Windows.Forms.PictureBox SnapToolButton;
+        private System.Windows.Forms.PictureBox ScaleToolButton;
+        private System.Windows.Forms.PictureBox RotationToolButton;
+        private System.Windows.Forms.PictureBox MoveToolButton;
+        private System.Windows.Forms.PictureBox SelectToolButton;
+        private System.Windows.Forms.TabPage ObjectTab;
         private System.Windows.Forms.Button ColorButton;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox PositionPanel;
         private System.Windows.Forms.NumericUpDown posZnm;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.NumericUpDown posYnm;
@@ -1050,14 +1049,14 @@ namespace MarioKartTrackMaker
         private System.Windows.Forms.NumericUpDown posXnm;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ColorDialog colorDialog1;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox ScalePanel;
         private System.Windows.Forms.NumericUpDown sclZnm;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.NumericUpDown sclYnm;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.NumericUpDown sclXnm;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox RotationPanel;
         private System.Windows.Forms.NumericUpDown rotZnm;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.NumericUpDown rotYnm;
@@ -1065,9 +1064,9 @@ namespace MarioKartTrackMaker
         private System.Windows.Forms.NumericUpDown rotXnm;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.ListBox listBox2;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ListBox AttachmentList;
+        private System.Windows.Forms.Button OrbitViewResetButton;
+        private System.Windows.Forms.Button AlignOrbitButton;
     }
 }
 

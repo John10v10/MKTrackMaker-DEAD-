@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace MarioKartTrackMaker.ViewerResources
 {
+    /// <summary>
+    /// The bounding box class.
+    /// </summary>
     public class Bounds
     {
         public float minX, maxX, minY, maxY, minZ, maxZ = 0;
@@ -34,6 +37,9 @@ namespace MarioKartTrackMaker.ViewerResources
                 return rslt;
             }
         }
+        /// <summary>
+        /// Gets the average value between the minimum size and the maximum size.
+        /// </summary>
         public float average
         {
             get
@@ -105,6 +111,11 @@ namespace MarioKartTrackMaker.ViewerResources
             }
             GL.End();
         }
+        /// <summary>
+        /// Calculates a transformed bounding box.
+        /// </summary>
+        /// <param name="mtx">The matrix to transform the bounding box.</param>
+        /// <returns></returns>
         public Bounds MultMtx(Matrix4 mtx)
         {
             Bounds b = new Bounds();
@@ -136,18 +147,61 @@ namespace MarioKartTrackMaker.ViewerResources
             return b;
         }
     }
+    /// <summary>
+    /// This class defines a mesh, a series of vertices, normals, texture coordinates (UVs), and faces. This is what is used to render model data.
+    /// </summary>
     public class Mesh
     {
+        /// <summary>
+        /// A series of 3D points.
+        /// </summary>
         public List<Vector3> Vertices;
+        /// <summary>
+        /// A series of lighting points.
+        /// </summary>
         public List<Vector3> Normals;
+        /// <summary>
+        /// A series of 2D texture coordinates.
+        /// </summary>
         public List<Vector2> UVs;
+        /// <summary>
+        /// A series of bounding boxes for triangles.
+        /// </summary>
         public List<Bounds> faceBounds = new List<Bounds>();
+        /// <summary>
+        /// A series of triangles that connect to specified vertex ids in the vertex list.
+        /// </summary>
         public List<int[]> faces;
+        /// <summary>
+        /// A series of triangles that connect to specified normal ids in the normal list.
+        /// </summary>
         public List<int[]> fnmls;
+        /// <summary>
+        /// A series of triangles that connect to specified texture coordinates ids in the UV list.
+        /// </summary>
         public List<int[]> fuvs;
+        /// <summary>
+        /// The texture id of the mesh. If -1, it should render with the diffuse color instead.
+        /// </summary>
         public int texture;
+        /// <summary>
+        /// Currently useless, but hope to make meshes shadeless if they hold a shadeless flag in their setting. 
+        /// </summary>
         public bool isShadeless = false;
+        /// <summary>
+        /// The bounding box size of this decoration mesh.
+        /// </summary>
         public Bounds size = new Bounds();
+        /// <summary>
+        /// Constructor. Loads the mesh from the specified inputs.
+        /// </summary>
+        /// <param name="Vertices">The specified vertex list.</param>
+        /// <param name="Normals">The specified normal list.</param>
+        /// <param name="UVs">The specified UV list.</param>
+        /// <param name="faces">The specified vertex face list.</param>
+        /// <param name="fnmls">The specified normal face list.<param>
+        /// <param name="fuvs">The specified uv face list.<param>
+        /// <param name="texture">The specified texture.</param>
         public Mesh(List<Vector3> Vertices, List<Vector3> Normals, List<Vector2> UVs, List<int[]> faces, List<int[]> fnmls, List<int[]> fuvs, int texture)
         {
             this.Vertices = Vertices;
@@ -162,6 +216,9 @@ namespace MarioKartTrackMaker.ViewerResources
             CalculateFaceBounds();
         }
 
+        /// <summary>
+        /// Calculates the boundaries of all the vertex faces in this mesh.
+        /// </summary>
         private void CalculateFaceBounds()
         {
             foreach (int[] f in faces)
@@ -188,6 +245,9 @@ namespace MarioKartTrackMaker.ViewerResources
             }
         }
 
+        /// <summary>
+        /// Calculates the boundaries of this mesh.
+        /// </summary>
         private void CalculateBounds()
         {
             size.minX = float.PositiveInfinity;
@@ -208,6 +268,9 @@ namespace MarioKartTrackMaker.ViewerResources
             }
         }
 
+        /// <summary>
+        /// Removes a useless vertex without messing up the entire mesh.
+        /// </summary>
         private void RemoveVertex(int index)
         {
             Vertices.RemoveAt(index);
@@ -239,6 +302,9 @@ namespace MarioKartTrackMaker.ViewerResources
                 }
             }
         }
+        /// <summary>
+        /// Removes a useless texture coordinate without messing up the entire mesh.
+        /// </summary>
         private void RemoveUV(int index)
         {
             UVs.RemoveAt(index);
@@ -250,6 +316,9 @@ namespace MarioKartTrackMaker.ViewerResources
                 }
             }
         }
+        /// <summary>
+        /// Removes a useless normal without messing up the entire mesh.
+        /// </summary>
         private void RemoveNormal(int index)
         {
             Normals.RemoveAt(index);
@@ -261,7 +330,10 @@ namespace MarioKartTrackMaker.ViewerResources
                 }
             }
         }
-        public static int amountremoved = 0;
+
+        /// <summary>
+        /// Checks to see if a vertex is used in any vertex face list.
+        /// </summary>
         private bool InFaces(int index)
         {
             foreach (int[] f in faces)
@@ -270,6 +342,9 @@ namespace MarioKartTrackMaker.ViewerResources
                         return true;
             return false;
         }
+        /// <summary>
+        /// Checks to see if a normal is used in any normal face list.
+        /// </summary>
         private bool InFnmls(int index)
         {
             foreach (int[] f in fnmls)
@@ -278,6 +353,9 @@ namespace MarioKartTrackMaker.ViewerResources
                         return true;
             return false;
         }
+        /// <summary>
+        /// Checks to see if a texture coordinate is used in any UV face list.
+        /// </summary>
         private bool InFuvs(int index)
         {
             foreach (int[] f in fuvs)
@@ -286,6 +364,9 @@ namespace MarioKartTrackMaker.ViewerResources
                         return true;
             return false;
         }
+        /// <summary>
+        /// Removes all unnecessary data from the mesh. This is supposed to be flawless and make no apparent changes, but free up some memory.
+        /// </summary>
         private void Optimize()
         {
             List<int> Verts_to_remove = new List<int>();
@@ -333,7 +414,6 @@ namespace MarioKartTrackMaker.ViewerResources
             for (int i = 0; i < UVs_to_remove.Count; i++)
             {
                 RemoveUV(UVs_to_remove[i]);
-                amountremoved++;
                 for (int ii = 0; ii < UVs_to_remove.Count; ii++)
                 {
                     if (UVs_to_remove[i] < UVs_to_remove[ii])
@@ -342,6 +422,13 @@ namespace MarioKartTrackMaker.ViewerResources
             }
         }
 
+        /// <summary>
+        /// Renders the mesh.
+        /// </summary>
+        /// <param name="program">The id of the shader program.</param>
+        /// <param name="wireframe">Render this as wireframe?</param>
+        /// <param name="selected">Make the mesh look highlighted/selected?</param>
+        /// <param name="Color">The diffuse color.</param>
         public void DrawMesh(int program, bool wireframe, bool selected, Vector3 Color)
         {
             GL.UseProgram(program);

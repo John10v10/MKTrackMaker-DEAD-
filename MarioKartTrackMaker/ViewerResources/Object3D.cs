@@ -1,17 +1,29 @@
 ﻿using OpenTK;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL;
 namespace MarioKartTrackMaker.ViewerResources
 {
+    /// <summary>
+    /// This class defines a track part or track element.
+    /// </summary>
     public class Object3D
     {
+        /// <summary>
+        /// The database of all the 3D objects in the scene.
+        /// </summary>
         public static List<Object3D> database = new List<Object3D>();
+        /// <summary>
+        /// Defines the active object in the scene.
+        /// </summary>
         public static Object3D Active_Object;
+        /// <summary>
+        /// This defines all the secondary selected 3D objects. This is currently useless right now, but I plan to use it in the future.
+        /// </summary>
         public static List<Object3D> Selected_Objects = new List<Object3D>();
+        /// <summary>
+        /// This structure defines that attachments on this 3D object are actually connected to another attachment and object.
+        /// </summary>
         public class attachmentInfo
         {
             public Attachment thisAtch;
@@ -20,6 +32,9 @@ namespace MarioKartTrackMaker.ViewerResources
             public attachmentInfo thatAtchInfo;
             public Object3D AttachedTo;
 
+            /// <summary>
+            /// Attaches the 3D object to the other 3D object via the other attachment.
+            /// </summary>
             public void Attach()
             {
                 thisObject.transform = thisAtch.transform.Inverted()*thatAtch.transform*AttachedTo.transform;
@@ -45,9 +60,21 @@ namespace MarioKartTrackMaker.ViewerResources
                 no:;
             }
         }
+        /// <summary>
+        /// The list of all the connected attachments.
+        /// </summary>
         public List<attachmentInfo> atch_info = new List<attachmentInfo>();
+        /// <summary>
+        /// The list of all the decorations that lie on this object.
+        /// </summary>
         public List<DecorationObject> Decorations = new List<DecorationObject>();
+        /// <summary>
+        /// The 3D object's model defined by the database index.
+        /// </summary>
         private int _model;
+        /// <summary>
+        /// Gets the 3D object's model.
+        /// </summary>
         public Model model
         {
             get
@@ -58,6 +85,9 @@ namespace MarioKartTrackMaker.ViewerResources
         private Vector3 _position = Vector3.Zero;
         private Quaternion _rotation = Quaternion.Identity;
         private Vector3 _scale = Vector3.One;
+        /// <summary>
+        /// The position of the 3D object.
+        /// </summary>
         public Vector3 position {
             get { return _position; }
             set
@@ -66,6 +96,9 @@ namespace MarioKartTrackMaker.ViewerResources
                 FixTransform();
             }
         }
+        /// <summary>
+        /// The rotation of the 3D object.
+        /// </summary>
         public Quaternion rotation
         {
             get { return _rotation; }
@@ -75,6 +108,9 @@ namespace MarioKartTrackMaker.ViewerResources
                 FixTransform();
             }
         }
+        /// <summary>
+        /// The scale of the 3D object.
+        /// </summary>
         public Vector3 scale
         {
             get { return _scale; }
@@ -86,6 +122,9 @@ namespace MarioKartTrackMaker.ViewerResources
         }
         private Matrix4 _transform = Matrix4.Identity;
 
+        /// <summary>
+        /// The overall transformation of the 3D object.
+        /// </summary>
         public Matrix4 transform
         {
             get
@@ -101,14 +140,27 @@ namespace MarioKartTrackMaker.ViewerResources
             }
         }
 
+        /// <summary>
+        /// The diffuse color of the 3D object.
+        /// </summary>
         public Vector3 Color = Vector3.One;
 
+        /// <summary>
+        /// Fixes the transformation matrix on the position, rotation, and scale.
+        /// </summary>
         private void FixTransform()
         {
             _transform = Matrix4.Mult(Matrix4.CreateScale(scale), Matrix4.Mult(Matrix4.CreateFromQuaternion(rotation), Matrix4.CreateTranslation(position)));
         }
+        /// <summary>
+        /// Defines the attachment that is currently selected.
+        /// </summary>
         public Attachment Active_Attachment;
 
+        /// <summary>
+        /// Let's construct a 3D object!
+        /// </summary>
+        /// <param name="filepath">The path to import the model file.</param>
         public Object3D(string filepath)
         {
             _model = Model.AddModel(filepath);
@@ -131,6 +183,9 @@ namespace MarioKartTrackMaker.ViewerResources
                 }
             }
         }
+        /// <summary>
+        /// By doing this, if this object is supposed to be attached to another object, but it isn't, it'll attach that object to this object, and then any objects to that objects, and so on.
+        /// </summary>
         public void FixAttachments()
         {
             List<attachmentInfo> Fixed_Attachments = new List<attachmentInfo>();
@@ -152,12 +207,21 @@ namespace MarioKartTrackMaker.ViewerResources
             }
             return FOUND;
         }
+        /// <summary>
+        /// Checks if the specified 3D object is contained inside a group of attached 3D objects.
+        /// </summary>
+        /// <param name="obj">The specified 3D object.</param>
+        /// <returns></returns>
         public bool ContainsObjectInChain(Object3D obj)
         {
             List<Object3D> Passed_Objects = new List<Object3D>();
             return _ContainsAttachmentInChain(obj, ref Passed_Objects);
         }
 
+        /// <summary>
+        /// Draws the current manipulation tool for this 3D object.
+        /// </summary>
+        /// <param name="HoverState">Which one apears white? Set to -1 if you don't want that.</param>
         public void DrawTool(int HoverState)
         {
             GL.PushMatrix();
@@ -176,14 +240,19 @@ namespace MarioKartTrackMaker.ViewerResources
                 case Tools.Scale:
                     ToolModels.DrawScaleTool(HoverState, model.size.maxS * ((this == Active_Object) ? 1 : 0.25f));
                     break;
-                case Tools.Snap:
-                    ToolModels.DrawConnectTool(model.size.maxS * ((this == Active_Object) ? 1 : 0.25f));
-                    break;
                 case Tools.Decorate:
                     break;
             }
             GL.PopMatrix();
         }
+        /// <summary>
+        /// Renders the 3D object.
+        /// </summary>
+        /// <param name="program">The id of the shader program.</param>
+        /// <param name="collision_mode">The collision mode. 1 displays only the model, 2 displays only the model's collisions, and 3 displays both.</param>
+        /// <param name="wireframe">Render this as wireframe?</param>
+        /// <param name="inSight">Render the model if the 3D object is in camera's sight.</param>
+        /// <param name="cam">The camera.</param>
         public void DrawObject(int program, int collision_mode, bool wireframe, bool inSight, Camera cam)
         {
             GL.PushMatrix();
@@ -210,6 +279,9 @@ namespace MarioKartTrackMaker.ViewerResources
             GL.PopMatrix();
         }
 
+        /// <summary>
+        /// Displays the attachments.
+        /// </summary>
         private void DrawAttachments()
         {
             foreach (Attachment atch in model.attachments)
@@ -222,6 +294,12 @@ namespace MarioKartTrackMaker.ViewerResources
             }
         }
 
+        /// <summary>
+        /// This will attach the object to another object.
+        /// </summary>
+        /// <param name="atch">The target attachment.</param>
+        /// <param name="targetObj">The target object.</param>
+        /// <returns></returns>
         public bool attachTo(Attachment atch, Object3D targetObj)
         {
             foreach(Attachment thisatch in model.attachments)
@@ -235,6 +313,13 @@ namespace MarioKartTrackMaker.ViewerResources
             }
             return false;
         }
+        /// <summary>
+        /// This will attach the object to another object with the specified attachment.
+        /// </summary>
+        /// <param name="thisatch">The specified attachment.</param>
+        /// <param name="thatatch">The target attachment.</param>
+        /// <param name="targetObj">The target object.</param>
+        /// <returns></returns>
         public void attachTo(Attachment thisatch, Attachment thatatch, Object3D targetObj)
         {
             

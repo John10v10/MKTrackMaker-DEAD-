@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using MarioKartTrackMaker.ViewerResources;
@@ -13,15 +7,39 @@ using OpenTK;
 
 namespace MarioKartTrackMaker
 {
+    /// <summary>
+    /// The program's tools defined by integers.
+    /// </summary>
     public enum Tools : int
     {
+        /// <summary>
+        /// The selection tool.
+        /// </summary>
         Select = 0,
+        /// <summary>
+        /// The move tool.
+        /// </summary>
         Move = 1,
+        /// <summary>
+        /// The rotation tool.
+        /// </summary>
         Rotate = 2,
+        /// <summary>
+        /// The scale tool.
+        /// </summary>
         Scale = 3,
+        /// <summary>
+        /// The tool that attaches the selected part to another.
+        /// </summary>
         Snap = 4,
+        /// <summary>
+        /// This tool allows you to decorate whatever is selected from the list on to any part.
+        /// </summary>
         Decorate = 5
     }
+    /// <summary>
+    /// The main form of the program.
+    /// </summary>
     public partial class MainForm : Form
     {
         public MainForm()
@@ -29,50 +47,48 @@ namespace MarioKartTrackMaker
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        /// <summary>
+        /// Loads the form.
+        /// </summary>
+        private void OnLoad(object sender, EventArgs e)
         {
-            LoadSets(listView2);
+            LoadSets(SetList);
             UpdateToolStats();
             UpdateObjectStats();
-            listBox1.Height = (int)((Height - listBox1.Top - 48.0) / 2.0 - 8.0);
-            listBox2.Top = (int)(listBox1.Top + listBox1.Height + 8.0);
-            listBox2.Height = (int)((Height - listBox2.Top - 48.0));
+            ObjectList.Height = (int)((Height - ObjectList.Top - 48.0) / 2.0 - 8.0);
+            AttachmentList.Top = (int)(ObjectList.Top + ObjectList.Height + 8.0);
+            AttachmentList.Height = (int)((Height - AttachmentList.Top - 48.0));
         }
+        /// <summary>
+        /// This static field tells the program what tool is currently active. The selection tool is default.
+        /// </summary>
         public static Tools current_tool = Tools.Select;
+        /// <summary>
+        /// This is the bridge to access stuff in the decorations window from stuff in here. 
+        /// </summary>
         public Decorations_Form DF = new Decorations_Form();
-        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
-        {
-
-        }
-
-        private void openATrackToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void closeTrackToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
+        /// <summary>
+        /// Loads/refreshes all the objects in the scene.
+        /// </summary>
         public void DisplayObjectList()
         {
             Object3D activeObj = Object3D.Active_Object;
-            listBox1.Items.Clear();
+            ObjectList.Items.Clear();
             foreach (Object3D obj in Object3D.database)
             {
-                listBox1.Items.Add(obj);
+                ObjectList.Items.Add(obj);
             }
             if(activeObj != null)
             {
+                ObjectList.SelectedItem = activeObj;
                 Object3D.Active_Object = activeObj;
-                listBox1.SelectedItem = activeObj;
             }
             
         }
+        /// <summary>
+        /// Loads all sets from the "Parts_n_Models" folder.
+        /// </summary>
+        /// <param name="sender">The target ListView control</param>
         private void LoadSets(ListView sender)
         {
             int imageIndex = 0;
@@ -80,6 +96,7 @@ namespace MarioKartTrackMaker
             sender.LargeImageList.Images.Clear();
             try
             {
+                CheckDirectory("Parts_n_Models");
                 foreach (string dir in Directory.GetDirectories("Parts_n_Models"))
                 {
 					int plat = (int)Environment.OSVersion.Platform;
@@ -105,19 +122,41 @@ namespace MarioKartTrackMaker
             }
         }
 
-        private void listView2_SelectedIndexChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Checks to see if the directory exists. If it doesn't it will pop up an error message.
+        /// </summary>
+        /// <param name="v">The directory to check</param>
+        private void CheckDirectory(string v)
         {
-            if(listView2.SelectedItems.Count > 0)
+            if (!Directory.Exists(v))
             {
-                LoadParts(listView1, (string)listView2.SelectedItems[0].Tag);
-            }
-            else
-            {
-                listView1.Items.Clear();
-                listView1.LargeImageList.Images.Clear();
+                MessageBox.Show(string.Format("{0} directory is not found. Please add {0} in the directory of this program.", v), "Missing Directory:");
             }
         }
 
+        /// <summary>
+        /// When the selected index of the set list changes, it will automatically load the track parts of the selected set.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnSelectedSetChanged(object sender, EventArgs e)
+        {
+            if(SetList.SelectedItems.Count > 0)
+            {
+                LoadParts(PartList, (string)SetList.SelectedItems[0].Tag);
+            }
+            else
+            {
+                PartList.Items.Clear();
+                PartList.LargeImageList.Images.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Loads the parts of the selected set.
+        /// </summary>
+        /// <param name="listView">Target ListView control</param>
+        /// <param name="dir">Directory to load the sets.</param>
         private void LoadParts(ListView listView, string dir)
         {
             int imageIndex = 0;
@@ -144,57 +183,67 @@ namespace MarioKartTrackMaker
             }
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Sets the viewport to either render normal or in a wireframe view.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnWireframeCheckBoxChanged(object sender, EventArgs e)
         {
-            viewPortPanel1.wireframemode = ((CheckBox)sender).Checked;
+            ViewPort.wireframemode = ((CheckBox)sender).Checked;
         }
 
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Sets the viewport to either render normal, only collisions, or both.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnCollisionCheckBoxChanged(object sender, EventArgs e)
         {
             if (((CheckBox)sender).CheckState == CheckState.Unchecked)
-                viewPortPanel1.collisionviewmode = 1;
+                ViewPort.collisionviewmode = 1;
             else if (((CheckBox)sender).CheckState == CheckState.Checked)
-                viewPortPanel1.collisionviewmode = 2;
+                ViewPort.collisionviewmode = 2;
             else if (((CheckBox)sender).CheckState == CheckState.Indeterminate)
-                viewPortPanel1.collisionviewmode = 3;
+                ViewPort.collisionviewmode = 3;
+        }
+        
+        
+        /// <summary>
+        /// Sets the viewport's far clipping.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnClipFarValueChanged(object sender, EventArgs e)
+        {
+            ClipNearNumeric.Maximum = ClipFarNumeric.Value;
+            ViewPort.cam.clip_far = (float)ClipFarNumeric.Value;
+            ViewPort.Invalidate();
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        /// <summary>
+        /// Sets the viewport's near clipping.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnClipNearValueChanged(object sender, EventArgs e)
         {
-            viewPortPanel1.Invoke((EventHandler)delegate {viewPortPanel1.Invalidate();});
+            ViewPort.cam.clip_near = (float)ClipNearNumeric.Value;
+            ViewPort.Invalidate();
         }
-
-        private void viewPortPanel1_Load(object sender, EventArgs e)
+        /// <summary>
+        /// If you want the active object to set to what you click on in the object list, set this value to true.
+        /// </summary>
+        public bool DoStuffWhenSelectedObjectIndexChanged = true;
+        /// <summary>
+        /// Loads the data of the selected object of the object list to all of the object controls, and if DoStuffWhenSelectedObjectIndexChanged is true,
+        /// the active object will set to the selected object of the object list.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnObjectListIndexChanged(object sender, EventArgs e)
         {
-
-        }
-
-        private void viewPortPanel1_KeyDown(object sender, KeyEventArgs e)
-        {
-
-        }
-
-        private void viewPortPanel1_KeyUp(object sender, KeyEventArgs e)
-        {
-
-        }
-
-        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
-        {
-            numericUpDown1.Maximum = numericUpDown2.Value;
-            viewPortPanel1.cam.clip_far = (float)numericUpDown2.Value;
-            viewPortPanel1.Invalidate();
-        }
-
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
-        {
-            viewPortPanel1.cam.clip_near = (float)numericUpDown1.Value;
-            viewPortPanel1.Invalidate();
-        }
-        public bool listBox1_DoStuffWhenIndexChanged = true;
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (listBox1_DoStuffWhenIndexChanged)
+            if (DoStuffWhenSelectedObjectIndexChanged)
             {
                 if (((ListBox)sender).SelectedItems.Count > 0)
                 {
@@ -202,26 +251,33 @@ namespace MarioKartTrackMaker
                 }
                 else Object3D.Active_Object = null;
             }
-            viewPortPanel1.Invalidate();
+            ViewPort.Invalidate();
             UpdateObjectStats();
         }
+        /// <summary>
+        /// Refreshes the active object in the object list.
+        /// </summary>
         public void UpdateActiveObject()
         {
-            listBox1.SelectedItems.Clear();
-            if(Object3D.Active_Object != null)
-                listBox1.SelectedItems.Add(Object3D.Active_Object);
-	    if(Object3D.Active_Object != null)
-            	listBox1.SelectedItems.Add(Object3D.Active_Object);
+            ObjectList.SelectedItems.Clear();
+            if (Object3D.Active_Object != null)
+                ObjectList.SelectedItems.Add(Object3D.Active_Object);
+            if (Object3D.Active_Object != null)
+                ObjectList.SelectedItems.Add(Object3D.Active_Object);
         }
+        /// <summary>
+        /// Loads the data of the active object to all of the object controls.
+        /// </summary>
         public void UpdateObjectStats()
         {
-            listBox2.Items.Clear();
+            AttachmentList.Items.Clear();
             ColorButton.Enabled = posXnm.Enabled = posYnm.Enabled = posZnm.Enabled = rotXnm.Enabled = rotYnm.Enabled = rotZnm.Enabled = sclXnm.Enabled = sclYnm.Enabled = sclZnm.Enabled = false;
             if (Object3D.Active_Object != null)
             {
                 posXnm.Value = (decimal)Object3D.Active_Object.position.X;
                 posYnm.Value = (decimal)Object3D.Active_Object.position.Y;
                 posZnm.Value = (decimal)Object3D.Active_Object.position.Z;
+                //We need to convert the active object's rotation into 3 euler angles.
                 Quaternion q = Object3D.Active_Object.rotation;
                 rotXnm.Value = (decimal)(Math.Round(Math.Atan2(Math.Max(-1, Math.Min(1, (2 * q.X * q.W - 2 * q.Y * q.Z))), Math.Max(-1, Math.Min(1, (1 - 2 * q.X * q.X - 2 * q.Z * q.Z)))) * 180 / Math.PI, 3));
                 rotYnm.Value = (decimal)(Math.Round(Math.Atan2(Math.Max(-1, Math.Min(1, (2 * q.Y * q.W - 2 * q.X * q.Z))), Math.Max(-1, Math.Min(1, (1 - 2 * q.Y * q.Y - 2 * q.Z * q.Z)))) * 180 / Math.PI, 3));
@@ -248,8 +304,8 @@ namespace MarioKartTrackMaker
                 ColorButton.BackColor = Color.White;
                 ColorButton.ForeColor = Color.Black;
             }
-            listBox2.Items.Clear();
-            listBox2.SelectedItems.Clear();
+            AttachmentList.Items.Clear();
+            AttachmentList.SelectedItems.Clear();
             if (Object3D.Active_Object != null)
             {
                 foreach (Attachment atch in Object3D.Active_Object.model.attachments)
@@ -257,45 +313,51 @@ namespace MarioKartTrackMaker
                     foreach (Object3D.attachmentInfo atif in Object3D.Active_Object.atch_info)
                         if (atif.thisAtch == atch)
                             goto no;
-                    listBox2.Items.Add(atch);
+                    AttachmentList.Items.Add(atch);
                     if (atch == Object3D.Active_Object.Active_Attachment)
                     {
-                        listBox2.SelectedItems.Add(atch);
+                        AttachmentList.SelectedItems.Add(atch);
                     }
                     no:;
                 }
-                if(listBox2.SelectedItems.Count == 0 && listBox2.Items.Count > 0)
+                if(AttachmentList.SelectedItems.Count == 0 && AttachmentList.Items.Count > 0)
                 {
-                    listBox2.SelectedItems.Add(listBox2.Items[0]);
+                    AttachmentList.SelectedItems.Add(AttachmentList.Items[0]);
                 }
             }
         }
 
-        private void listBox1_DoubleClick(object sender, EventArgs e)
+        /// <summary>
+        /// When the object list is double clicked, it will navigate the viewport to the selected object.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnObjectListDoubleClick(object sender, EventArgs e)
         {
-            if (listBox1.SelectedItems.Count > 0)
+            if (ObjectList.SelectedItems.Count > 0)
             {
-                viewPortPanel1.GoToObject((Object3D)listBox1.SelectedItems[0], false);
+                ViewPort.GoToObject((Object3D)ObjectList.SelectedItems[0], false);
             }
         }
-
-        private void tabPage1_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        
+        /// <summary>
+        /// Refreshes the tool buttons to display which one is selected.
+        /// </summary>
         public void UpdateToolStats()
         {
             Color sc = Color.LightSkyBlue;
-            pictureBox1.BackColor = (current_tool == Tools.Select) ? sc : Color.White;
-            pictureBox2.BackColor = (current_tool == Tools.Move) ? sc : Color.White;
-            pictureBox3.BackColor = (current_tool == Tools.Rotate) ? sc : Color.White;
-            pictureBox4.BackColor = (current_tool == Tools.Scale) ? sc : Color.White;
-            pictureBox5.BackColor = (current_tool == Tools.Snap) ? sc : Color.White;
-            pictureBox6.BackColor = (current_tool == Tools.Decorate) ? sc : Color.White;
+            SelectToolButton.BackColor = (current_tool == Tools.Select) ? sc : Color.White;
+            MoveToolButton.BackColor = (current_tool == Tools.Move) ? sc : Color.White;
+            RotationToolButton.BackColor = (current_tool == Tools.Rotate) ? sc : Color.White;
+            ScaleToolButton.BackColor = (current_tool == Tools.Scale) ? sc : Color.White;
+            SnapToolButton.BackColor = (current_tool == Tools.Snap) ? sc : Color.White;
+            DecorationToolButton.BackColor = (current_tool == Tools.Decorate) ? sc : Color.White;
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Sets the active tool to the select tool.
+        /// </summary>
+        private void OnSelectToolClick(object sender, EventArgs e)
         {
             if (DF.Visible)
             {
@@ -303,10 +365,13 @@ namespace MarioKartTrackMaker
             }
             current_tool = Tools.Select;
             UpdateToolStats();
-            viewPortPanel1.Invalidate();
+            ViewPort.Invalidate();
         }
 
-        private void pictureBox2_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Sets the active tool to the move tool.
+        /// </summary>
+        private void OnMoveToolClick(object sender, EventArgs e)
         {
 
             if (DF.Visible)
@@ -315,10 +380,13 @@ namespace MarioKartTrackMaker
             }
             current_tool = Tools.Move;
             UpdateToolStats();
-            viewPortPanel1.Invalidate();
+            ViewPort.Invalidate();
         }
 
-        private void pictureBox3_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Sets the active tool to the rotate tool.
+        /// </summary>
+        private void OnRotateToolClick(object sender, EventArgs e)
         {
             if (DF.Visible)
             {
@@ -326,10 +394,13 @@ namespace MarioKartTrackMaker
             }
             current_tool = Tools.Rotate;
             UpdateToolStats();
-            viewPortPanel1.Invalidate();
+            ViewPort.Invalidate();
         }
 
-        private void pictureBox4_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Sets the active tool to the scale tool.
+        /// </summary>
+        private void OnScaleToolClick(object sender, EventArgs e)
         {
 
             if (DF.Visible)
@@ -338,10 +409,13 @@ namespace MarioKartTrackMaker
             }
             current_tool = Tools.Scale;
             UpdateToolStats();
-            viewPortPanel1.Invalidate();
+            ViewPort.Invalidate();
         }
 
-        private void pictureBox5_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Sets the active tool to the attach tool.
+        /// </summary>
+        private void OnAttachToolClick(object sender, EventArgs e)
         {
             if (DF.Visible)
             {
@@ -349,40 +423,39 @@ namespace MarioKartTrackMaker
             }
             current_tool = Tools.Snap;
             UpdateToolStats();
-            viewPortPanel1.Invalidate();
+            ViewPort.Invalidate();
         }
 
-        private void pictureBox6_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Sets the active tool to the decoration tool.
+        /// </summary>
+        private void OnDecorationToolClick(object sender, EventArgs e)
         {
             if (!DF.Visible) {
                 DF.Show();
-                this.Activate();
+                Activate();
             }
             current_tool = Tools.Decorate;
             UpdateToolStats();
-            viewPortPanel1.Invalidate();
+            ViewPort.Invalidate();
         }
 
-        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        /// <summary>
+        /// This tells the program to load a part from the selection of the part list.
+        /// </summary>
+        private void OnPartsListDoubleClick(object sender, MouseEventArgs e)
         {
-
-        }
-
-        private void listView1_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if (listView1.SelectedItems.Count > 0)
+            if (PartList.SelectedItems.Count > 0)
             {
-                viewPortPanel1.InsertObjects((string)listView1.SelectedItems[0].Tag, (listBox2.SelectedItems.Count > 0)?((Attachment)listBox2.SelectedItems[0]):null);
-                viewPortPanel1.Refresh();
+                ViewPort.InsertObject((string)PartList.SelectedItems[0].Tag, (AttachmentList.SelectedItems.Count > 0)?((Attachment)AttachmentList.SelectedItems[0]):null);
+                ViewPort.Refresh();
                 DisplayObjectList();
             }
         }
 
+        /// <summary>
+        /// Sets the X position of the active object.
+        /// </summary>
         private void posXnm_ValueChanged(object sender, EventArgs e)
         {
             if (((NumericUpDown)sender).Enabled)
@@ -391,11 +464,14 @@ namespace MarioKartTrackMaker
                 pos.X = (float)((NumericUpDown)sender).Value;
                 Object3D.Active_Object.position = pos;
                 Object3D.Active_Object.FixAttachments();
-                viewPortPanel1.Invalidate();
+                ViewPort.Invalidate();
                 DisplayObjectList();
             }
         }
 
+        /// <summary>
+        /// Sets the Y position of the active object.
+        /// </summary>
         private void posYnm_ValueChanged(object sender, EventArgs e)
         {
 
@@ -405,11 +481,14 @@ namespace MarioKartTrackMaker
                 pos.Y = (float)((NumericUpDown)sender).Value;
                 Object3D.Active_Object.position = pos;
                 Object3D.Active_Object.FixAttachments();
-                viewPortPanel1.Invalidate();
+                ViewPort.Invalidate();
                 DisplayObjectList();
             }
         }
 
+        /// <summary>
+        /// Sets the Z position of the active object.
+        /// </summary>
         private void posZnm_ValueChanged(object sender, EventArgs e)
         {
             if (((NumericUpDown)sender).Enabled)
@@ -418,11 +497,14 @@ namespace MarioKartTrackMaker
                 pos.Z = (float)((NumericUpDown)sender).Value;
                 Object3D.Active_Object.position = pos;
                 Object3D.Active_Object.FixAttachments();
-                viewPortPanel1.Invalidate();
+                ViewPort.Invalidate();
                 DisplayObjectList();
             }
         }
 
+        /// <summary>
+        /// Sets the X rotation of the active object.
+        /// </summary>
         private void rotXnm_ValueChanged(object sender, EventArgs e)
         {
 
@@ -431,11 +513,14 @@ namespace MarioKartTrackMaker
                 Object3D.Active_Object.rotation = Quaternion.FromEulerAngles(new Vector3((float)((double)(rotZnm.Value) / 180 * Math.PI), (float)((double)(rotYnm.Value) / 180 * Math.PI), (float)((double)(rotXnm.Value) / 180 * Math.PI)));
 
                 Object3D.Active_Object.FixAttachments();
-                viewPortPanel1.Invalidate();
+                ViewPort.Invalidate();
                 DisplayObjectList();
             }
         }
 
+        /// <summary>
+        /// Sets the Y rotation of the active object.
+        /// </summary>
         private void rotYnm_ValueChanged(object sender, EventArgs e)
         {
 
@@ -444,11 +529,14 @@ namespace MarioKartTrackMaker
                 Object3D.Active_Object.rotation = Quaternion.FromEulerAngles(new Vector3((float)((double)(rotZnm.Value) / 180 * Math.PI), (float)((double)(rotYnm.Value) / 180 * Math.PI), (float)((double)(rotXnm.Value) / 180 * Math.PI)));
 
                 Object3D.Active_Object.FixAttachments();
-                viewPortPanel1.Invalidate();
+                ViewPort.Invalidate();
                 DisplayObjectList();
             }
         }
 
+        /// <summary>
+        /// Sets the Z rotation of the active object.
+        /// </summary>
         private void rotZnm_ValueChanged(object sender, EventArgs e)
         {
             if (((NumericUpDown)sender).Enabled)
@@ -456,11 +544,14 @@ namespace MarioKartTrackMaker
                 Object3D.Active_Object.rotation = Quaternion.FromEulerAngles(new Vector3((float)((double)(rotZnm.Value) / 180 * Math.PI), (float)((double)(rotYnm.Value) / 180 * Math.PI), (float)((double)(rotXnm.Value) / 180 * Math.PI)));
 
                 Object3D.Active_Object.FixAttachments();
-                viewPortPanel1.Invalidate();
+                ViewPort.Invalidate();
                 DisplayObjectList();
             }
         }
 
+        /// <summary>
+        /// Sets the X scale of the active object.
+        /// </summary>
         private void sclXnm_ValueChanged(object sender, EventArgs e)
         {
 
@@ -470,11 +561,14 @@ namespace MarioKartTrackMaker
                 scale.X = (float)((NumericUpDown)sender).Value;
                 Object3D.Active_Object.scale = scale;
                 Object3D.Active_Object.FixAttachments();
-                viewPortPanel1.Invalidate();
+                ViewPort.Invalidate();
                 DisplayObjectList();
             }
         }
 
+        /// <summary>
+        /// Sets the Y scale of the active object.
+        /// </summary>
         private void sclYnm_ValueChanged(object sender, EventArgs e)
         {
 
@@ -484,11 +578,14 @@ namespace MarioKartTrackMaker
                 scale.Y = (float)((NumericUpDown)sender).Value;
                 Object3D.Active_Object.scale = scale;
                 Object3D.Active_Object.FixAttachments();
-                viewPortPanel1.Invalidate();
+                ViewPort.Invalidate();
                 DisplayObjectList();
             }
         }
 
+        /// <summary>
+        /// Sets the Z scale of the active object.
+        /// </summary>
         private void sclZnm_ValueChanged(object sender, EventArgs e)
         {
             if (((NumericUpDown)sender).Enabled)
@@ -497,40 +594,57 @@ namespace MarioKartTrackMaker
                 scale.Z = (float)((NumericUpDown)sender).Value;
                 Object3D.Active_Object.scale = scale;
                 Object3D.Active_Object.FixAttachments();
-                viewPortPanel1.Invalidate();
+                ViewPort.Invalidate();
                 DisplayObjectList();
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Globally fixes the camera tilt.
+        /// </summary>
+        private void OnOrbitViewResetButtonClick(object sender, EventArgs e)
         {
-            viewPortPanel1.cam.UpDirection = Vector3.UnitZ;
-            viewPortPanel1.Invalidate();
+            ViewPort.cam.UpDirection = Vector3.UnitZ;
+            ViewPort.Invalidate();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Fixes the camera tilt to the selected object.
+        /// </summary>
+        private void OnAlignOrbitButtonClick(object sender, EventArgs e)
         {
-            viewPortPanel1.cam.UpDirection = Vector3.UnitZ*Matrix3.CreateFromQuaternion(Object3D.Active_Object.rotation);
-            viewPortPanel1.Invalidate();
+            ViewPort.cam.UpDirection = Vector3.UnitZ*Matrix3.CreateFromQuaternion(Object3D.Active_Object.rotation);
+            ViewPort.Invalidate();
         }
 
-        private void Form1_Resize(object sender, EventArgs e)
+        /// <summary>
+        /// Fizes the controls to the new size of the form.
+        /// </summary>
+        private void OnResize(object sender, EventArgs e)
         {
-            listBox1.Height = (int)((Height - listBox1.Top - 48.0) / 2.0 - 8.0);
-            listBox2.Top = (int)(listBox1.Top + listBox1.Height + 8.0);
-            listBox2.Height = (int)((Height - listBox2.Top - 48.0));
+            ObjectList.Height = (int)((Height - ObjectList.Top - 48.0) / 2.0 - 8.0);
+            AttachmentList.Top = (int)(ObjectList.Top + ObjectList.Height + 8.0);
+            AttachmentList.Height = (int)((Height - AttachmentList.Top - 48.0));
         }
 
-        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Selects the attachment from the active object.
+        /// </summary>
+        private void OnSelectedAttachmentChanged(object sender, EventArgs e)
         {
-            if(listBox2.SelectedItems.Count > 0 && Object3D.Active_Object != null)
+            if(AttachmentList.SelectedItems.Count > 0 && Object3D.Active_Object != null)
             {
-                Object3D.Active_Object.Active_Attachment = (Attachment)listBox2.SelectedItems[0];
-                viewPortPanel1.Invalidate();
+                Object3D.Active_Object.Active_Attachment = (Attachment)AttachmentList.SelectedItems[0];
+                ViewPort.Invalidate();
             }
         }
 
-        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        /// <summary>
+        /// Do stuff when a key is pressed. This is to select a tool by simply pressing 1, 2, 3, 4, 5, or 6.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnKeyDown(object sender, KeyEventArgs e)
         {
             if (!(ActiveControl is NumericUpDown)) {
                 if (e.KeyCode == Keys.D1)
@@ -542,7 +656,7 @@ namespace MarioKartTrackMaker
                     }
                     current_tool = Tools.Select;
                     UpdateToolStats();
-                    viewPortPanel1.Invalidate();
+                    ViewPort.Invalidate();
                 }
                 else if (e.KeyCode == Keys.D2)
                 {
@@ -553,7 +667,7 @@ namespace MarioKartTrackMaker
                     }
                     current_tool = Tools.Move;
                     UpdateToolStats();
-                    viewPortPanel1.Invalidate();
+                    ViewPort.Invalidate();
                 }
                 else if (e.KeyCode == Keys.D3)
                 {
@@ -564,7 +678,7 @@ namespace MarioKartTrackMaker
                     }
                     current_tool = Tools.Rotate;
                     UpdateToolStats();
-                    viewPortPanel1.Invalidate();
+                    ViewPort.Invalidate();
                 }
                 else if (e.KeyCode == Keys.D4)
                 {
@@ -575,7 +689,7 @@ namespace MarioKartTrackMaker
 
                     current_tool = Tools.Scale;
                     UpdateToolStats();
-                    viewPortPanel1.Invalidate();
+                    ViewPort.Invalidate();
                 }
                 else if (e.KeyCode == Keys.D5)
                 {
@@ -586,7 +700,7 @@ namespace MarioKartTrackMaker
 
                     current_tool = Tools.Snap;
                     UpdateToolStats();
-                    viewPortPanel1.Invalidate();
+                    ViewPort.Invalidate();
                 }
                 else if (e.KeyCode == Keys.D6)
                 {
@@ -598,18 +712,21 @@ namespace MarioKartTrackMaker
                     }
                     current_tool = Tools.Decorate;
                     UpdateToolStats();
-                    viewPortPanel1.Invalidate();
+                    ViewPort.Invalidate();
                 }
             }
         }
 
-        private void ColorButton_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Activates the color dialogue, when the user selects the color, the active object will display in that color.
+        /// </summary>
+        private void OnColorButtonClick(object sender, EventArgs e)
         {
             colorDialog1.ShowDialog();
             Object3D.Active_Object.Color = new Vector3(colorDialog1.Color.R / 255F, colorDialog1.Color.G / 255F, colorDialog1.Color.B / 255F);
             ColorButton.BackColor = colorDialog1.Color;
             ColorButton.ForeColor = Color.FromArgb(255 - colorDialog1.Color.R, 255 - colorDialog1.Color.G, 255 - colorDialog1.Color.B);
-            viewPortPanel1.Invalidate();
+            ViewPort.Invalidate();
         }
     }
 }

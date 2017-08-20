@@ -35,7 +35,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "ViewPortPanel";
-            this.Load += new System.EventHandler(this.ViewPortPanel_Load);
             this.ResumeLayout(false);
 
         }

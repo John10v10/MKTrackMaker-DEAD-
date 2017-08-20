@@ -1,15 +1,21 @@
 ﻿using OpenTK;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MarioKartTrackMaker.ViewerResources
 {
-    public static class OtherMathUtils
+    /// <summary>
+    /// Useful algorithms go in here. Especially mathimatical algorithms.
+    /// </summary>
+    public static class MathUtils
     {
-        //Credits: www.scratchapixel.com
+        /// <summary>
+        /// Calculates if a ray intersects with a sphere. If it does, it'll return the distance from the origin of the ray to the hit point (Credits: www.scratchapixel.com).
+        /// Oh yeah, the sphere is always in position 0,0,0.
+        /// </summary>
+        /// <param name="ray">The ray to calculate with.</param>
+        /// <param name="radius">The radius of the sphere.</param>
+        /// <param name="tnsfm">The transformation of the matrix.</param>
+        /// <returns></returns>
         public static double? intersectSphere(ViewPortPanel.Ray ray, double radius, Matrix4 tnsfm)
         {
             double t0; // solutions for t if the ray intersects 
@@ -33,8 +39,13 @@ namespace MarioKartTrackMaker.ViewerResources
 
             return t0;
         }
-//Special thanks to DLBmaths's Youtube Video Here: https://youtu.be/9wznbg_aKOo?t=6m59s
-public static Vector3 ClosestPointFromLine(ViewPortPanel.Ray L, Vector3 pos)
+        /// <summary>
+        /// Calculates the point of a line that is closest to another point. Special thanks to DLBmaths's Youtube Video Here: https://youtu.be/9wznbg_aKOo?t=6m59s
+        /// </summary>
+        /// <param name="L">The ray to calculate with.</param>
+        /// <param name="pos">The input point.</param>
+        /// <returns></returns>
+        public static Vector3 ClosestPointFromLine(ViewPortPanel.Ray L, Vector3 pos)
         {
             //Step 1: Setting up the input values.
             float tMx1 = L.dir.X;
@@ -63,7 +74,17 @@ public static Vector3 ClosestPointFromLine(ViewPortPanel.Ray L, Vector3 pos)
             return L.pos + L.dir * t;
         }
 
-        //Special thanks to DLBmaths's Youtube Video Here: https://www.youtube.com/watch?v=HC5YikQxwZA
+
+        /// <summary>
+        /// Calculates the closest points from two skew lines. Special thanks to DLBmaths's Youtube Video Here: https://www.youtube.com/watch?v=HC5YikQxwZA
+        /// </summary>
+        /// <param name="L1">Skew line 1</param>
+        /// <param name="L2">Skew line 2</param>
+        /// <param name="Min_1">Minimum point of line 1</param>
+        /// <param name="Min_2">Minimum point of line 2</param>
+        /// <param name="Max_1">Maximum point of line 1</param>
+        /// <param name="Max_2">Maximum point of line 2</param>
+        /// <returns></returns>
         public static Vector3[] ClosestPointsBetweenRays(ViewPortPanel.Ray L1, ViewPortPanel.Ray L2, float Min_1 = float.NegativeInfinity, float Min_2 = float.NegativeInfinity, float Max_1 = float.PositiveInfinity, float Max_2 = float.PositiveInfinity)
         {
             Vector3 U1 = L1.dir;
@@ -158,6 +179,10 @@ public static Vector3 ClosestPointFromLine(ViewPortPanel.Ray L, Vector3 pos)
             results[1] = L2.pos + L2.dir * s;
             return results;
         }
+        /// <summary>
+        /// Oh just something to add to the triangle intersection calculations.
+        /// </summary>
+        /// <returns></returns>
         public static float edgeFunction(Vector3 a, Vector3 b, Vector3 c, int mode)
         {
             if (mode == 0)
@@ -168,6 +193,9 @@ public static Vector3 ClosestPointFromLine(ViewPortPanel.Ray L, Vector3 pos)
                 return (c[1] - a[1]) * (b[2] - a[2]) - (c[2] - a[2]) * (b[1] - a[1]);
             return 0;
         }
+        /// <summary>
+        /// Yeah, I had to set up an entire structure for the results of calculating a triangle intersection.
+        /// </summary>
         public struct TriangleIntersection
         {
             public bool intersects;
@@ -186,7 +214,17 @@ public static Vector3 ClosestPointFromLine(ViewPortPanel.Ray L, Vector3 pos)
                 normal = n;
             }
         }
-        //somewhat credits: scratchapixel.com
+        /// <summary>
+        /// Calculates the triangle intersection (somewhat credits: scratchapixel.com).
+        /// </summary>
+        /// <param name="r">The ray to calculate with.</param>
+        /// <param name="v0">The first point of the triangle.</param>
+        /// <param name="v1">The second point of the triangle.</param>
+        /// <param name="v2">The third point of the triangle.</param>
+        /// <param name="n0">The first normal of the triangle.</param>
+        /// <param name="n1">The second normal of the triangle.</param>
+        /// <param name="n2">The third normal of the triangle.</param>
+        /// <returns></returns>
         public static TriangleIntersection RayIntersectsTriangle(ViewPortPanel.Ray r, Vector3 v0, Vector3 v1, Vector3 v2, Vector3 n0, Vector3 n1, Vector3 n2)
         {
             // compute plane's normal
@@ -260,6 +298,13 @@ public static Vector3 ClosestPointFromLine(ViewPortPanel.Ray L, Vector3 pos)
 
 
         }
+        /// <summary>
+        /// Simply calculates the distance from a ray's origin to the hit point.
+        /// </summary>
+        /// <param name="r">The ray to calculate with.</param>
+        /// <param name="n">The plane's direction to face (the normal).</param>
+        /// <param name="p0">The core position of the plane.</param>
+        /// <returns></returns>
         public static float intersectPlane(ViewPortPanel.Ray r, Vector3 n, Vector3 p0)
         {
             // assuming vectors are all normalized

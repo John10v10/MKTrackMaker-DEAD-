@@ -1,12 +1,17 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using System;
 using System.Collections.Generic;
 
 namespace MarioKartTrackMaker.ViewerResources
 {
+    /// <summary>
+    /// This class defines a collision mesh, just like a mesh, but should be simplier. It is used to collide with a track.
+    /// </summary>
     public class Collision_Mesh
     {
+        /// <summary>
+        /// There is a variety of types of collisions throughout the Mario Kart series. But for right now, I've written down some general types I have imagined.
+        /// </summary>
         public enum CollisionType : int
         {
             road = 0,
@@ -24,16 +29,34 @@ namespace MarioKartTrackMaker.ViewerResources
             spin_out = 12,
             knock_out = 13
         }
+        /// <summary>
+        /// A series of 3D points.
+        /// </summary>
         public List<Vector3> Vertices;
+        /// <summary>
+        /// A series of triangles that connect to specified vertex ids in the vertex list.
+        /// </summary>
         public List<int[]> faces;
+        /// <summary>
+        /// Defines the type of collision this mesh uses.
+        /// </summary>
         public CollisionType type;
+        /// <summary>
+        /// Constructor. Loads the collision mesh from the specified inputs.
+        /// </summary>
+        /// <param name="Vertices">The specified vertex list.</param>
+        /// <param name="faces">The specified vertex face list.</param>
+        /// <param name="coll">The specified collision type.</param>
         public Collision_Mesh(List<Vector3> Vertices, List<int[]> faces, CollisionType coll)
         {
             this.Vertices = Vertices;
             this.faces = faces;
             type = coll;
-            //Optimize();
+            Optimize();
         }
+        /// <summary>
+        /// Removes a useless vertex without messing up the entire collision mesh.
+        /// </summary>
         private void RemoveVertex(int index)
         {
             Vertices.RemoveAt(index);
@@ -57,6 +80,9 @@ namespace MarioKartTrackMaker.ViewerResources
                 faces.RemoveAt(i);
             }
         }
+        /// <summary>
+        /// Checks to see if a vertex is used in any vertex face list.
+        /// </summary>
         private bool InFaces(int index)
         {
             foreach (int[] f in faces)
@@ -65,6 +91,9 @@ namespace MarioKartTrackMaker.ViewerResources
                         return true;
             return false;
         }
+        /// <summary>
+        /// Removes all unnecessary data from the mesh. This is supposed to be flawless and make no apparent changes, but free up some memory.
+        /// </summary>
         private void Optimize()
         {
             List<int> Verts_to_remove = new List<int>();
@@ -86,6 +115,10 @@ namespace MarioKartTrackMaker.ViewerResources
             }
         }
 
+        /// <summary>
+        /// Renders the collision mesh.
+        /// </summary>
+        /// <param name="wireframe">Render this as wireframe?</param>
         public void DrawMesh(bool wireframe)
         {
             GL.UseProgram(0);
