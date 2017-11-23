@@ -13,7 +13,19 @@ namespace MarioKartTrackMaker
         /// <summary>
         /// This value defines whether the decoration tool should place, or paint. Returns true if place.
         /// </summary>
-        public bool place_mode { get { return PlaceRadioButton.Checked && !PaintRadioButton.Checked; } }
+        public int place_mode
+        {
+            get
+            {
+                if (PlaceRadioButton.Checked) return 0;
+                if (PaintRadioButton.Checked) return 1;
+                if (EraseRadioButton.Checked) return 2;
+                return -1;
+            }
+        }
+        /// <summary>
+        /// Construct the decorations form.
+        /// </summary>
         public Decorations_Form()
         {
             InitializeComponent();
@@ -126,6 +138,28 @@ namespace MarioKartTrackMaker
                 Console.WriteLine(e);
                 listView.Items.Clear();
                 listView.LargeImageList.Images.Clear();
+            }
+        }
+
+        private void EraseRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if ((sender as RadioButton).Checked)
+            {
+                MainForm.decorate_erase_mode = (float)FlowNumeric.Value;
+                label2.Text = "Size:";
+            }
+            else
+            {
+                MainForm.decorate_erase_mode = float.NaN;
+                label2.Text = "Flow:";
+            }
+        }
+
+        private void FlowNumeric_ValueChanged(object sender, EventArgs e)
+        {
+            if (EraseRadioButton.Checked)
+            {
+                MainForm.decorate_erase_mode = (float)FlowNumeric.Value;
             }
         }
     }

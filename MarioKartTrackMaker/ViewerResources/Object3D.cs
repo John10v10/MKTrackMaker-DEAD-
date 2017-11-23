@@ -7,7 +7,7 @@ namespace MarioKartTrackMaker.ViewerResources
     /// <summary>
     /// This class defines a track part or track element.
     /// </summary>
-    public class Object3D
+    public class Object3D : IDisposable
     {
         /// <summary>
         /// The database of all the 3D objects in the scene.
@@ -356,5 +356,62 @@ namespace MarioKartTrackMaker.ViewerResources
             _FixAttachments(ref Fixed_Attachments);
             no:;
         }
+        public void detach(attachmentInfo atif)
+        {
+            atif.thatAtchInfo.AttachedTo = null;
+            atif.thatAtchInfo.thatAtch = null;
+            atif.thatAtchInfo.thatAtchInfo = null;
+            atif.thatAtchInfo.thisAtch = null;
+            if (atif.AttachedTo.atch_info.Contains(atif.thatAtchInfo)) atif.AttachedTo.atch_info.Remove(atif.thatAtchInfo);
+            atif.thisObject = null;
+            atif.AttachedTo = null;
+            atif.thatAtch = null;
+            atif.thatAtchInfo = null;
+            atif.thisAtch = null;
+            atif.thisObject = null;
+            if (atch_info.Contains(atif)) atch_info.Remove(atif);
+        }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                    if (database.Contains(this)) database.Remove(this);
+                    if (Active_Object == this) Active_Object = null;
+                    attachmentInfo[] allatin = atch_info.ToArray();
+                    foreach(attachmentInfo atif in allatin)
+                    {
+                        detach(atif);
+                    }
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~Object3D() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

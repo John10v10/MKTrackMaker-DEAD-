@@ -58,11 +58,16 @@ namespace MarioKartTrackMaker
             ObjectList.Height = (int)((Height - ObjectList.Top - 48.0) / 2.0 - 8.0);
             AttachmentList.Top = (int)(ObjectList.Top + ObjectList.Height + 8.0);
             AttachmentList.Height = (int)((Height - AttachmentList.Top - 48.0));
+            gameComboBox.SelectedIndex = 1;
         }
         /// <summary>
         /// This static field tells the program what tool is currently active. The selection tool is default.
         /// </summary>
         public static Tools current_tool = Tools.Select;
+        /// <summary>
+        /// This static field tells the program whether erase mode is on or off. Right now it is only used to tell the tool drawer whether to draw its decoration tool pink or normal.
+        /// </summary>
+        public static float decorate_erase_mode = float.NaN;
         /// <summary>
         /// This is the bridge to access stuff in the decorations window from stuff in here. 
         /// </summary>
@@ -714,6 +719,15 @@ namespace MarioKartTrackMaker
                     UpdateToolStats();
                     ViewPort.Invalidate();
                 }
+                else if (e.KeyCode == Keys.Delete || e.KeyCode == Keys.Back)
+                {
+                    if(Object3D.Active_Object != null) Object3D.Active_Object.Dispose();
+                    ViewPort.Invalidate();
+                    DisplayObjectList();
+                    UpdateActiveObject();
+                    UpdateToolStats();
+                    UpdateObjectStats();
+                }
             }
         }
 
@@ -727,6 +741,11 @@ namespace MarioKartTrackMaker
             ColorButton.BackColor = colorDialog1.Color;
             ColorButton.ForeColor = Color.FromArgb(255 - colorDialog1.Color.R, 255 - colorDialog1.Color.G, 255 - colorDialog1.Color.B);
             ViewPort.Invalidate();
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
         }
     }
 }

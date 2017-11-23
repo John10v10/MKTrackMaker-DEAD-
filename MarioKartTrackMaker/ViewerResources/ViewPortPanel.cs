@@ -684,14 +684,22 @@ namespace MarioKartTrackMaker.ViewerResources
                     case Tools.Decorate:
                         if (tr.Hit)
                         {
-                            GL.Color3(1F, 0, 0);
-                            ToolModels.DrawBall(tr.HitPos, cam.zoom / 50F, 16);
-                            GL.Color3(1F, 1F, 0);
-                            GL.LineWidth(2F);
-                            GL.Begin(PrimitiveType.Lines);
-                            GL.Vertex3(tr.HitPos);
-                            GL.Vertex3(tr.HitPos+tr.HitNormal*cam.zoom/15F);
-                            GL.End();
+                            if (!float.IsNaN(MainForm.decorate_erase_mode))
+                            {
+                                GL.Color3(1F, 0.5F, 1F);
+                                ToolModels.DrawBall(tr.HitPos, MainForm.decorate_erase_mode, 32);
+                            }
+                            else
+                            {
+                                GL.Color3(1F, 0, 0);
+                                ToolModels.DrawBall(tr.HitPos, cam.zoom / 50F, 16);
+                                GL.Color3(1F, 1F, 0);
+                                GL.LineWidth(2F);
+                                GL.Begin(PrimitiveType.Lines);
+                                GL.Vertex3(tr.HitPos);
+                                GL.Vertex3(tr.HitPos + tr.HitNormal * cam.zoom / 15F);
+                                GL.End();
+                            }
                         }
                         break;
                 }
@@ -939,16 +947,17 @@ namespace MarioKartTrackMaker.ViewerResources
                         {
                             Object3D.Active_Object.Active_Attachment = closestAtch;
                         }
-                        if(Form.ActiveForm is MainForm)((MainForm)Form.ActiveForm).DoStuffWhenSelectedObjectIndexChanged = false;
-                        if(Form.ActiveForm is MainForm)((MainForm)Form.ActiveForm).UpdateActiveObject();
-                        if(Form.ActiveForm is MainForm)((MainForm)Form.ActiveForm).DoStuffWhenSelectedObjectIndexChanged = true;
+                        if (Form.ActiveForm is MainForm) ((MainForm)Form.ActiveForm).DoStuffWhenSelectedObjectIndexChanged = false;
+                        if (Form.ActiveForm is MainForm) ((MainForm)Form.ActiveForm).UpdateActiveObject();
+                        if (Form.ActiveForm is MainForm) ((MainForm)Form.ActiveForm).DoStuffWhenSelectedObjectIndexChanged = true;
                     }
-                    else {
+                    else
+                    {
                         Object3D.Active_Object = null;
                         Invalidate();
-                        if(Form.ActiveForm is MainForm)((MainForm)Form.ActiveForm).DoStuffWhenSelectedObjectIndexChanged = false;
-                        if(Form.ActiveForm is MainForm)((MainForm)Form.ActiveForm).UpdateActiveObject();
-                        if(Form.ActiveForm is MainForm)((MainForm)Form.ActiveForm).DoStuffWhenSelectedObjectIndexChanged = true;
+                        if (Form.ActiveForm is MainForm) ((MainForm)Form.ActiveForm).DoStuffWhenSelectedObjectIndexChanged = false;
+                        if (Form.ActiveForm is MainForm) ((MainForm)Form.ActiveForm).UpdateActiveObject();
+                        if (Form.ActiveForm is MainForm) ((MainForm)Form.ActiveForm).DoStuffWhenSelectedObjectIndexChanged = true;
                     }
                 }
             }
@@ -1002,7 +1011,7 @@ namespace MarioKartTrackMaker.ViewerResources
                         __t = MathUtils.intersectPlane(__r, Vector3.TransformNormal(Vector3.UnitY, tnsfm), Vector3.TransformPosition(Vector3.Zero, tnsfm));
                         Vector3 PlaneHitPos = Vector3.TransformPosition(__r.pos + __r.dir * Math.Abs(__t), tnsfm.Inverted());
                         Vector3 Size = tnsfm.ExtractScale();
-                        float angle = (float)Math.Atan2(PlaneHitPos.X* Size.X, PlaneHitPos.Z * Size.Z);
+                        float angle = (float)Math.Atan2(PlaneHitPos.X * Size.X, PlaneHitPos.Z * Size.Z);
                         _ObjectToDragPreviousPosition = new object[] { _ObjectToDrag.rotation, angle };
                         _ObjectToDragPreviousMatrix = tnsfm;
                     }
@@ -1083,24 +1092,29 @@ namespace MarioKartTrackMaker.ViewerResources
                 if (e.Button == MouseButtons.Left)
                 {
                     if (Form.ActiveForm is MainForm)
+                    {
                         if (((MainForm)Form.ActiveForm).DF.DecorationsList.SelectedItems.Count > 0)
                         {
-                            float jit = (float)( ((MainForm)Form.ActiveForm).DF.JitterNumeric.Value);
+                            float jit = (float)(((MainForm)Form.ActiveForm).DF.JitterNumeric.Value);
                             TraceResult ltr = FromScreen(mx + lerp(-jit, jit, (float)(r.NextDouble())), my + lerp(-jit, jit, (float)(r.NextDouble())), cam.matrix).Trace(cam, true, false, false, false);
 
                             if (ltr.Hit)
                             {
-                                DecorationObject dec = new DecorationObject((string)((MainForm)Form.ActiveForm).DF.DecorationsList.SelectedItems[0].Tag);
-                                Matrix4 dirmtx = FromNormal(ltr.HitNormal);
-                                Vector3 relativeCamVector = Vector3.TransformPosition((cam.position - ltr.HitPos), dirmtx.Inverted());
-                                float tilt = (float)Math.Atan2(relativeCamVector.X, -relativeCamVector.Y);
-                                float tiltjitrange = (float)((float)(((MainForm)Form.ActiveForm).DF.TurnJitterNumeric.Value) *Math.PI / 180);
-                                tilt += lerp(-tiltjitrange / 2, tiltjitrange / 2, (float)(r.NextDouble()));
-                                PrevDP = ltr.HitPos;
-                                dec.transform = dirmtx * Matrix4.CreateFromAxisAngle(ltr.HitNormal, tilt) * Matrix4.CreateScale(lerp((float)((MainForm)Form.ActiveForm).DF.SizeJitterMinNumeric.Value, (float)((MainForm)Form.ActiveForm).DF.SizeJitterMaxNumeric.Value, (float)(r.NextDouble()))) *Matrix4.CreateTranslation(ltr.HitPos) * ltr.HitObject.transform.Inverted();
-                                ltr.HitObject.Decorations.Add(dec);
+                                if (((MainForm)Form.ActiveForm).DF.place_mode != 2)
+                                {
+                                    DecorationObject dec = new DecorationObject((string)((MainForm)Form.ActiveForm).DF.DecorationsList.SelectedItems[0].Tag, ltr.HitObject);
+                                    Matrix4 dirmtx = FromNormal(ltr.HitNormal);
+                                    Vector3 relativeCamVector = Vector3.TransformPosition((cam.position - ltr.HitPos), dirmtx.Inverted());
+                                    float tilt = (float)Math.Atan2(relativeCamVector.X, -relativeCamVector.Y);
+                                    float tiltjitrange = (float)((float)(((MainForm)Form.ActiveForm).DF.TurnJitterNumeric.Value) * Math.PI / 180);
+                                    tilt += lerp(-tiltjitrange / 2, tiltjitrange / 2, (float)(r.NextDouble()));
+                                    PrevDP = ltr.HitPos;
+                                    dec.transform = dirmtx * Matrix4.CreateFromAxisAngle(ltr.HitNormal, tilt) * Matrix4.CreateScale(lerp((float)((MainForm)Form.ActiveForm).DF.SizeJitterMinNumeric.Value, (float)((MainForm)Form.ActiveForm).DF.SizeJitterMaxNumeric.Value, (float)(r.NextDouble()))) * Matrix4.CreateTranslation(ltr.HitPos) * ltr.HitObject.transform.Inverted();
+                                    ltr.HitObject.Decorations.Add(dec);
+                                }
                             }
                         }
+                    }
                 }
             }
         }
@@ -1328,28 +1342,37 @@ namespace MarioKartTrackMaker.ViewerResources
                 {
                     if (Form.ActiveForm is MainForm)
                         if (((MainForm)Form.ActiveForm).DF.DecorationsList.SelectedItems.Count > 0)
-                    {
-                        float jit = (float)(((MainForm)Form.ActiveForm).DF.JitterNumeric.Value);
-                    TraceResult ltr = FromScreen(mx + lerp(-jit, jit, (float)(r.NextDouble())), my + lerp(-jit, jit, (float)(r.NextDouble())), cam.matrix).Trace(cam, true, false, false, false);
-                        if (ltr.Hit)
                         {
-                            if (!((MainForm)Form.ActiveForm).DF.place_mode)
+                            float jit = (float)(((MainForm)Form.ActiveForm).DF.JitterNumeric.Value);
+                            TraceResult ltr = FromScreen(mx + lerp(-jit, jit, (float)(r.NextDouble())), my + lerp(-jit, jit, (float)(r.NextDouble())), cam.matrix).Trace(cam, true, false, false, false);
+                            if (ltr.Hit)
                             {
-                                if ((PrevDP - ltr.HitPos).Length >= (float)((MainForm)Form.ActiveForm).DF.FlowNumeric.Value * 10)
+                                if (((MainForm)Form.ActiveForm).DF.place_mode == 1)
                                 {
-                                    DecorationObject dec = new DecorationObject((string)((MainForm)Form.ActiveForm).DF.DecorationsList.SelectedItems[0].Tag);
-                                    Matrix4 dirmtx = FromNormal(ltr.HitNormal);
-                                    Vector3 relativeCamVector = Vector3.TransformPosition((cam.position - ltr.HitPos), dirmtx.Inverted());
-                                    float tilt = (float)Math.Atan2(relativeCamVector.X, -relativeCamVector.Y);
-                                    float tiltjitrange = (float)((float)(((MainForm)Form.ActiveForm).DF.TurnJitterNumeric.Value) * Math.PI / 180);
-                                    tilt += lerp(-tiltjitrange / 2, tiltjitrange / 2, (float)(r.NextDouble()));
-                                    PrevDP = ltr.HitPos;
-                                    dec.transform = dirmtx * Matrix4.CreateFromAxisAngle(ltr.HitNormal, tilt) * Matrix4.CreateScale(lerp((float)((MainForm)Form.ActiveForm).DF.SizeJitterMinNumeric.Value, (float)((MainForm)Form.ActiveForm).DF.SizeJitterMaxNumeric.Value, (float)(r.NextDouble()))) * Matrix4.CreateTranslation(ltr.HitPos) * ltr.HitObject.transform.Inverted();
-                                    ltr.HitObject.Decorations.Add(dec);
+                                    if ((PrevDP - ltr.HitPos).Length >= (float)((MainForm)Form.ActiveForm).DF.FlowNumeric.Value * 10)
+                                    {
+                                        DecorationObject dec = new DecorationObject((string)((MainForm)Form.ActiveForm).DF.DecorationsList.SelectedItems[0].Tag, ltr.HitObject);
+                                        Matrix4 dirmtx = FromNormal(ltr.HitNormal);
+                                        Vector3 relativeCamVector = Vector3.TransformPosition((cam.position - ltr.HitPos), dirmtx.Inverted());
+                                        float tilt = (float)Math.Atan2(relativeCamVector.X, -relativeCamVector.Y);
+                                        float tiltjitrange = (float)((float)(((MainForm)Form.ActiveForm).DF.TurnJitterNumeric.Value) * Math.PI / 180);
+                                        tilt += lerp(-tiltjitrange / 2, tiltjitrange / 2, (float)(r.NextDouble()));
+                                        PrevDP = ltr.HitPos;
+                                        dec.transform = dirmtx * Matrix4.CreateFromAxisAngle(ltr.HitNormal, tilt) * Matrix4.CreateScale(lerp((float)((MainForm)Form.ActiveForm).DF.SizeJitterMinNumeric.Value, (float)((MainForm)Form.ActiveForm).DF.SizeJitterMaxNumeric.Value, (float)(r.NextDouble()))) * Matrix4.CreateTranslation(ltr.HitPos) * ltr.HitObject.transform.Inverted();
+                                        ltr.HitObject.Decorations.Add(dec);
+                                    }
+                                }
+                                else if (((MainForm)Form.ActiveForm).DF.place_mode == 2)
+                                {
+                                    DecorationObject[] allDOs = ltr.HitObject.Decorations.ToArray();
+                                    foreach (DecorationObject DO in allDOs)
+                                    {
+                                        if (((DO.transform * ltr.HitObject.transform).ExtractTranslation()-ltr.HitPos).Length <= MainForm.decorate_erase_mode)
+                                        DO.Dispose();
+                                    }
                                 }
                             }
                         }
-                    }
                 }
             }
             if (tr.Hit || invalidate || _prevhit) Invalidate();
