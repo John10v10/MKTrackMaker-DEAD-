@@ -35,7 +35,11 @@ namespace MarioKartTrackMaker
         /// <summary>
         /// This tool allows you to decorate whatever is selected from the list on to any part.
         /// </summary>
-        Decorate = 5
+        Decorate = 5,
+        /// <summary>
+        /// This tool allows you to build a terrain map.
+        /// </summary>
+        Terrain = 6
     }
     /// <summary>
     /// The main form of the program.
@@ -59,6 +63,7 @@ namespace MarioKartTrackMaker
             AttachmentList.Top = (int)(ObjectList.Top + ObjectList.Height + 8.0);
             AttachmentList.Height = (int)((Height - AttachmentList.Top - 48.0));
             gameComboBox.SelectedIndex = 1;
+            TF = new Terrain_Config(this);
         }
         /// <summary>
         /// This static field tells the program what tool is currently active. The selection tool is default.
@@ -72,6 +77,10 @@ namespace MarioKartTrackMaker
         /// This is the bridge to access stuff in the decorations window from stuff in here. 
         /// </summary>
         public Decorations_Form DF = new Decorations_Form();
+        /// <summary>
+        /// This is the bridge to access stuff in the terrain window from stuff in here. 
+        /// </summary>
+        public Terrain_Config TF;
         /// <summary>
         /// Loads/refreshes all the objects in the scene.
         /// </summary>
@@ -356,6 +365,7 @@ namespace MarioKartTrackMaker
             RotationToolButton.BackColor = (current_tool == Tools.Rotate) ? sc : Color.White;
             ScaleToolButton.BackColor = (current_tool == Tools.Scale) ? sc : Color.White;
             SnapToolButton.BackColor = (current_tool == Tools.Snap) ? sc : Color.White;
+            TerrainToolButton.BackColor = (current_tool == Tools.Terrain) ? sc : Color.White;
             DecorationToolButton.BackColor = (current_tool == Tools.Decorate) ? sc : Color.White;
         }
 
@@ -367,6 +377,10 @@ namespace MarioKartTrackMaker
             if (DF.Visible)
             {
                 DF.Hide();
+            }
+            if (TF.Visible)
+            {
+                TF.Hide();
             }
             current_tool = Tools.Select;
             UpdateToolStats();
@@ -383,6 +397,10 @@ namespace MarioKartTrackMaker
             {
                 DF.Hide();
             }
+            if (TF.Visible)
+            {
+                TF.Hide();
+            }
             current_tool = Tools.Move;
             UpdateToolStats();
             ViewPort.Invalidate();
@@ -396,6 +414,10 @@ namespace MarioKartTrackMaker
             if (DF.Visible)
             {
                 DF.Hide();
+            }
+            if (TF.Visible)
+            {
+                TF.Hide();
             }
             current_tool = Tools.Rotate;
             UpdateToolStats();
@@ -412,6 +434,10 @@ namespace MarioKartTrackMaker
             {
                 DF.Hide();
             }
+            if (TF.Visible)
+            {
+                TF.Hide();
+            }
             current_tool = Tools.Scale;
             UpdateToolStats();
             ViewPort.Invalidate();
@@ -426,7 +452,30 @@ namespace MarioKartTrackMaker
             {
                 DF.Hide();
             }
+            if (TF.Visible)
+            {
+                TF.Hide();
+            }
             current_tool = Tools.Snap;
+            UpdateToolStats();
+            ViewPort.Invalidate();
+        }
+
+        /// <summary>
+        /// Sets the active tool to the terrain tool.
+        /// </summary>
+        private void OnTerrainToolClick(object sender, EventArgs e)
+        {
+            if (DF.Visible)
+            {
+                DF.Hide();
+            }
+            if (!TF.Visible)
+            {
+                TF.Show();
+                Activate();
+            }
+            current_tool = Tools.Terrain;
             UpdateToolStats();
             ViewPort.Invalidate();
         }
@@ -439,6 +488,10 @@ namespace MarioKartTrackMaker
             if (!DF.Visible) {
                 DF.Show();
                 Activate();
+            }
+            if (TF.Visible)
+            {
+                TF.Hide();
             }
             current_tool = Tools.Decorate;
             UpdateToolStats();
@@ -659,6 +712,10 @@ namespace MarioKartTrackMaker
                     {
                         DF.Hide();
                     }
+                    if (TF.Visible)
+                    {
+                        TF.Hide();
+                    }
                     current_tool = Tools.Select;
                     UpdateToolStats();
                     ViewPort.Invalidate();
@@ -669,6 +726,10 @@ namespace MarioKartTrackMaker
                     if (DF.Visible)
                     {
                         DF.Hide();
+                    }
+                    if (TF.Visible)
+                    {
+                        TF.Hide();
                     }
                     current_tool = Tools.Move;
                     UpdateToolStats();
@@ -681,6 +742,10 @@ namespace MarioKartTrackMaker
                     {
                         DF.Hide();
                     }
+                    if (TF.Visible)
+                    {
+                        TF.Hide();
+                    }
                     current_tool = Tools.Rotate;
                     UpdateToolStats();
                     ViewPort.Invalidate();
@@ -691,7 +756,10 @@ namespace MarioKartTrackMaker
                     {
                         DF.Hide();
                     }
-
+                    if (TF.Visible)
+                    {
+                        TF.Hide();
+                    }
                     current_tool = Tools.Scale;
                     UpdateToolStats();
                     ViewPort.Invalidate();
@@ -702,18 +770,41 @@ namespace MarioKartTrackMaker
                     {
                         DF.Hide();
                     }
-
+                    if (TF.Visible)
+                    {
+                        TF.Hide();
+                    }
                     current_tool = Tools.Snap;
                     UpdateToolStats();
                     ViewPort.Invalidate();
                 }
                 else if (e.KeyCode == Keys.D6)
                 {
+                    if (DF.Visible)
+                    {
+                        DF.Hide();
+                    }
+
+                    if (!TF.Visible)
+                    {
+                        TF.Show();
+                        Activate();
+                    }
+                    current_tool = Tools.Terrain;
+                    UpdateToolStats();
+                    ViewPort.Invalidate();
+                }
+                else if (e.KeyCode == Keys.D7)
+                {
 
                     if (!DF.Visible)
                     {
                         DF.Show();
                         this.Activate();
+                    }
+                    if (TF.Visible)
+                    {
+                        TF.Hide();
                     }
                     current_tool = Tools.Decorate;
                     UpdateToolStats();
@@ -744,6 +835,11 @@ namespace MarioKartTrackMaker
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void ViewPort_Load(object sender, EventArgs e)
         {
 
         }

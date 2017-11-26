@@ -158,6 +158,13 @@ namespace MarioKartTrackMaker.ViewerResources
         public Attachment Active_Attachment;
 
         /// <summary>
+        /// Let's construct a 3D terrain object!
+        /// </summary>
+        public Object3D(TerrainMap tmap)
+        {
+            _model = Model.AddModel(tmap);
+        }
+        /// <summary>
         /// Let's construct a 3D object!
         /// </summary>
         /// <param name="filepath">The path to import the model file.</param>

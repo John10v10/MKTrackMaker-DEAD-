@@ -58,6 +58,7 @@ namespace MarioKartTrackMaker
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.ToolTab = new System.Windows.Forms.TabPage();
             this.DecorationToolButton = new System.Windows.Forms.PictureBox();
+            this.TerrainToolButton = new System.Windows.Forms.PictureBox();
             this.SnapToolButton = new System.Windows.Forms.PictureBox();
             this.ScaleToolButton = new System.Windows.Forms.PictureBox();
             this.RotationToolButton = new System.Windows.Forms.PictureBox();
@@ -89,19 +90,20 @@ namespace MarioKartTrackMaker
             this.ViewToolTab = new System.Windows.Forms.TabPage();
             this.OrbitViewResetButton = new System.Windows.Forms.Button();
             this.AlignOrbitButton = new System.Windows.Forms.Button();
+            this.GenSettings = new System.Windows.Forms.TabPage();
+            this.gameComboBox = new System.Windows.Forms.ComboBox();
+            this.label14 = new System.Windows.Forms.Label();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.AttachmentList = new System.Windows.Forms.ListBox();
             this.ViewPort = new MarioKartTrackMaker.ViewerResources.ViewPortPanel();
-            this.GenSettings = new System.Windows.Forms.TabPage();
-            this.label14 = new System.Windows.Forms.Label();
-            this.gameComboBox = new System.Windows.Forms.ComboBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ClipNearNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ClipFarNumeric)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.ToolTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DecorationToolButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TerrainToolButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SnapToolButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ScaleToolButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RotationToolButton)).BeginInit();
@@ -387,6 +389,7 @@ namespace MarioKartTrackMaker
             // ToolTab
             // 
             this.ToolTab.Controls.Add(this.DecorationToolButton);
+            this.ToolTab.Controls.Add(this.TerrainToolButton);
             this.ToolTab.Controls.Add(this.SnapToolButton);
             this.ToolTab.Controls.Add(this.ScaleToolButton);
             this.ToolTab.Controls.Add(this.RotationToolButton);
@@ -394,7 +397,7 @@ namespace MarioKartTrackMaker
             this.ToolTab.Controls.Add(this.SelectToolButton);
             this.ToolTab.Location = new System.Drawing.Point(4, 29);
             this.ToolTab.Name = "ToolTab";
-            this.ToolTab.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.ToolTab.Padding = new System.Windows.Forms.Padding(3);
             this.ToolTab.Size = new System.Drawing.Size(539, 100);
             this.ToolTab.TabIndex = 2;
             this.ToolTab.Text = "Transform Tools";
@@ -406,7 +409,7 @@ namespace MarioKartTrackMaker
             this.DecorationToolButton.BackgroundImage = global::MarioKartTrackMaker.Properties.Resources.DecorateIcon;
             this.DecorationToolButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.DecorationToolButton.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.DecorationToolButton.Location = new System.Drawing.Point(384, 27);
+            this.DecorationToolButton.Location = new System.Drawing.Point(396, 27);
             this.DecorationToolButton.Name = "DecorationToolButton";
             this.DecorationToolButton.Size = new System.Drawing.Size(54, 55);
             this.DecorationToolButton.TabIndex = 0;
@@ -414,13 +417,26 @@ namespace MarioKartTrackMaker
             this.toolTip1.SetToolTip(this.DecorationToolButton, "Decoration Tool");
             this.DecorationToolButton.Click += new System.EventHandler(this.OnDecorationToolClick);
             // 
+            // TerrainToolButton
+            // 
+            this.TerrainToolButton.BackColor = System.Drawing.Color.White;
+            this.TerrainToolButton.BackgroundImage = global::MarioKartTrackMaker.Properties.Resources.TerrainToolIcon;
+            this.TerrainToolButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.TerrainToolButton.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.TerrainToolButton.Location = new System.Drawing.Point(340, 27);
+            this.TerrainToolButton.Name = "TerrainToolButton";
+            this.TerrainToolButton.Size = new System.Drawing.Size(54, 55);
+            this.TerrainToolButton.TabIndex = 0;
+            this.TerrainToolButton.TabStop = false;
+            this.TerrainToolButton.Click += new System.EventHandler(this.OnTerrainToolClick);
+            // 
             // SnapToolButton
             // 
             this.SnapToolButton.BackColor = System.Drawing.Color.White;
             this.SnapToolButton.BackgroundImage = global::MarioKartTrackMaker.Properties.Resources.ConnectToolIcon;
             this.SnapToolButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.SnapToolButton.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.SnapToolButton.Location = new System.Drawing.Point(327, 27);
+            this.SnapToolButton.Location = new System.Drawing.Point(284, 27);
             this.SnapToolButton.Name = "SnapToolButton";
             this.SnapToolButton.Size = new System.Drawing.Size(54, 55);
             this.SnapToolButton.TabIndex = 0;
@@ -434,7 +450,7 @@ namespace MarioKartTrackMaker
             this.ScaleToolButton.BackgroundImage = global::MarioKartTrackMaker.Properties.Resources.ScaleToolIcon;
             this.ScaleToolButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ScaleToolButton.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ScaleToolButton.Location = new System.Drawing.Point(268, 27);
+            this.ScaleToolButton.Location = new System.Drawing.Point(228, 27);
             this.ScaleToolButton.Name = "ScaleToolButton";
             this.ScaleToolButton.Size = new System.Drawing.Size(54, 55);
             this.ScaleToolButton.TabIndex = 0;
@@ -448,7 +464,7 @@ namespace MarioKartTrackMaker
             this.RotationToolButton.BackgroundImage = global::MarioKartTrackMaker.Properties.Resources.RotationToolIcon;
             this.RotationToolButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.RotationToolButton.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.RotationToolButton.Location = new System.Drawing.Point(212, 27);
+            this.RotationToolButton.Location = new System.Drawing.Point(172, 27);
             this.RotationToolButton.Name = "RotationToolButton";
             this.RotationToolButton.Size = new System.Drawing.Size(54, 55);
             this.RotationToolButton.TabIndex = 0;
@@ -462,7 +478,7 @@ namespace MarioKartTrackMaker
             this.MoveToolButton.BackgroundImage = global::MarioKartTrackMaker.Properties.Resources.MoveToolIcon;
             this.MoveToolButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.MoveToolButton.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.MoveToolButton.Location = new System.Drawing.Point(155, 27);
+            this.MoveToolButton.Location = new System.Drawing.Point(116, 27);
             this.MoveToolButton.Name = "MoveToolButton";
             this.MoveToolButton.Size = new System.Drawing.Size(54, 55);
             this.MoveToolButton.TabIndex = 0;
@@ -477,7 +493,7 @@ namespace MarioKartTrackMaker
             this.SelectToolButton.BackgroundImage = global::MarioKartTrackMaker.Properties.Resources.SelectToolIcon;
             this.SelectToolButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.SelectToolButton.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.SelectToolButton.Location = new System.Drawing.Point(97, 27);
+            this.SelectToolButton.Location = new System.Drawing.Point(60, 27);
             this.SelectToolButton.Name = "SelectToolButton";
             this.SelectToolButton.Size = new System.Drawing.Size(54, 55);
             this.SelectToolButton.TabIndex = 0;
@@ -493,7 +509,7 @@ namespace MarioKartTrackMaker
             this.ObjectTab.Controls.Add(this.PositionPanel);
             this.ObjectTab.Location = new System.Drawing.Point(4, 29);
             this.ObjectTab.Name = "ObjectTab";
-            this.ObjectTab.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.ObjectTab.Padding = new System.Windows.Forms.Padding(3);
             this.ObjectTab.Size = new System.Drawing.Size(539, 100);
             this.ObjectTab.TabIndex = 3;
             this.ObjectTab.Text = "Object Properties";
@@ -847,7 +863,7 @@ namespace MarioKartTrackMaker
             this.ViewToolTab.Controls.Add(this.ClipNearNumeric);
             this.ViewToolTab.Location = new System.Drawing.Point(4, 29);
             this.ViewToolTab.Name = "ViewToolTab";
-            this.ViewToolTab.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.ViewToolTab.Padding = new System.Windows.Forms.Padding(3);
             this.ViewToolTab.Size = new System.Drawing.Size(539, 100);
             this.ViewToolTab.TabIndex = 1;
             this.ViewToolTab.Text = "View Tools";
@@ -857,7 +873,7 @@ namespace MarioKartTrackMaker
             // 
             this.OrbitViewResetButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.OrbitViewResetButton.Location = new System.Drawing.Point(198, 34);
-            this.OrbitViewResetButton.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.OrbitViewResetButton.Margin = new System.Windows.Forms.Padding(5);
             this.OrbitViewResetButton.Name = "OrbitViewResetButton";
             this.OrbitViewResetButton.Size = new System.Drawing.Size(60, 57);
             this.OrbitViewResetButton.TabIndex = 9;
@@ -870,7 +886,7 @@ namespace MarioKartTrackMaker
             // 
             this.AlignOrbitButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AlignOrbitButton.Location = new System.Drawing.Point(257, 34);
-            this.AlignOrbitButton.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.AlignOrbitButton.Margin = new System.Windows.Forms.Padding(5);
             this.AlignOrbitButton.Name = "AlignOrbitButton";
             this.AlignOrbitButton.Size = new System.Drawing.Size(60, 57);
             this.AlignOrbitButton.TabIndex = 9;
@@ -878,6 +894,39 @@ namespace MarioKartTrackMaker
             this.toolTip1.SetToolTip(this.AlignOrbitButton, "Aligns the camera to the correct view for rotated/tilted track pieces.");
             this.AlignOrbitButton.UseVisualStyleBackColor = true;
             this.AlignOrbitButton.Click += new System.EventHandler(this.OnAlignOrbitButtonClick);
+            // 
+            // GenSettings
+            // 
+            this.GenSettings.Controls.Add(this.gameComboBox);
+            this.GenSettings.Controls.Add(this.label14);
+            this.GenSettings.Location = new System.Drawing.Point(4, 29);
+            this.GenSettings.Name = "GenSettings";
+            this.GenSettings.Size = new System.Drawing.Size(539, 100);
+            this.GenSettings.TabIndex = 4;
+            this.GenSettings.Text = "General Settings";
+            this.GenSettings.UseVisualStyleBackColor = true;
+            // 
+            // gameComboBox
+            // 
+            this.gameComboBox.FormattingEnabled = true;
+            this.gameComboBox.Items.AddRange(new object[] {
+            "Mario Kart DS",
+            "Mario Kart Wii",
+            "Mario Kart 7",
+            "Mario Kart 8"});
+            this.gameComboBox.Location = new System.Drawing.Point(128, 19);
+            this.gameComboBox.Name = "gameComboBox";
+            this.gameComboBox.Size = new System.Drawing.Size(175, 28);
+            this.gameComboBox.TabIndex = 1;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(14, 19);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(107, 20);
+            this.label14.TabIndex = 0;
+            this.label14.Text = "Target Game:";
             // 
             // AttachmentList
             // 
@@ -899,45 +948,13 @@ namespace MarioKartTrackMaker
             this.ViewPort.BackColor = System.Drawing.Color.Black;
             this.ViewPort.collisionviewmode = 1;
             this.ViewPort.Location = new System.Drawing.Point(376, 178);
-            this.ViewPort.Margin = new System.Windows.Forms.Padding(9, 9, 9, 9);
+            this.ViewPort.Margin = new System.Windows.Forms.Padding(9);
             this.ViewPort.Name = "ViewPort";
             this.ViewPort.Size = new System.Drawing.Size(403, 426);
             this.ViewPort.TabIndex = 0;
             this.ViewPort.VSync = true;
             this.ViewPort.wireframemode = false;
-            // 
-            // GenSettings
-            // 
-            this.GenSettings.Controls.Add(this.gameComboBox);
-            this.GenSettings.Controls.Add(this.label14);
-            this.GenSettings.Location = new System.Drawing.Point(4, 29);
-            this.GenSettings.Name = "GenSettings";
-            this.GenSettings.Size = new System.Drawing.Size(539, 100);
-            this.GenSettings.TabIndex = 4;
-            this.GenSettings.Text = "General Settings";
-            this.GenSettings.UseVisualStyleBackColor = true;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(14, 19);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(107, 20);
-            this.label14.TabIndex = 0;
-            this.label14.Text = "Target Game:";
-            // 
-            // gameComboBox
-            // 
-            this.gameComboBox.FormattingEnabled = true;
-            this.gameComboBox.Items.AddRange(new object[] {
-            "Mario Kart DS",
-            "Mario Kart Wii",
-            "Mario Kart 7",
-            "Mario Kart 8"});
-            this.gameComboBox.Location = new System.Drawing.Point(128, 19);
-            this.gameComboBox.Name = "gameComboBox";
-            this.gameComboBox.Size = new System.Drawing.Size(175, 28);
-            this.gameComboBox.TabIndex = 1;
+            this.ViewPort.Load += new System.EventHandler(this.ViewPort_Load);
             // 
             // MainForm
             // 
@@ -967,6 +984,7 @@ namespace MarioKartTrackMaker
             this.tabControl1.ResumeLayout(false);
             this.ToolTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DecorationToolButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TerrainToolButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SnapToolButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ScaleToolButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.RotationToolButton)).EndInit();
@@ -999,7 +1017,7 @@ namespace MarioKartTrackMaker
 
         #endregion
         
-        private ViewPortPanel ViewPort;
+        public ViewPortPanel ViewPort;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openATrackToolStripMenuItem;
@@ -1064,6 +1082,7 @@ namespace MarioKartTrackMaker
         private System.Windows.Forms.TabPage GenSettings;
         private System.Windows.Forms.ComboBox gameComboBox;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.PictureBox TerrainToolButton;
     }
 }
 
