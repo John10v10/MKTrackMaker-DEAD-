@@ -47,6 +47,17 @@ namespace MarioKartTrackMaker.ViewerResources
             return -1;
         }
         /// <summary>
+        /// Loads and adds a new model from a terrain map into the database.
+        /// </summary>
+        /// <param name="tmap">The terrain mesh of the model.</param>
+        public static int AddModel(TerrainMap tmap)
+        {
+            Model m = new Model(tmap);
+            database.Add(m);
+            int id = database.IndexOf(m);
+            return id;
+        }
+        /// <summary>
         /// Loads and adds a new model from a file into the database.
         /// </summary>
         /// <param name="path">The path of the model file to load.</param>
@@ -54,7 +65,7 @@ namespace MarioKartTrackMaker.ViewerResources
         public static int AddModel(string path)
         {
             int id = IsLoaded(path);
-            if(id == -1)
+            if (id == -1)
             {
                 Model m = new Model(path);
                 database.Add(m);
@@ -98,6 +109,21 @@ namespace MarioKartTrackMaker.ViewerResources
                         return false;
                 return true;
             }
+        }
+        /// <summary>
+        /// Is this a terrain model?
+        /// </summary>
+        public bool isTerrainModel = false;
+        /// <summary>
+        /// Constructor. Loads the model from a terrain map.
+        /// </summary>
+        /// <param name="tmap">The terrain map.</param>
+        public Model(TerrainMap tmap)
+        {
+            meshes.Add(tmap);
+            isTerrainModel = true;
+            name = "Terrain Map";
+            CalculateBounds();
         }
         /// <summary>
         /// Constructor. Loads the model from file.

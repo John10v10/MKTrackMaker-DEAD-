@@ -514,7 +514,7 @@ namespace MarioKartTrackMaker.ViewerResources
         }
         /// <summary>
         /// YAY! We're painting the scene! :D
-        /// </summary>
+        /// </summary>  
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -638,6 +638,7 @@ namespace MarioKartTrackMaker.ViewerResources
                     GL.Vertex3(Math.Sin(i * Math.PI / 180) * 20 + mx - Width / 2, Math.Cos(i * Math.PI / 180) * 20 - my + Height / 2, -5);
                 }
                 GL.End();*/
+                
                 foreach (Object3D obj in Object3D.database)
                 {
                         obj.DrawObject(_pgm, _coll, _wf, inSight(obj, cam), cam);

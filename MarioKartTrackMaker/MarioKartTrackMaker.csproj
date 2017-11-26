@@ -73,16 +73,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Decorations_Form.cs">
+    <Compile Include="Forms\Decorations_Form.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Decorations_Form.Designer.cs">
+    <Compile Include="Forms\Decorations_Form.Designer.cs">
       <DependentUpon>Decorations_Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm.cs">
+    <Compile Include="Forms\Terrain_Config.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="Forms\Terrain_Config.Designer.cs">
+      <DependentUpon>Terrain_Config.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="IO\ContentPipe.cs" />
@@ -104,6 +110,7 @@
     <Compile Include="ViewerResources\DecorationMesh.cs" />
     <Compile Include="ViewerResources\DecorationObject.cs" />
     <Compile Include="ViewerResources\MathUtils.cs" />
+    <Compile Include="ViewerResources\TerrainMap.cs" />
     <Compile Include="ViewerResources\ToolModels.cs" />
     <Compile Include="ViewerResources\Mesh.cs" />
     <Compile Include="ViewerResources\Model.cs" />
@@ -115,10 +122,13 @@
     <Compile Include="ViewerResources\ViewPortPanel.Designer.cs">
       <DependentUpon>ViewPortPanel.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Decorations_Form.resx">
+    <EmbeddedResource Include="Forms\Decorations_Form.resx">
       <DependentUpon>Decorations_Form.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Forms\Terrain_Config.resx">
+      <DependentUpon>Terrain_Config.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -183,6 +193,7 @@
     <Content Include="Icons\RotationToolIcon.png" />
     <Content Include="Icons\ScaleToolIcon.png" />
     <None Include="Icons\SelectToolIcon.png" />
+    <None Include="Icons\TerrainToolIcon.png" />
     <Content Include="Parts_n_Models\Basic_Shapes\Cone.png" />
     <Content Include="Parts_n_Models\Basic_Shapes\Cube.png" />
     <Content Include="Parts_n_Models\Basic_Shapes\Cylinder.png" />

@@ -183,7 +183,7 @@ namespace MarioKartTrackMaker.ViewerResources
         /// <summary>
         /// The texture id of the mesh. If -1, it should render with the diffuse color instead.
         /// </summary>
-        public int texture;
+        public int texture = -1;
         /// <summary>
         /// Currently useless, but hope to make meshes shadeless if they hold a shadeless flag in their setting. 
         /// </summary>
@@ -192,6 +192,10 @@ namespace MarioKartTrackMaker.ViewerResources
         /// The bounding box size of this decoration mesh.
         /// </summary>
         public Bounds size = new Bounds();
+        public Mesh()
+        {
+
+        }
         /// <summary>
         /// Constructor. Loads the mesh from the specified inputs.
         /// </summary>
@@ -219,7 +223,7 @@ namespace MarioKartTrackMaker.ViewerResources
         /// <summary>
         /// Calculates the boundaries of all the vertex faces in this mesh.
         /// </summary>
-        private void CalculateFaceBounds()
+        public void CalculateFaceBounds()
         {
             foreach (int[] f in faces)
             {
@@ -248,7 +252,7 @@ namespace MarioKartTrackMaker.ViewerResources
         /// <summary>
         /// Calculates the boundaries of this mesh.
         /// </summary>
-        private void CalculateBounds()
+        public void CalculateBounds()
         {
             size.minX = float.PositiveInfinity;
             size.minY = float.PositiveInfinity;
@@ -367,7 +371,7 @@ namespace MarioKartTrackMaker.ViewerResources
         /// <summary>
         /// Removes all unnecessary data from the mesh. This is supposed to be flawless and make no apparent changes, but free up some memory.
         /// </summary>
-        private void Optimize()
+        public void Optimize()
         {
             List<int> Verts_to_remove = new List<int>();
             for(int i = 0; i < Vertices.Count; i++)
@@ -421,7 +425,33 @@ namespace MarioKartTrackMaker.ViewerResources
                 }
             }
         }
+        
+        public void CalculateNormals()
+        {
+            int[][] VertexInFaceIndexes = new int[Vertices.Count][];
+            Vector3[] nmls = new Vector3[Normals.Count];
+            foreach (int[] f in faces)
+            {
+                Vector3 Normal = Vector3.Zero;
+                for (int i = 0; i < f.Length; i++)
+                {
 
+                    Vector3 Current = Vertices[f[i]-1];
+                    Vector3 Next = Vertices[f[(i + 1) % f.Length]-1];
+                    Normal.X = Normal.X + ((Current.Y - Next.Y) * (Current.Z + Next.Z));
+                    Normal.Y = Normal.Y + ((Current.Z - Next.Z) * (Current.X + Next.X));
+                    Normal.Z = Normal.Z + ((Current.X - Next.X) * (Current.Y + Next.Y));
+                }
+                for (int i = 0; i < f.Length; i++)
+                {
+                    nmls[f[i] - 1] += Normal;
+                }
+            }
+            for(int i = 0; i < Math.Min(nmls.Length, Normals.Count); i++)
+            {
+                Normals[i] = nmls[i].Normalized();
+            }
+        }
         /// <summary>
         /// Renders the mesh.
         /// </summary>
