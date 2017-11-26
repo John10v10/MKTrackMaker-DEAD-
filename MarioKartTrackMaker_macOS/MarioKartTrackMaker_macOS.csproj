@@ -52,6 +52,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.Mac" />
+    <Reference Include="OpenTK" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
@@ -109,14 +110,29 @@
     <Compile Include="ViewController.designer.cs">
       <DependentUpon>ViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainView.cs" />
+    <Compile Include="MainViewController.cs" />
+    <Compile Include="MainView.designer.cs">
+      <DependentUpon>MainView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainViewController.designer.cs">
+      <DependentUpon>MainViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestTKWindow.cs" />
+    <Compile Include="TestTKWindow.designer.cs">
+      <DependentUpon>TestTKWindow.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
+    <InterfaceDefinition Include="MainView.xib" />
+    <InterfaceDefinition Include="TestTKWindow.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Icons\MoveToolIcon.png" />
     <Content Include="Resources\Icons\RotationToolIcon.png" />
     <Content Include="Resources\Icons\ScaleToolIcon.png" />
   </ItemGroup>
+  <Import Project="..\SharedFiles\SharedFiles.projitems" Label="Shared" Condition="Exists('..\SharedFiles\SharedFiles.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
 </Project>

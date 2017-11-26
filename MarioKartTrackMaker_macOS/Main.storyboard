@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="EPS-7c-DYE">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13529"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -190,7 +190,7 @@
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
-                    <window key="window" title="Mario Kart Track Maker" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" tabbingMode="disallowed" id="IQv-IB-iLA">
+                    <window key="window" title="Mario Kart Track Maker" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" tabbingMode="disallowed" id="IQv-IB-iLA" customClass="MainWindow">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
@@ -236,7 +236,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <popUpButtonCell key="cell" type="roundTextured" title="Mario Kart DS" bezelStyle="texturedRounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" selectedItem="PM4-Sm-hs6" id="shX-QZ-83p">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
+                                            <font key="font" metaFont="menu"/>
                                             <menu key="menu" id="KHd-MN-Ifv">
                                                 <items>
                                                     <menuItem title="Mario Kart DS" state="on" id="PM4-Sm-hs6" userLabel="Mario Kart DS"/>
@@ -269,6 +269,40 @@
             </objects>
             <point key="canvasLocation" x="46" y="262"/>
         </scene>
+        <!--Window Controller-->
+        <scene sceneID="ljZ-Be-klq">
+            <objects>
+                <windowController id="EPS-7c-DYE" customClass="TestTKWindow" sceneMemberID="viewController">
+                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="awi-BY-GXL" customClass="TestTKWindow" customModule="MarioKartTrackMaker_macOS" customModuleProvider="target">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="294" y="314" width="480" height="270"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1058"/>
+                        <connections>
+                            <outlet property="delegate" destination="EPS-7c-DYE" id="qXF-8d-UNH"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="5fo-m2-EOz" kind="relationship" relationship="window.shadowedContentViewController" id="RBG-6h-fnp"/>
+                    </connections>
+                </windowController>
+                <customObject id="2Zv-mA-SNs" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-593" y="622"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Y5J-LD-04w">
+            <objects>
+                <viewController id="5fo-m2-EOz" sceneMemberID="viewController">
+                    <view key="view" id="4Wj-3y-YE5">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="3Pc-s9-eBT" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-490" y="1068"/>
+        </scene>
         <!--Split View Controller-->
         <scene sceneID="qcr-W7-A6a">
             <objects>
@@ -283,11 +317,11 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <subviews>
                             <customView id="Y9t-5b-w5l">
-                                <rect key="frame" x="0.0" y="0.0" width="221" height="300"/>
+                                <rect key="frame" x="0.0" y="0.0" width="226" height="300"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </customView>
                             <customView id="3RC-ti-W8C">
-                                <rect key="frame" x="231" y="0.0" width="219" height="300"/>
+                                <rect key="frame" x="227" y="0.0" width="223" height="300"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </customView>
                         </subviews>
@@ -332,11 +366,11 @@
             </objects>
             <point key="canvasLocation" x="595" y="1403"/>
         </scene>
-        <!--View Controller-->
+        <!--MainView-->
         <scene sceneID="UPC-1U-eXh">
             <objects>
-                <viewController id="EBQ-jt-7Q5" sceneMemberID="viewController">
-                    <view key="view" id="Knc-F5-5ca">
+                <viewController title="MainView" id="EBQ-jt-7Q5" sceneMemberID="viewController">
+                    <view key="view" id="Knc-F5-5ca" customClass="MainView" customModule="MarioKartTrackMaker_macOS" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </view>
