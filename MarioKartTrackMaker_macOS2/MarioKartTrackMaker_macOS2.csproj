@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{F3CC4527-43AF-41CB-94C1-BFF310D5726A}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>MacOpenTK</RootNamespace>
+    <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
+    <AssemblyName>MacOpenTK</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <UseRefCounting>true</UseRefCounting>
+    <UseSGen>true</UseSGen>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <CodeSigningKey>Mac Developer</CodeSigningKey>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>false</CreatePackage>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <LinkMode>SdkOnly</LinkMode>
+    <UseRefCounting>true</UseRefCounting>
+    <UseSGen>true</UseSGen>
+    <IncludeMonoRuntime>true</IncludeMonoRuntime>
+    <CreatePackage>true</CreatePackage>
+    <CodeSigningKey>Developer ID Application</CodeSigningKey>
+    <EnableCodeSigning>true</EnableCodeSigning>
+    <EnablePackageSigning>false</EnablePackageSigning>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Xamarin.Mac" />
+    <Reference Include="OpenTK" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MainWindow.cs" />
+    <Compile Include="MainWindow.designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindowController.cs" />
+    <Compile Include="MainWindowController.designer.cs">
+      <DependentUpon>MainWindowController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Main.cs" />
+    <Compile Include="AppDelegate.cs" />
+    <Compile Include="AppDelegate.designer.cs">
+      <DependentUpon>AppDelegate.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="MainWindow.xib" />
+    <InterfaceDefinition Include="MainMenu.xib" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Info.plist" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\.DS_Store" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Resources\Assets.xcassets\Contents.json" />
+    <ImageAsset Include="Resources\Assets.xcassets\SelectTool.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Assets.xcassets\SelectTool.imageset\SelectToolIcon-1.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\SelectTool.imageset\SelectToolIcon-2.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\SelectTool.imageset\SelectToolIcon.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ConnectTool.imageset\ConnectToolIcon-1.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ConnectTool.imageset\ConnectToolIcon-2.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ConnectTool.imageset\ConnectToolIcon.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ConnectTool.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Assets.xcassets\MoveTool.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Assets.xcassets\MoveTool.imageset\MoveToolIcon-1.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\MoveTool.imageset\MoveToolIcon-2.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\MoveTool.imageset\MoveToolIcon.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\RotationTool.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Assets.xcassets\RotationTool.imageset\RotationToolIcon-1.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\RotationTool.imageset\RotationToolIcon-2.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\RotationTool.imageset\RotationToolIcon.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ScaleTool.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Assets.xcassets\ScaleTool.imageset\ScaleToolIcon-1.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ScaleTool.imageset\ScaleToolIcon-2.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ScaleTool.imageset\ScaleToolIcon.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\Image.imageset\Contents.json" />
+  </ItemGroup>
+  <Import Project="..\SharedFiles\SharedFiles.projitems" Label="Shared" Condition="Exists('..\SharedFiles\SharedFiles.projitems')" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
+</Project>

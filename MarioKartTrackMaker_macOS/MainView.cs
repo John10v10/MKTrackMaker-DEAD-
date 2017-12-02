@@ -38,6 +38,7 @@ namespace MarioKartTrackMaker_macOS
         // Shared initialization code
         void Initialize()
         {
+
         }
 
         #endregion
@@ -47,8 +48,12 @@ namespace MarioKartTrackMaker_macOS
         {
             base.AwakeFromNib();
 
+            Console.WriteLine("before its added");
             centralView = new MonoMacGameView(Frame);
-            centralView.Frame = Frame;
+            centralView.Frame = new CGRect(0f, 0f, 500f, 500f);
+
+            Console.WriteLine(centralView.Frame.ToString());
+            Console.WriteLine("after its added");
 
             // Wire-up any required Game events
             centralView.Load += (sender, e) =>
@@ -86,7 +91,10 @@ namespace MarioKartTrackMaker_macOS
             };
 
             centralView.Run(60.0);
+
+            Console.WriteLine(centralView.ToString());
         }
+
         #endregion
     }
 }

@@ -5,9 +5,9 @@ VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarioKartTrackMaker", "MarioKartTrackMaker\MarioKartTrackMaker.csproj", "{B427DA5E-8D06-4ECB-9C38-A3155F9E51A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarioKartTrackMaker_macOS", "MarioKartTrackMaker_macOS\MarioKartTrackMaker_macOS.csproj", "{0BFD0D17-7731-412A-AD9B-93565DB7A252}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SharedFiles", "SharedFiles\SharedFiles.shproj", "{E4A7141F-5B22-4746-ABBA-B842638CB558}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarioKartTrackMaker_macOS", "fourthone\MarioKartTrackMaker_macOS.csproj", "{37535E7D-194F-49D2-A142-982B40516000}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +19,10 @@ Global
 		{B427DA5E-8D06-4ECB-9C38-A3155F9E51A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B427DA5E-8D06-4ECB-9C38-A3155F9E51A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B427DA5E-8D06-4ECB-9C38-A3155F9E51A1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0BFD0D17-7731-412A-AD9B-93565DB7A252}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0BFD0D17-7731-412A-AD9B-93565DB7A252}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0BFD0D17-7731-412A-AD9B-93565DB7A252}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0BFD0D17-7731-412A-AD9B-93565DB7A252}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37535E7D-194F-49D2-A142-982B40516000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37535E7D-194F-49D2-A142-982B40516000}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37535E7D-194F-49D2-A142-982B40516000}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37535E7D-194F-49D2-A142-982B40516000}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

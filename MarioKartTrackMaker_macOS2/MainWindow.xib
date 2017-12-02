@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13529"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="MainWindowController">
+            <connections>
+                <outlet property="window" destination="2" id="6"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="MyFirstTrack.mktm" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" animationBehavior="default" tabbingMode="disallowed" id="2" customClass="MainWindow">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="131" y="74" width="606" height="354"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
+            <view key="contentView" id="3">
+                <rect key="frame" x="0.0" y="0.0" width="606" height="354"/>
+                <autoresizingMask key="autoresizingMask"/>
+            </view>
+            <toolbar key="toolbar" implicitIdentifier="734EADFA-B3C0-4618-832E-B8C5828999F0" autosavesConfiguration="NO" displayMode="iconOnly" sizeMode="regular" id="DmV-gU-ihC">
+                <allowedToolbarItems>
+                    <toolbarItem implicitItemIdentifier="7DE7A5A5-6638-443D-8B32-84481A21758B" label="Custom View" paletteLabel="Custom View" id="P7f-cm-6TT">
+                        <nil key="toolTip"/>
+                        <size key="minSize" width="120" height="25"/>
+                        <size key="maxSize" width="125" height="25"/>
+                        <popUpButton key="view" verticalHuggingPriority="750" misplaced="YES" id="kUy-rK-dQI">
+                            <rect key="frame" x="0.0" y="14" width="120" height="25"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                            <popUpButtonCell key="cell" type="roundTextured" title="Mario Kart DS" bezelStyle="texturedRounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" selectedItem="Aup-fS-DLa" id="Hel-6e-NzA">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="menu"/>
+                                <menu key="menu" id="jut-aX-PJh">
+                                    <items>
+                                        <menuItem title="Mario Kart DS" state="on" id="Aup-fS-DLa" userLabel="MKDS">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Mario Kart Wii" id="6Te-Ur-Dlt" userLabel="MKW">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Mario Kart 7" id="MXY-Z8-8te" userLabel="MK7">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Mario Kart 8" id="Wte-5V-v7p" userLabel="MK8">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </popUpButtonCell>
+                        </popUpButton>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="0D50CA82-66F3-4E56-B0E7-73813CA32885" label="Custom View" paletteLabel="Custom View" id="Zu3-W2-9Af">
+                        <nil key="toolTip"/>
+                        <size key="minSize" width="102" height="23"/>
+                        <size key="maxSize" width="345" height="23"/>
+                        <segmentedControl key="view" verticalHuggingPriority="750" id="2Kw-IO-l0r">
+                            <rect key="frame" x="0.0" y="14" width="186" height="23"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <segmentedCell key="cell" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="m6d-un-6rA">
+                                <font key="font" metaFont="system"/>
+                                <segments>
+                                    <segment image="SelectTool" width="30"/>
+                                    <segment image="MoveTool" width="30" selected="YES" tag="1"/>
+                                    <segment image="RotationTool" width="30">
+                                        <nil key="label"/>
+                                    </segment>
+                                    <segment image="ScaleTool" width="30">
+                                        <nil key="label"/>
+                                    </segment>
+                                    <segment image="ConnectTool" width="30">
+                                        <nil key="label"/>
+                                    </segment>
+                                    <segment image="DecorateTool" width="30">
+                                        <nil key="label"/>
+                                    </segment>
+                                </segments>
+                            </segmentedCell>
+                        </segmentedControl>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="EFe-T2-AUW"/>
+                    <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="BX8-1B-dMM"/>
+                </allowedToolbarItems>
+                <defaultToolbarItems>
+                    <toolbarItem reference="Zu3-W2-9Af"/>
+                    <toolbarItem reference="BX8-1B-dMM"/>
+                    <toolbarItem reference="P7f-cm-6TT"/>
+                </defaultToolbarItems>
+            </toolbar>
+        </window>
+    </objects>
+    <resources>
+        <image name="ConnectTool" width="64" height="64"/>
+        <image name="DecorateTool" width="64" height="64"/>
+        <image name="MoveTool" width="64" height="64"/>
+        <image name="RotationTool" width="64" height="64"/>
+        <image name="ScaleTool" width="64" height="64"/>
+        <image name="SelectTool" width="64" height="64"/>
+    </resources>
+</document>

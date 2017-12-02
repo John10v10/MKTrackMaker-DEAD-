@@ -122,11 +122,20 @@
     <Compile Include="TestTKWindow.designer.cs">
       <DependentUpon>TestTKWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestWindow2.cs" />
+    <Compile Include="TestWindow2.designer.cs">
+      <DependentUpon>TestWindow2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MarioKartGLView.cs" />
+    <Compile Include="MarioKartGLView.designer.cs">
+      <DependentUpon>MarioKartGLView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
     <InterfaceDefinition Include="MainView.xib" />
-    <InterfaceDefinition Include="TestTKWindow.xib" />
+    <InterfaceDefinition Include="TestWindow2.xib" />
+    <InterfaceDefinition Include="MarioKartGLView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Icons\MoveToolIcon.png" />
