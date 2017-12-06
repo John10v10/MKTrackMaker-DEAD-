@@ -40,8 +40,9 @@ namespace MarioKartTrackMaker_macOS
             GL.ClearColor(0, 0, 0, 0);
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
-            DrawTriangle();
+            //DrawTriangle();
 
+            //MarioKartTrackMaker.ViewerResources.ToolModels.DrawBall(new OpenTK.Vector3(), 5f, 4);
             Console.WriteLine("drawn");
             GL.Flush();
         }

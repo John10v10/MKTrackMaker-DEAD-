@@ -6,9 +6,13 @@
     <SharedGUID>{E4A7141F-5B22-4746-ABBA-B842638CB558}</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>SharedFiles</Import_RootNamespace>
+    <Import_RootNamespace>MarioKartTrackMaker.ViewerResources</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)MyClass.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)ViewerResources\" />
+    <Folder Include="$(MSBuildThisFileDirectory)IO\" />
   </ItemGroup>
 </Project>
